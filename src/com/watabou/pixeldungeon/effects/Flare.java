@@ -26,7 +26,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.annotation.SuppressLint;
 import android.opengl.GLES20;
-import android.util.FloatMath;
 
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
@@ -50,7 +49,6 @@ public class Flare extends Visual {
 	
 	private int nRays;
 	
-	@SuppressLint("FloatMath")
 	public Flare( int nRays, float radius ) {
 		
 		super( 0, 0, 0, 0 );
@@ -87,13 +85,13 @@ public class Flare extends Visual {
 		for (int i=0; i < nRays; i++) {
 			
 			float a = i * 3.1415926f * 2 / nRays;
-			v[0] = FloatMath.cos( a ) * radius;
-			v[1] = FloatMath.sin( a ) * radius;
+			v[0] = (float) Math.cos( a ) * radius;
+			v[1] = (float) Math.sin( a ) * radius;
 			vertices.put( v );
 			
 			a += 3.1415926f * 2 / nRays / 2;
-			v[0] = FloatMath.cos( a ) * radius;
-			v[1] = FloatMath.sin( a ) * radius;
+			v[0] = (float) Math.cos( a ) * radius;
+			v[1] = (float) Math.sin( a ) * radius;
 			vertices.put( v );
 			
 			indices.put( (short)0 );

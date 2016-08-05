@@ -365,12 +365,15 @@ public class Heap implements Bundlable {
 	private static final String TYPE	= "type";
 	private static final String ITEMS	= "items";
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		pos = bundle.getInt( POS );
 		type = Type.valueOf( bundle.getString( TYPE ) );
-		items = new LinkedList<Item>( (Collection<? extends Item>) bundle.getCollection( ITEMS ) ); 
+		Collection<Bundlable> tmp = bundle.getCollection( ITEMS );
+		items = new LinkedList<Item>(); 
+		for (Bundlable b : tmp) {
+			items.add((Item) b);
+		}
 	}
 
 	@Override

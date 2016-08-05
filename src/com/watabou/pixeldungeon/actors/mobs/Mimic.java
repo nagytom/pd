@@ -38,6 +38,7 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.MimicSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.watabou.utils.Bundlable;
 
 public class Mimic extends Mob {
 	
@@ -60,11 +61,14 @@ public class Mimic extends Mob {
 		bundle.put( LEVEL, level );
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		items = new ArrayList<Item>( (Collection<? extends Item>) bundle.getCollection( ITEMS ) ); 
+		Collection<Bundlable> tmp = bundle.getCollection( ITEMS );
+		items = new ArrayList<Item>(tmp.size()); 
+		for (Bundlable b : tmp) {
+			items.add((Item) b);
+		}
 		adjustStats( bundle.getInt( LEVEL ) );
 	}
 	

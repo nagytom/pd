@@ -37,6 +37,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+import com.watabou.utils.Bundlable;
 
 public abstract class RegularLevel extends Level {
 
@@ -674,12 +675,15 @@ public abstract class RegularLevel extends Level {
 		bundle.put( "rooms", rooms );
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		
-		rooms = new HashSet<Room>( (Collection<? extends Room>) bundle.getCollection( "rooms" ) );
+		Collection<Bundlable> tmp = bundle.getCollection( "rooms" );
+		rooms = new HashSet<Room>();
+		for (Bundlable b : tmp) {
+			rooms.add((Room) b);
+		}
 		for (Room r : rooms) {
 			if (r.type == Type.WEAK_FLOOR) {
 				weakFloorCreated = true;
