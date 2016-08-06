@@ -36,28 +36,28 @@ import hu.nagytom.pd.utils.Random;
 public class Skeleton extends Mob {
 
 	private static final String TXT_HERO_KILLED = "You were killed by the explosion of bones...";
-	
+
 	{
 		name = "skeleton";
 		spriteClass = SkeletonSprite.class;
-		
+
 		HP = HT = 25;
 		defenseSkill = 9;
-		
+
 		EXP = 5;
 		maxLvl = 10;
 	}
-	
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 3, 8 );
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
-		
+
 		super.die( cause );
-		
+
 		boolean heroKilled = false;
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			Char ch = findChar( pos + Level.NEIGHBOURS8[i] );
@@ -69,17 +69,17 @@ public class Skeleton extends Mob {
 				}
 			}
 		}
-		
+
 		if (Dungeon.visible[pos]) {
 			Sample.INSTANCE.play( Assets.SND_BONES );
 		}
-		
+
 		if (heroKilled) {
 			Dungeon.fail( Utils.format( ResultDescriptions.MOB, Utils.indefinite( name ), Dungeon.depth ) );
 			GLog.n( TXT_HERO_KILLED );
 		}
 	}
-	
+
 	@Override
 	protected void dropLoot() {
 		if (Random.Int( 5 ) == 0) {
@@ -93,22 +93,22 @@ public class Skeleton extends Mob {
 			Dungeon.level.drop( loot, pos ).sprite.drop();
 		}
 	}
-	
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 12;
 	}
-	
+
 	@Override
 	public int dr() {
 		return 5;
 	}
-	
+
 	@Override
 	public String defenseVerb() {
 		return "blocked";
 	}
-	
+
 	@Override
 	public String description() {
 		return
@@ -116,12 +116,12 @@ public class Skeleton extends Mob {
 			"animated by emanations of evil magic from the depths below. After they have been " +
 			"damaged enough, they disintegrate in an explosion of bones.";
 	}
-	
+
 	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 	static {
 		IMMUNITIES.add( Death.class );
 	}
-	
+
 	@Override
 	public HashSet<Class<?>> immunities() {
 		return IMMUNITIES;

@@ -27,28 +27,28 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class ScrollOfTeleportation extends Scroll {
 
-	public static final String TXT_TELEPORTED = 
+	public static final String TXT_TELEPORTED =
 		"In a blink of an eye you were teleported to another location of the level.";
-	
-	public static final String TXT_NO_TELEPORT = 
+
+	public static final String TXT_NO_TELEPORT =
 		"Strong magic aura of this place prevents you from teleporting!";
-	
+
 	{
 		name = "Scroll of Teleportation";
 	}
-	
+
 	@Override
 	protected void doRead() {
 
 		Sample.INSTANCE.play( Assets.SND_READ );
 		Invisibility.dispel();
-		
+
 		teleportHero( curUser );
 		setKnown();
-		
+
 		readAnimation();
 	}
-	
+
 	public static void teleportHero( Hero  hero ) {
 
 		int count = 10;
@@ -59,22 +59,22 @@ public class ScrollOfTeleportation extends Scroll {
 				break;
 			}
 		} while (pos == -1);
-		
+
 		if (pos == -1) {
-			
+
 			GLog.w( TXT_NO_TELEPORT );
-			
+
 		} else {
 
 			WandOfBlink.appear( hero, pos );
 			Dungeon.level.press( pos, hero );
 			Dungeon.observe();
-			
+
 			GLog.i( TXT_TELEPORTED );
-			
+
 		}
 	}
-	
+
 	@Override
 	public String desc() {
 		return
@@ -83,7 +83,7 @@ public class ScrollOfTeleportation extends Scroll {
 			"to escape a dangerous situation, but the unlucky reader might " +
 			"find himself in an even more dangerous place.";
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity : super.price();

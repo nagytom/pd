@@ -29,11 +29,11 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 public class PotionOfInvisibility extends Potion {
 
 	private static final float ALPHA	= 0.4f;
-	
+
 	{
 		name = "Potion of Invisibility";
 	}
-	
+
 	@Override
 	protected void apply( Hero hero ) {
 		setKnown();
@@ -41,7 +41,7 @@ public class PotionOfInvisibility extends Potion {
 		GLog.i( "You see your hands turn invisible!" );
 		Sample.INSTANCE.play( Assets.SND_MELD );
 	}
-	
+
 	@Override
 	public String desc() {
 		return
@@ -49,12 +49,12 @@ public class PotionOfInvisibility extends Potion {
 			"enemies will be unable to see you. Attacking an enemy, as well as using a wand or a scroll " +
 			"before enemy's eyes, will dispel the effect.";
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity : super.price();
 	}
-	
+
 	public static void melt( Char ch ) {
 		if (ch.sprite.parent != null) {
 			ch.sprite.parent.add( new AlphaTweener( ch.sprite, ALPHA, 0.4f ) );

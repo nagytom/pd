@@ -20,16 +20,16 @@ package hu.nagytom.pd.pixeldungeon.items.weapon.melee;
 import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Longsword extends MeleeWeapon {
-	
+
 	{
 		name = "longsword";
 		image = ItemSpriteSheet.LONG_SWORD;
 	}
-	
+
 	public Longsword() {
 		super( 4, 1f, 1f );
 	}
-	
+
 	@Override
 	public String desc() {
 		return "This towering blade inflicts heavy damage by investing its heft into every cut.";

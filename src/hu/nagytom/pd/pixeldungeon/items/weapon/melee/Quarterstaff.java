@@ -25,11 +25,11 @@ public class Quarterstaff extends MeleeWeapon {
 		name = "quarterstaff";
 		image = ItemSpriteSheet.QUARTERSTAFF;
 	}
-	
+
 	public Quarterstaff() {
 		super( 2, 1f, 1f );
 	}
-	
+
 	@Override
 	public String desc() {
 		return "A staff of hardwood, its ends are shod with iron.";

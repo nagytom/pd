@@ -18,16 +18,16 @@
 package hu.nagytom.pd.pixeldungeon.items.rings;
 
 public class RingOfPower extends Ring {
-	
+
 	{
 		name = "Ring of Power";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Power();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -35,7 +35,7 @@ public class RingOfPower extends Ring {
 			"that radiates from this ring. Degraded rings of power will instead weaken your wands." :
 			super.desc();
 	}
-	
+
 	public class Power extends RingBuff {
 	}
 }

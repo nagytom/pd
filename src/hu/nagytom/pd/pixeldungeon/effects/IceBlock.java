@@ -24,18 +24,18 @@ import hu.nagytom.pd.pixeldungeon.Assets;
 import hu.nagytom.pd.pixeldungeon.sprites.CharSprite;
 
 public class IceBlock extends Gizmo {
-	
-	private float phase; 
-	
+
+	private float phase;
+
 	private CharSprite target;
-	
+
 	public IceBlock( CharSprite target ) {
 		super();
 
 		this.target = target;
 		phase = 0;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
@@ -46,7 +46,7 @@ public class IceBlock extends Gizmo {
 			target.tint( 0.83f, 1.17f, 1.33f, 0.6f );
 		}
 	}
-	
+
 	public void melt() {
 
 		target.resetColor();
@@ -57,12 +57,12 @@ public class IceBlock extends Gizmo {
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
 	}
-	
+
 	public static IceBlock freeze( CharSprite sprite ) {
-		
+
 		IceBlock iceBlock = new IceBlock( sprite );
 		sprite.parent.add( iceBlock );
-		
+
 		return iceBlock;
 	}
 }

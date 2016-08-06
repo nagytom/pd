@@ -25,7 +25,7 @@ public enum Icons {
 
 	SKULL,
 	BUSY,
-	COMPASS, 
+	COMPASS,
 	PREFS,
 	WARNING,
 	TARGET,
@@ -51,11 +51,11 @@ public enum Icons {
 	CHALLENGE_OFF,
 	CHALLENGE_ON,
 	RESUME;
-	
+
 	public Image get() {
 		return get( this );
 	}
-	
+
 	public static Image get( Icons type ) {
 		Image icon = new Image( Assets.ICONS );
 		switch (type) {
@@ -146,7 +146,7 @@ public enum Icons {
 		}
 		return icon;
 	}
-	
+
 	public static Image get( HeroClass cl ) {
 		switch (cl) {
 		case WARRIOR:

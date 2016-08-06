@@ -18,16 +18,16 @@
 package hu.nagytom.pd.pixeldungeon.items.rings;
 
 public class RingOfMending extends Ring {
-	
+
 	{
 		name = "Ring of Mending";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Rejuvenation();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -36,7 +36,7 @@ public class RingOfMending extends Ring {
 			"decrease or even halt one's natural regeneration." :
 			super.desc();
 	}
-	
+
 	public class Rejuvenation extends RingBuff {
 	}
 }

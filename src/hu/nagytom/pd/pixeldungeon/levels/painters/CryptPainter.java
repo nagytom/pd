@@ -36,12 +36,12 @@ public class CryptPainter extends Painter {
 		Point c = room.center();
 		int cx = c.x;
 		int cy = c.y;
-		
+
 		Room.Door entrance = room.entrance();
-		
+
 		entrance.set( Room.Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey() );
-		
+
 		if (entrance.x == room.left) {
 			set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
 			set( level, new Point( room.right-1, room.bottom-1 ), Terrain.STATUE );
@@ -59,12 +59,12 @@ public class CryptPainter extends Painter {
 			set( level, new Point( room.right-1, room.top+1 ), Terrain.STATUE );
 			cy = room.top + 2;
 		}
-		
+
 		level.drop( prize( level ), cx + cy * Level.WIDTH ).type = Type.TOMB;
 	}
-	
+
 	private static Item prize( Level level ) {
-		
+
 		Item prize = Generator.random( Generator.Category.ARMOR );
 
 		for (int i=0; i < 3; i++) {
@@ -73,7 +73,7 @@ public class CryptPainter extends Painter {
 				prize = another;
 			}
 		}
-		
+
 		return prize;
 	}
 }

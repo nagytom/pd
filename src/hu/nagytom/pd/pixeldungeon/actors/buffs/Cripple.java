@@ -22,12 +22,12 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 public class Cripple extends FlavourBuff {
 
 	public static final float DURATION	= 10f;
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.CRIPPLE;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Crippled";

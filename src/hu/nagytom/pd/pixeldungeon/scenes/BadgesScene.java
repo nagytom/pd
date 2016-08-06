@@ -38,46 +38,46 @@ import hu.nagytom.pd.utils.Callback;
 import hu.nagytom.pd.utils.Random;
 
 public class BadgesScene extends PixelScene {
-	
+
 	private static final String TXT_TITLE = "Your Badges";
-	
+
 	@Override
 	public void create() {
-		
+
 		super.create();
-		
+
 		Music.INSTANCE.play( Assets.THEME, true );
 		Music.INSTANCE.volume( 1f );
-		
+
 		uiCamera.visible = false;
-		
+
 		int w = Camera.main.width;
 		int h = Camera.main.height;
-		
+
 		Archs archs = new Archs();
 		archs.setSize( w, h );
 		add( archs );
-		
+
 		int pw = (int)Math.min( w, (PixelDungeon.landscape() ? MIN_WIDTH_L : MIN_WIDTH_P) * 3 ) - 16;
 		int ph = (int)Math.min( h, (PixelDungeon.landscape() ? MIN_HEIGHT_L : MIN_HEIGHT_P) * 3 ) - 32;
-		
+
 		float size = (float)Math.sqrt( pw * ph / 27f );
 		int nCols = (int)Math.ceil( pw / size );
 		int nRows = (int)Math.ceil( ph / size );
 		size = Math.min( pw / nCols, ph / nRows );
-		
+
 		float left = (w - size * nCols) / 2;
 		float top = (h - size * nRows) / 2;
-		
+
 		BitmapText title = PixelScene.createText( TXT_TITLE, 9 );
 		title.hardlight( Window.TITLE_COLOR );
 		title.measure();
 		title.x = align( (w - title.width()) / 2 );
 		title.y = align( (top - title.baseLine()) / 2 );
 		add( title );
-		
+
 		Badges.loadGlobal();
-		
+
 		List<Badges.Badge> badges = Badges.filtered( true );
 		for (int i=0; i < nRows; i++) {
 			for (int j=0; j < nCols; j++) {
@@ -90,13 +90,13 @@ public class BadgesScene extends PixelScene {
 				add( button );
 			}
 		}
-		
+
 		ExitButton btnExit = new ExitButton();
 		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
 		add( btnExit );
-		
+
 		fadeIn();
-		
+
 		Badges.loadingListener = new Callback() {
 			@Override
 			public void call() {
@@ -106,21 +106,21 @@ public class BadgesScene extends PixelScene {
 			}
 		};
 	}
-	
+
 	@Override
 	public void destroy() {
-		
+
 		Badges.saveGlobal();
 		Badges.loadingListener = null;
-		
+
 		super.destroy();
 	}
-	
+
 	@Override
 	protected void onBackPressed() {
 		PixelDungeon.switchNoFade( TitleScene.class );
 	}
-	
+
 	private static class BadgeButton extends Button {
 
 		private Badges.Badge badge;

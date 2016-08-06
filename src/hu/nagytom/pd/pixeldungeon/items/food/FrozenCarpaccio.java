@@ -38,14 +38,14 @@ public class FrozenCarpaccio extends Food {
 		image = ItemSpriteSheet.CARPACCIO;
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 	}
-	
+
 	@Override
 	public void execute( Hero hero, String action ) {
-		
+
 		super.execute( hero, action );
-		
+
 		if (action.equals( AC_EAT )) {
-			
+
 			switch (Random.Int( 5 )) {
 			case 0:
 				GLog.i( "You see your hands turn invisible!" );
@@ -72,18 +72,18 @@ public class FrozenCarpaccio extends Food {
 			}
 		}
 	}
-	
+
 	@Override
 	public String info() {
-		return 
+		return
 			"It's a piece of frozen raw meat. The only way to eat it is " +
 			"by cutting thin slices of it. And this way it's suprisingly good.";
 	}
-	
+
 	public int price() {
 		return 10 * quantity;
 	};
-	
+
 	public static Food cook( MysteryMeat ingredient ) {
 		FrozenCarpaccio result = new FrozenCarpaccio();
 		result.quantity = ingredient.quantity();

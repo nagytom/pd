@@ -20,12 +20,12 @@ package hu.nagytom.pd.pixeldungeon.actors.buffs;
 import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class Rage extends FlavourBuff {
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.RAGE;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Blinded with rage";

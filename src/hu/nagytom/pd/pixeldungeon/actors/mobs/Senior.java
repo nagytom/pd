@@ -30,12 +30,12 @@ public class Senior extends Monk {
 		name = "senior monk";
 		spriteClass = SeniorSprite.class;
 	}
-	
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 12, 20 );
 	}
-	
+
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		if (Random.Int( 10 ) == 0) {
@@ -43,7 +43,7 @@ public class Senior extends Monk {
 		}
 		return super.attackProc( enemy, damage );
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		super.die( cause );

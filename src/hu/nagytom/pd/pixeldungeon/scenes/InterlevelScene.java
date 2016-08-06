@@ -37,44 +37,44 @@ import hu.nagytom.pd.pixeldungeon.windows.WndStory;
 public class InterlevelScene extends PixelScene {
 
 	private static final float TIME_TO_FADE = 0.3f;
-	
+
 	private static final String TXT_DESCENDING	= "Descending...";
 	private static final String TXT_ASCENDING	= "Ascending...";
 	private static final String TXT_LOADING		= "Loading...";
 	private static final String TXT_RESURRECTING= "Resurrecting...";
 	private static final String TXT_RETURNING	= "Returning...";
 	private static final String TXT_FALLING		= "Falling...";
-	
+
 	private static final String ERR_FILE_NOT_FOUND	= "File not found. For some reason.";
-	private static final String ERR_GENERIC			= "Something went wrong..."	;	
-	
+	private static final String ERR_GENERIC			= "Something went wrong..."	;
+
 	public static enum Mode {
 		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, NONE
 	};
 	public static Mode mode;
-	
+
 	public static int returnDepth;
 	public static int returnPos;
-	
+
 	public static boolean noStory = false;
-	
+
 	public static boolean fallIntoPit;
-	
+
 	private enum Phase {
 		FADE_IN, STATIC, FADE_OUT
 	};
 	private Phase phase;
 	private float timeLeft;
-	
+
 	private BitmapText message;
-	
+
 	private Thread thread;
 	private String error = null;
-	
+
 	@Override
 	public void create() {
 		super.create();
-		
+
 		String text = "";
 		switch (mode) {
 		case DESCEND:
@@ -97,24 +97,24 @@ public class InterlevelScene extends PixelScene {
 			break;
 		default:
 		}
-		
+
 		message = PixelScene.createText( text, 9 );
 		message.measure();
-		message.x = (Camera.main.width - message.width()) / 2; 
+		message.x = (Camera.main.width - message.width()) / 2;
 		message.y = (Camera.main.height - message.height()) / 2;
 		add( message );
-		
+
 		phase = Phase.FADE_IN;
 		timeLeft = TIME_TO_FADE;
-		
+
 		thread = new Thread() {
 			@Override
 			public void run() {
-				
+
 				try {
-					
+
 					Generator.reset();
-					
+
 					switch (mode) {
 					case DESCEND:
 						descend();
@@ -140,17 +140,17 @@ public class InterlevelScene extends PixelScene {
 					if ((Dungeon.depth % 5) == 0) {
 						Sample.INSTANCE.load( Assets.SND_BOSS );
 					}
-					
+
 				} catch (FileNotFoundException e) {
-					
+
 					error = ERR_FILE_NOT_FOUND;
-					
+
 				} catch (Exception e ) {
-					
+
 					error = ERR_GENERIC;
-					
+
 				}
-				
+
 				if (phase == Phase.STATIC && error == null) {
 					phase = Phase.FADE_OUT;
 					timeLeft = TIME_TO_FADE;
@@ -159,15 +159,15 @@ public class InterlevelScene extends PixelScene {
 		};
 		thread.start();
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		float p = timeLeft / TIME_TO_FADE;
-		
+
 		switch (phase) {
-		
+
 		case FADE_IN:
 			message.alpha( 1 - p );
 			if ((timeLeft -= Game.elapsed) <= 0) {
@@ -179,7 +179,7 @@ public class InterlevelScene extends PixelScene {
 				}
 			}
 			break;
-			
+
 		case FADE_OUT:
 			message.alpha( p );
 			if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth == 1)) {
@@ -189,7 +189,7 @@ public class InterlevelScene extends PixelScene {
 				Game.switchScene( GameScene.class );
 			}
 			break;
-			
+
 		case STATIC:
 			if (error != null) {
 				add( new WndError( error ) {
@@ -203,9 +203,9 @@ public class InterlevelScene extends PixelScene {
 			break;
 		}
 	}
-	
+
 	private void descend() throws Exception {
-		
+
 		Actor.fixTime();
 		if (Dungeon.hero == null) {
 			Dungeon.init();
@@ -217,7 +217,7 @@ public class InterlevelScene extends PixelScene {
 		} else {
 			Dungeon.saveLevel();
 		}
-		
+
 		Level level;
 		if (Dungeon.depth >= Statistics.deepestFloor) {
 			level = Dungeon.newLevel();
@@ -227,12 +227,12 @@ public class InterlevelScene extends PixelScene {
 		}
 		Dungeon.switchLevel( level, level.entrance );
 	}
-	
+
 	private void fall() throws Exception {
-		
+
 		Actor.fixTime();
 		Dungeon.saveLevel();
-		
+
 		Level level;
 		if (Dungeon.depth >= Statistics.deepestFloor) {
 			level = Dungeon.newLevel();
@@ -242,32 +242,32 @@ public class InterlevelScene extends PixelScene {
 		}
 		Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
 	}
-	
+
 	private void ascend() throws Exception {
 		Actor.fixTime();
-		
+
 		Dungeon.saveLevel();
 		Dungeon.depth--;
 		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		Dungeon.switchLevel( level, level.exit );
 	}
-	
+
 	private void returnTo() throws Exception {
-		
+
 		Actor.fixTime();
-		
+
 		Dungeon.saveLevel();
 		Dungeon.depth = returnDepth;
 		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
 		Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( returnPos ) : returnPos );
 	}
-	
+
 	private void restore() throws Exception {
-		
+
 		Actor.fixTime();
-		
+
 		GameLog.wipe();
-		
+
 		Dungeon.loadGame( StartScene.curClass );
 		if (Dungeon.depth == -1) {
 			Dungeon.depth = Statistics.deepestFloor;
@@ -277,11 +277,11 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( Dungeon.hero.pos ) : Dungeon.hero.pos );
 		}
 	}
-	
+
 	private void resurrect() throws Exception {
-		
-		Actor.fixTime(); 
-		
+
+		Actor.fixTime();
+
 		if (Dungeon.bossLevel()) {
 			Dungeon.hero.resurrect( Dungeon.depth );
 			Dungeon.depth--;
@@ -292,7 +292,7 @@ public class InterlevelScene extends PixelScene {
 			Dungeon.resetLevel();
 		}
 	}
-	
+
 	@Override
 	protected void onBackPressed() {
 		// Do nothing

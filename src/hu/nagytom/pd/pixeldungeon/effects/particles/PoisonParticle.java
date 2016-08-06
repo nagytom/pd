@@ -24,8 +24,8 @@ import hu.nagytom.pd.utils.ColorMath;
 import hu.nagytom.pd.utils.Random;
 
 public class PoisonParticle extends PixelParticle {
-	
-	public static final Emitter.Factory MISSILE = new Factory() {	
+
+	public static final Emitter.Factory MISSILE = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((PoisonParticle)emitter.recycle( PoisonParticle.class )).resetMissile( x, y );
@@ -35,8 +35,8 @@ public class PoisonParticle extends PixelParticle {
 			return true;
 		};
 	};
-	
-	public static final Emitter.Factory SPLASH = new Factory() {	
+
+	public static final Emitter.Factory SPLASH = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((PoisonParticle)emitter.recycle( PoisonParticle.class )).resetSplash( x, y );
@@ -46,37 +46,37 @@ public class PoisonParticle extends PixelParticle {
 			return true;
 		};
 	};
-	
+
 	public PoisonParticle() {
 		super();
-		
+
 		lifespan = 0.6f;
-		
+
 		acc.set( 0, +30 );
 	}
-	
+
 	public void resetMissile( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan;
-		
+
 		speed.polar( -Random.Float( 3.1415926f ), Random.Float( 6 ) );
 	}
-	
+
 	public void resetSplash( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan;
-		
+
 		speed.polar( Random.Float( 3.1415926f ), Random.Float( 10, 20 ) );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

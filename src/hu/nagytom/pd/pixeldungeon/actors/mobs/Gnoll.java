@@ -24,42 +24,42 @@ import hu.nagytom.pd.pixeldungeon.sprites.GnollSprite;
 import hu.nagytom.pd.utils.Random;
 
 public class Gnoll extends Mob {
-	
+
 	{
 		name = "gnoll scout";
 		spriteClass = GnollSprite.class;
-		
+
 		HP = HT = 12;
 		defenseSkill = 4;
-		
+
 		EXP = 2;
 		maxLvl = 8;
-		
+
 		loot = Gold.class;
 		lootChance = 0.5f;
 	}
-	
+
 	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 2, 5 );
 	}
-	
+
 	@Override
 	public int attackSkill( Char target ) {
 		return 11;
 	}
-	
+
 	@Override
 	public int dr() {
 		return 2;
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		Ghost.Quest.processSewersKill( pos );
 		super.die( cause );
 	}
-	
+
 	@Override
 	public String description() {
 		return

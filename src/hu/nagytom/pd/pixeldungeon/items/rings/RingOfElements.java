@@ -33,12 +33,12 @@ public class RingOfElements extends Ring {
 	{
 		name = "Ring of Elements";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Resistance();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -59,9 +59,9 @@ public class RingOfElements extends Ring {
 		FULL.add( Eye.class );
 		FULL.add( Yog.BurningFist.class );
 	}
-	
+
 	public class Resistance extends RingBuff {
-		
+
 		public HashSet<Class<?>> resistances() {
 			if (Random.Int( level + 3 ) >= 3) {
 				return FULL;
@@ -69,7 +69,7 @@ public class RingOfElements extends Ring {
 				return EMPTY;
 			}
 		}
-		
+
 		public float durationFactor() {
 			return level < 0 ? 1 : (2 + 0.5f * level) / (2 + level);
 		}

@@ -30,7 +30,7 @@ public class SparseArray<T> extends android.util.SparseArray<T> {
 		}
 		return array;
 	}
-	
+
 	public List<T> values() {
 		int size = size();
 		ArrayList<T> list = new ArrayList<T>( size );

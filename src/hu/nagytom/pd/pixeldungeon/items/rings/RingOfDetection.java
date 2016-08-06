@@ -25,7 +25,7 @@ public class RingOfDetection extends Ring {
 	{
 		name = "Ring of Detection";
 	}
-	
+
 	@Override
 	public boolean doEquip( Hero hero ) {
 		if (super.doEquip( hero )) {
@@ -35,12 +35,12 @@ public class RingOfDetection extends Ring {
 			return false;
 		}
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Detection();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -49,7 +49,7 @@ public class RingOfDetection extends Ring {
 			"will dull your senses, making it harder to notice secrets even when actively searching for them." :
 			super.desc();
 	}
-	
+
 	public class Detection extends RingBuff {
 	}
 }

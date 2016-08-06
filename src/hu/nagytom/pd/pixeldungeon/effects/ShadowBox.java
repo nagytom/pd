@@ -24,15 +24,15 @@ import hu.nagytom.pd.pixeldungeon.Assets;
 public class ShadowBox extends NinePatch {
 
 	public static final float SIZE	= 16;
-	
+
 	public ShadowBox() {
 		super( Assets.SHADOW, 1 );
-		
+
 		texture.filter( SmartTexture.LINEAR, SmartTexture.LINEAR );
-		
+
 		scale.set( SIZE, SIZE );
 	}
-	
+
 	@Override
 	public void size(float width, float height) {
 		super.size( width / SIZE, height / SIZE );

@@ -22,12 +22,12 @@ public class Assets {
 	public static final String ARCS_BG		= "arcs1.png";
 	public static final String ARCS_FG		= "arcs2.png";
 	public static final String DASHBOARD	= "dashboard.png";
-	
+
 	public static final String BANNERS	= "banners.png";
 	public static final String BADGES	= "badges.png";
 	public static final String LOCKED	= "locked_badge.png";
 	public static final String AMULET	= "amulet.png";
-	
+
 	public static final String CHROME	= "chrome.png";
 	public static final String ICONS	= "icons.png";
 	public static final String STATUS	= "status_pane.png";
@@ -35,20 +35,20 @@ public class Assets {
 	public static final String XP_BAR	= "exp_bar.png";
 	public static final String TOOLBAR	= "toolbar.png";
 	public static final String SHADOW	= "shadow.png";
-	
+
 	public static final String WARRIOR	= "warrior.png";
 	public static final String MAGE		= "mage.png";
 	public static final String ROGUE	= "rogue.png";
 	public static final String HUNTRESS	= "ranger.png";
 	public static final String AVATARS	= "avatars.png";
 	public static final String PET		= "pet.png";
-	
+
 	public static final String SURFACE	= "surface.png";
-	
+
 	public static final String FIREBALL		= "fireball.png";
 	public static final String SPECKS		= "specks.png";
 	public static final String EFFECTS		= "effects.png";
-	
+
 	public static final String RAT		= "rat.png";
 	public static final String GNOLL	= "gnoll.png";
 	public static final String CRAB		= "crab.png";
@@ -87,40 +87,40 @@ public class Assets {
 	public static final String RATKING	= "ratking.png";
 	public static final String BEE		= "bee.png";
 	public static final String MIMIC	= "mimic.png";
-	
+
 	public static final String ITEMS	= "items.png";
 	public static final String PLANTS	= "plants.png";
-	
+
 	public static final String TILES_SEWERS	= "tiles0.png";
 	public static final String TILES_PRISON	= "tiles1.png";
 	public static final String TILES_CAVES	= "tiles2.png";
 	public static final String TILES_CITY	= "tiles3.png";
 	public static final String TILES_HALLS	= "tiles4.png";
-	
+
 	public static final String WATER_SEWERS	= "water0.png";
 	public static final String WATER_PRISON	= "water1.png";
 	public static final String WATER_CAVES	= "water2.png";
 	public static final String WATER_CITY	= "water3.png";
 	public static final String WATER_HALLS	= "water4.png";
-	
+
 	public static final String BUFFS_SMALL	= "buffs.png";
 	public static final String BUFFS_LARGE	= "large_buffs.png";
 	public static final String SPELL_ICONS	= "spell_icons.png";
-	
+
 	public static final String FONTS1X	= "font1x.png";
 	public static final String FONTS15X	= "font15x.png";
 	public static final String FONTS2X	= "font2x.png";
 	public static final String FONTS25X	= "font25x.png";
 	public static final String FONTS3X	= "font3x.png";
-	
+
 	public static final String THEME	= "theme.mp3";
 	public static final String TUNE		= "game.mp3";
 	public static final String HAPPY	= "surface.mp3";
-	
+
 	public static final String SND_CLICK	= "snd_click.mp3";
 	public static final String SND_BADGE	= "snd_badge.mp3";
 	public static final String SND_GOLD		= "snd_gold.mp3";
-	
+
 	public static final String SND_OPEN		= "snd_door_open.mp3";
 	public static final String SND_UNLOCK	= "snd_unlock.mp3";
 	public static final String SND_ITEM		= "snd_item.mp3";

@@ -21,15 +21,15 @@ import hu.nagytom.pd.noosa.Image;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 
 public class BusyIndicator extends Image {
-	
+
 	public BusyIndicator() {
 		super();
 		copy( Icons.BUSY.get() );
-		
+
 		origin.set( width / 2, height / 2 );
 		angularSpeed = 720;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

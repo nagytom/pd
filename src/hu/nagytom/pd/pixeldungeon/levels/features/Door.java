@@ -30,12 +30,12 @@ public class Door {
 		Level.set( pos, Terrain.OPEN_DOOR );
 		GameScene.updateMap( pos );
 		Dungeon.observe();
-		
+
 		if (Dungeon.visible[pos]) {
 			Sample.INSTANCE.play( Assets.SND_OPEN );
 		}
 	}
-	
+
 	public static void leave( int pos ) {
 		if (Dungeon.level.heaps.get( pos ) == null) {
 			Level.set( pos, Terrain.DOOR );

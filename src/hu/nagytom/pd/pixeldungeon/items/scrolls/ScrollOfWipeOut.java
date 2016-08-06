@@ -41,30 +41,30 @@ import hu.nagytom.pd.utils.Random;
 public class ScrollOfWipeOut extends Item {
 
 	private static final String TXT_BLINDED	= "You can't read a scroll while blinded";
-	
+
 	public static final String AC_READ	= "READ";
-	
+
 	protected static final float TIME_TO_READ	= 1f;
-	
+
 	{
 		name = "Scroll of Wipe Out";
 		image = ItemSpriteSheet.SCROLL_WIPE_OUT;
-		
-		stackable = true;		
+
+		stackable = true;
 		defaultAction = AC_READ;
 	}
-	
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_READ );
 		return actions;
 	}
-	
+
 	@Override
 	public void execute( Hero hero, String action ) {
 		if (action.equals( AC_READ )) {
-			
+
 			if (hero.buff( Blindness.class ) != null) {
 				GLog.w( TXT_BLINDED );
 			} else {
@@ -72,26 +72,26 @@ public class ScrollOfWipeOut extends Item {
 				curItem = detach( hero.belongings.backpack );
 				doRead();
 			}
-			
+
 		} else {
-		
+
 			super.execute( hero, action );
-			
+
 		}
 	}
-	
+
 	private void doRead() {
 		GameScene.flash( 0xFF6644 );
-		
+
 		Invisibility.dispel();
-		
+
 		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
 			if (!Bestiary.isBoss( mob )) {
 				Sample.INSTANCE.play( Assets.SND_CURSED, 0.3f, 0.3f, Random.Float( 0.6f, 0.9f ) );
 				mob.die( this );
 			}
 		}
-		
+
 		for (Heap heap : Dungeon.level.heaps.values()) {
 			switch (heap.type) {
 			case FOR_SALE:
@@ -108,17 +108,17 @@ public class ScrollOfWipeOut extends Item {
 			default:
 			}
 		}
-		
+
 		curUser.spend( TIME_TO_READ );
 		curUser.busy();
 		((HeroSprite)curUser.sprite).read();
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
@@ -130,7 +130,7 @@ public class ScrollOfWipeOut extends Item {
 			"Read this scroll to unleash the wrath of the dungeon spirits, killing everything on the current level. " +
 			"Well, almost everything. Some of the more powerful creatures may be not affected.";
 	}
-	
+
 	@Override
 	public int price() {
 		return 100 * quantity;

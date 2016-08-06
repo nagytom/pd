@@ -26,18 +26,18 @@ public class RingOfThorns extends Ring {
 	{
 		name = "Ring of Thorns";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Thorns();
 	}
-	
+
 	@Override
 	public Item random() {
 		level( +1 );
 		return this;
 	}
-	
+
 	@Override
 	public boolean doPickUp( Hero hero ) {
 		identify();
@@ -45,17 +45,17 @@ public class RingOfThorns extends Ring {
 		Badges.validateItemLevelAquired( this );
 		return super.doPickUp(hero);
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public void use() {
 		// Do nothing (it can't degrade)
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -64,7 +64,7 @@ public class RingOfThorns extends Ring {
 			"Upgrading this ring won't give any additional bonuses." :
 			super.desc();
 	}
-	
-	public class Thorns extends RingBuff {	
+
+	public class Thorns extends RingBuff {
 	}
 }

@@ -33,22 +33,22 @@ public class FloatingText extends BitmapText {
 	private static final float DISTANCE	= DungeonTilemap.SIZE;
 
 	private float timeLeft;
-	
+
 	private int key = -1;
-	
+
 	private float cameraZoom = -1;
-	
+
 	private static SparseArray<ArrayList<FloatingText>> stacks = new SparseArray<ArrayList<FloatingText>>();
-	
+
 	public FloatingText() {
 		super();
 		speed.y = - DISTANCE / LIFESPAN;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		if (timeLeft > 0) {
 			if ((timeLeft -= Game.elapsed) <= 0) {
 				kill();
@@ -58,7 +58,7 @@ public class FloatingText extends BitmapText {
 			}
 		}
 	}
-	
+
 	@Override
 	public void kill() {
 		if (key != -1) {
@@ -67,17 +67,17 @@ public class FloatingText extends BitmapText {
 		}
 		super.kill();
 	}
-	
+
 	@Override
 	public void destroy() {
 		kill();
 		super.destroy();
 	}
-	
+
 	public void reset( float x, float y, String text, int color ) {
-		
+
 		revive();
-		
+
 		if (cameraZoom != Camera.main.zoom) {
 			cameraZoom = Camera.main.zoom;
 			PixelScene.chooseFont( 9, cameraZoom );
@@ -87,36 +87,36 @@ public class FloatingText extends BitmapText {
 
 		text( text );
 		hardlight( color );
-		
+
 		measure();
 		this.x = PixelScene.align( x - width() / 2 );
 		this.y = y - height();
-		
+
 		timeLeft = LIFESPAN;
 	}
-	
+
 	/* STATIC METHODS */
-	
+
 	public static void show( float x, float y, String text, int color ) {
 		GameScene.status().reset( x,  y,  text, color );
 	}
-	
+
 	public static void show( float x, float y, int key, String text, int color ) {
 		FloatingText txt = GameScene.status();
 		txt.reset( x,  y,  text, color );
 		push( txt, key );
 	}
-	
+
 	private static void push( FloatingText txt, int key ) {
-		
+
 		txt.key = key;
-		
+
 		ArrayList<FloatingText> stack = stacks.get( key );
 		if (stack == null) {
 			stack = new ArrayList<FloatingText>();
 			stacks.put( key, stack );
 		}
-		
+
 		if (stack.size() > 0) {
 			FloatingText below = txt;
 			int aboveIndex = stack.size() - 1;
@@ -124,7 +124,7 @@ public class FloatingText extends BitmapText {
 				FloatingText above = stack.get( aboveIndex );
 				if (above.y + above.height() > below.y) {
 					above.y = below.y - above.height();
-					
+
 					below = above;
 					aboveIndex--;
 				} else {
@@ -132,7 +132,7 @@ public class FloatingText extends BitmapText {
 				}
 			}
 		}
-		
+
 		stack.add( txt );
 	}
 }

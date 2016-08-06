@@ -20,15 +20,15 @@ package hu.nagytom.pd.pixeldungeon.items.keys;
 import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class GoldenKey extends Key {
-	
+
 	{
 		name = "golden key";
 		image = ItemSpriteSheet.GOLDEN_KEY;
 	}
-	
+
 	@Override
 	public String info() {
-		return 
+		return
 			"The notches on this golden key are tiny and intricate. " +
 			"Maybe it can open some chest lock?";
 	}

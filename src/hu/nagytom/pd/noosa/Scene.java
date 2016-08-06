@@ -21,9 +21,9 @@ import hu.nagytom.pd.input.Keys;
 import hu.nagytom.pd.utils.Signal;
 
 public class Scene extends Group {
-	
+
 	private Signal.Listener<Keys.Key> keyListener;
-	
+
 	public void create() {
 		Keys.event.add( keyListener = new Signal.Listener<Keys.Key>() {
 			@Override
@@ -41,37 +41,37 @@ public class Scene extends Group {
 			}
 		} );
 	}
-	
+
 	@Override
 	public void destroy() {
 		Keys.event.remove( keyListener );
 		super.destroy();
 	}
-	
+
 	public void pause() {
-		
+
 	}
-	
+
 	public void resume() {
-		
+
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
 	}
-	
+
 	@Override
 	public Camera camera() {
 		return Camera.main;
 	}
-	
+
 	protected void onBackPressed() {
 		Game.instance.finish();
 	}
-	
+
 	protected void onMenuPressed() {
-		
+
 	}
 
 }

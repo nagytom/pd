@@ -23,21 +23,21 @@ import hu.nagytom.pd.noosa.Gizmo;
 abstract public class Tweener extends Gizmo {
 
 	public Gizmo target;
-	
+
 	public float interval;
 	public float elapsed;
-	
+
 	public Listener listener;
-	
+
 	public Tweener( Gizmo target, float interval ) {
 		super();
-		
+
 		this.target = target;
 		this.interval = interval;
-		
+
 		elapsed = 0;
 	}
-	
+
 	@Override
 	public void update() {
 		elapsed += Game.elapsed;
@@ -49,15 +49,15 @@ abstract public class Tweener extends Gizmo {
 			updateValues( elapsed / interval );
 		}
 	}
-	
+
 	protected void onComplete() {
 		if (listener != null) {
 			listener.onComplete( this );
 		}
 	}
-	
+
 	abstract protected void updateValues( float progress );
-	
+
 	public static interface Listener {
 		void onComplete( Tweener tweener );
 	}

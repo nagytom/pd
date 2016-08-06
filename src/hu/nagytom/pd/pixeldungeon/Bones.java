@@ -31,15 +31,15 @@ import hu.nagytom.pd.utils.Random;
 public class Bones {
 
 	private static final String BONES_FILE	= "bones.dat";
-	
+
 	private static final String LEVEL	= "level";
 	private static final String ITEM	= "item";
-	
+
 	private static int depth = -1;
 	private static Item item;
-	
+
 	public static void leave() {
-		
+
 		item = null;
 		switch (Random.Int( 4 )) {
 		case 0:
@@ -62,13 +62,13 @@ public class Bones {
 				item = new Gold( 1 );
 			}
 		}
-		
+
 		depth = Dungeon.depth;
-		
+
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, depth );
 		bundle.put( ITEM, item );
-		
+
 		try {
 			OutputStream output = Game.instance.openFileOutput( BONES_FILE, Game.MODE_PRIVATE );
 			Bundle.write( bundle, output );
@@ -77,29 +77,29 @@ public class Bones {
 
 		}
 	}
-	
+
 	public static Item get() {
 		if (depth == -1) {
-			
+
 			try {
 				InputStream input = Game.instance.openFileInput( BONES_FILE ) ;
 				Bundle bundle = Bundle.read( input );
 				input.close();
-				
+
 				depth = bundle.getInt( LEVEL );
 				item = (Item)bundle.get( ITEM );
-				
+
 				return get();
-				
+
 			} catch (IOException e) {
 				return null;
 			}
-			
+
 		} else {
 			if (depth == Dungeon.depth) {
 				Game.instance.deleteFile( BONES_FILE );
 				depth = 0;
-				
+
 				if (!item.stackable) {
 					item.cursed = true;
 					item.cursedKnown = true;
@@ -111,11 +111,11 @@ public class Bones {
 						item.levelKnown = false;
 					}
 				}
-				
+
 				if (item instanceof Ring) {
 					((Ring)item).syncGem();
 				}
-				
+
 				return item;
 			} else {
 				return null;

@@ -22,35 +22,35 @@ import hu.nagytom.pd.noosa.particles.PixelParticle;
 import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 
 public class BloodParticle extends PixelParticle.Shrinking {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((BloodParticle)emitter.recycle( BloodParticle.class )).reset( x, y );
 		}
 	};
-	
+
 	public BloodParticle() {
 		super();
-		
+
 		color( 0xCC0000 );
 		lifespan = 0.8f;
-		
+
 		acc.set( 0, +40 );
 	}
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan;
-		
+
 		size = 4;
 		speed.set( 0 );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

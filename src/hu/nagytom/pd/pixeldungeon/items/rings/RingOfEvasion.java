@@ -22,19 +22,19 @@ public class RingOfEvasion extends Ring {
 	{
 		name = "Ring of Evasion";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Evasion();
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
 			"This ring increases your chance to dodge enemy attack." :
 			super.desc();
 	}
-	
-	public class Evasion extends RingBuff {	
+
+	public class Evasion extends RingBuff {
 	}
 }

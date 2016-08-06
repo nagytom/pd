@@ -28,38 +28,38 @@ public class RatKing extends NPC {
 	{
 		name = "rat king";
 		spriteClass = RatKingSprite.class;
-		
+
 		state = SLEEPEING;
 	}
-	
+
 	@Override
 	public int defenseSkill( Char enemy ) {
 		return 1000;
 	}
-	
+
 	@Override
 	public float speed() {
 		return 2f;
 	}
-	
+
 	@Override
 	protected Char chooseEnemy() {
 		return null;
 	}
-	
+
 	@Override
 	public void damage( int dmg, Object src ) {
 	}
-	
+
 	@Override
 	public void add( Buff buff ) {
 	}
-	
+
 	@Override
 	public boolean reset() {
 		return true;
 	}
-	
+
 	@Override
 	public void interact() {
 		sprite.turnTo( pos, Dungeon.hero.pos );
@@ -71,10 +71,10 @@ public class RatKing extends NPC {
 			yell( "What is it? I have no time for this nonsense. My kingdom won't rule itself!" );
 		}
 	}
-	
+
 	@Override
 	public String description() {
-		return 
+		return
 			"This rat is a little bigger than a regular marsupial rat " +
 			"and it's wearing a tiny crown on its head.";
 	}

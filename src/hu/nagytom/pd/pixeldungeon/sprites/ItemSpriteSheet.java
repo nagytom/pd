@@ -18,18 +18,18 @@
 package hu.nagytom.pd.pixeldungeon.sprites;
 
 public class ItemSpriteSheet {
-	
+
 	// Placeholders
 	public static final int WEAPON	= 5;
 	public static final int ARMOR	= 6;
 	public static final int RING	= 7;
 	public static final int SMTH	= 127;
-	
+
 	// Keys
 	public static final int SKELETON_KEY	= 8;
 	public static final int IRON_KEY		= 9;
 	public static final int GOLDEN_KEY		= 10;
-	
+
 	// Melee weapons
 	public static final int SHORT_SWORD		= 2;
 	public static final int KNUCKLEDUSTER	= 16;
@@ -42,7 +42,7 @@ public class ItemSpriteSheet {
 	public static final int WAR_HAMMER		= 23;
 	public static final int SPEAR			= 29;
 	public static final int GLAIVE			= 30;
-	
+
 	// Missiles
 	public static final int SHURIKEN		= 15;
 	public static final int DART			= 31;
@@ -51,7 +51,7 @@ public class ItemSpriteSheet {
 	public static final int INCENDIARY_DART	= 108;
 	public static final int CURARE_DART		= 109;
 	public static final int JAVELIN			= 110;
-	
+
 	// Armors
 	public static final int ARMOR_CLOTH		= 24;
 	public static final int ARMOR_LEATHER	= 25;
@@ -62,7 +62,7 @@ public class ItemSpriteSheet {
 	public static final int ARMOR_WARRIOR	= 97;
 	public static final int ARMOR_MAGE		= 98;
 	public static final int ARMOR_HUNTRESS	= 99;
-	
+
 	// Wands
 	public static final int WAND_MAGIC_MISSILE	= 3;
 	public static final int WAND_HOLLY			= 48;
@@ -77,7 +77,7 @@ public class ItemSpriteSheet {
 	public static final int WAND_PURPLEHEART	= 69;
 	public static final int WAND_OAK			= 70;
 	public static final int WAND_BIRCH			= 71;
-	
+
 	// Rings
 	public static final int RING_DIAMOND	= 32;
 	public static final int RING_OPAL		= 33;
@@ -91,7 +91,7 @@ public class ItemSpriteSheet {
 	public static final int RING_SAPPHIRE	= 73;
 	public static final int RING_QUARTZ		= 74;
 	public static final int RING_AGATE		= 75;
-	
+
 	// Potions
 	public static final int POTION_TURQUOISE	= 56;
 	public static final int POTION_CRIMSON		= 57;
@@ -105,7 +105,7 @@ public class ItemSpriteSheet {
 	public static final int POTION_BISTRE		= 65;
 	public static final int POTION_INDIGO		= 66;
 	public static final int POTION_SILVER		= 67;
-	
+
 	// Scrolls
 	public static final int SCROLL_KAUNAN	= 40;
 	public static final int SCROLL_SOWILO	= 41;
@@ -120,7 +120,7 @@ public class ItemSpriteSheet {
 	public static final int SCROLL_ODAL		= 78;
 	public static final int SCROLL_TIWAZ	= 79;
 	public static final int SCROLL_WIPE_OUT	= 117;
-	
+
 	// Seeds
 	public static final int SEED_FIREBLOOM	= 88;
 	public static final int SEED_ICECAP		= 89;
@@ -130,7 +130,7 @@ public class ItemSpriteSheet {
 	public static final int SEED_EARTHROOT	= 93;
 	public static final int SEED_FADELEAF	= 94;
 	public static final int SEED_ROTBERRY	= 95;
-	
+
 	// Quest items
 	public static final int ROSE	= 100;
 	public static final int PICKAXE	= 101;
@@ -139,7 +139,7 @@ public class ItemSpriteSheet {
 	public static final int PHANTOM	= 118;
 	public static final int DUST	= 121;
 	public static final int TOKEN	= 122;
-	
+
 	// Heaps
 	public static final int BONES			= 0;
 	public static final int CHEST			= 11;
@@ -147,7 +147,7 @@ public class ItemSpriteSheet {
 	public static final int TOMB			= 13;
 	public static final int CRYSTAL_CHEST	= 105;
 	public static final int HIDDEN			= 119;
-	
+
 	// Food
 	public static final int RATION		= 4;
 	public static final int PASTY		= 112;
@@ -155,17 +155,17 @@ public class ItemSpriteSheet {
 	public static final int STEAK		= 114;
 	public static final int OVERPRICED	= 115;
 	public static final int CARPACCIO	= 116;
-	
+
 	// Bags
 	public static final int POUCH	= 83;
 	public static final int HOLDER	= 104;
 	public static final int HOLSTER	= 111;
 	public static final int KEYRING	= 126;
-	
+
 	// UNUSED
 	public static final int SPARK_UPGRADE	= 117;
 	public static final int SPARK_ENCHANT	= 118;
-	
+
 	// Misc
 	public static final int ANKH	= 1;
 	public static final int GOLD	= 14;

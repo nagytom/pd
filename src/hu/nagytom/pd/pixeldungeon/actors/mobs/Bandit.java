@@ -27,27 +27,27 @@ import hu.nagytom.pd.pixeldungeon.sprites.BanditSprite;
 import hu.nagytom.pd.utils.Random;
 
 public class Bandit extends Thief {
-	
+
 	public Item item;
-	
+
 	{
 		name = "crazy bandit";
 		spriteClass = BanditSprite.class;
 	}
-	
+
 	@Override
 	protected boolean steal( Hero hero ) {
 		if (super.steal( hero )) {
-			
+
 			Buff.prolong( hero, Blindness.class, Random.Int( 5, 12 ) );
 			Dungeon.observe();
-			
+
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		super.die( cause );

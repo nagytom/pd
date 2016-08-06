@@ -22,8 +22,8 @@ import hu.nagytom.pd.noosa.particles.PixelParticle;
 import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 
 public class FlameParticle extends PixelParticle.Shrinking {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((FlameParticle)emitter.recycle( FlameParticle.class )).reset( x, y );
@@ -33,28 +33,28 @@ public class FlameParticle extends PixelParticle.Shrinking {
 			return true;
 		};
 	};
-	
+
 	public FlameParticle() {
 		super();
-		
+
 		color( 0xEE7722 );
 		lifespan = 0.6f;
-		
+
 		acc.set( 0, -80 );
 	}
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan;
-		
+
 		size = 4;
 		speed.set( 0 );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

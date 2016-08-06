@@ -21,5 +21,5 @@ public interface Bundlable {
 
 	void restoreFromBundle( Bundle bundle );
 	void storeInBundle( Bundle bundle );
-	
+
 }

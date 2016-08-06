@@ -26,15 +26,15 @@ public class WandHolster extends Bag {
 	{
 		name = "wand holster";
 		image = ItemSpriteSheet.HOLSTER;
-		
+
 		size = 12;
 	}
-	
+
 	@Override
 	public boolean grab( Item item ) {
 		return item instanceof Wand;
 	}
-	
+
 	@Override
 	public boolean collect( Bag container ) {
 		if (super.collect( container )) {
@@ -48,19 +48,19 @@ public class WandHolster extends Bag {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void onDetach( ) {
 		for (Item item : items) {
 			((Wand)item).stopCharging();
 		}
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;
 	}
-	
+
 	@Override
 	public String info() {
 		return

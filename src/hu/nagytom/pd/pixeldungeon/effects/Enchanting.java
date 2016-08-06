@@ -53,14 +53,14 @@ public class Enchanting extends ItemSprite {
 		duration = FADE_IN_TIME;
 		passed = 0;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		x = target.sprite.center().x - SIZE / 2;
 		y = target.sprite.y - SIZE;
-		
+
 		switch (phase) {
 		case FADE_IN:
 			alpha( passed / duration * ALPHA );
@@ -74,7 +74,7 @@ public class Enchanting extends ItemSprite {
 			scale.set( 1 + passed / duration );
 			break;
 		}
-		
+
 		if ((passed += Game.elapsed) > duration) {
 			switch (phase) {
 			case FADE_IN:
@@ -89,17 +89,17 @@ public class Enchanting extends ItemSprite {
 				kill();
 				break;
 			}
-			
+
 			passed = 0;
 		}
 	}
-	
+
 	public static void show( Char ch, Item item ) {
-		
+
 		if (!ch.sprite.visible) {
 			return;
 		}
-		
+
 		Enchanting sprite = new Enchanting( item );
 		sprite.target = ch;
 		ch.sprite.parent.add( sprite );

@@ -29,7 +29,7 @@ public class Slow extends FlavourBuff {
 	public int icon() {
 		return BuffIndicator.SLOW;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Slowed";

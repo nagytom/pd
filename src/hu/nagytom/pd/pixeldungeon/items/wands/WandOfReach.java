@@ -42,31 +42,31 @@ import hu.nagytom.pd.utils.Callback;
 
 public class WandOfReach extends Wand {
 
-	private static final String TXT_YOU_NOW_HAVE	= "You have magically transported %s into your backpack"; 
-	
+	private static final String TXT_YOU_NOW_HAVE	= "You have magically transported %s into your backpack";
+
 	{
 		name = "Wand of Reach";
 		hitChars = false;
 	}
-	
+
 	@Override
 	protected void onZap( int cell ) {
-		
+
 		int reach = Math.min( Ballistica.distance, power() + 4 );
-		
+
 		boolean mapUpdated = false;
 		for (int i=1; i < reach; i++) {
-			
+
 			int c = Ballistica.trace[i];
-			
+
 			int before = Dungeon.level.map[c];
-			
+
 			Char ch = Actor.findChar( c );
 			if (ch != null) {
 				Actor.addDelayed( new Swap( curUser, ch ), -1 );
 				break;
 			}
-			
+
 			Heap heap = Dungeon.level.heaps.get( c );
 			if (heap != null) {
 				switch (heap.type) {
@@ -81,30 +81,30 @@ public class WandOfReach extends Wand {
 					break;
 				default:
 				}
-				
+
 				break;
 			}
-			
+
 			Dungeon.level.press( c, null );
-			if (before == Terrain.OPEN_DOOR) {	
+			if (before == Terrain.OPEN_DOOR) {
 				Level.set( c, Terrain.DOOR );
 				GameScene.updateMap( c );
 			} else if (Level.water[c]) {
 				GameScene.ripple( c );
 			}
-			
+
 			mapUpdated = mapUpdated || Dungeon.level.map[c] != before;
 		}
-		
+
 		if (mapUpdated) {
 			Dungeon.observe();
 		}
 	}
-	
+
 	private void transport( Heap heap ) {
 		Item item = heap.pickUp();
 		if (item.doPickUp( curUser )) {
-			
+
 			if (item instanceof Dewdrop) {
 				// Do nothing
 			} else {
@@ -120,12 +120,12 @@ public class WandOfReach extends Wand {
 			Dungeon.level.drop( item, curUser.pos ).sprite.drop();
 		}
 	}
-	
+
 	protected void fx( int cell, Callback callback ) {
 		MagicMissile.force( curUser.sprite.parent, curUser.pos, cell, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
-	
+
 	@Override
 	public String desc() {
 		return

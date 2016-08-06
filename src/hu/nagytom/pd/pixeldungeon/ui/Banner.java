@@ -26,48 +26,48 @@ public class Banner extends Image {
 		FADE_IN, STATIC, FADE_OUT
 	};
 	private State state;
-	
+
 	private float time;
-	
+
 	private int color;
 	private float fadeTime;
 	private float showTime;
-	
+
 	public Banner( Image sample ) {
 		super();
 		copy( sample );
 		alpha( 0 );
 	}
-	
+
 	public Banner( Object tx ) {
 		super( tx );
 		alpha( 0 );
 	}
-	
+
 	public void show( int color, float fadeTime, float showTime ) {
-		
+
 		this.color = color;
 		this.fadeTime = fadeTime;
 		this.showTime = showTime;
-		
+
 		state = State.FADE_IN;
-		
+
 		time = fadeTime;
 	}
-	
+
 	public void show( int color, float fadeTime ) {
 		show( color, fadeTime, Float.MAX_VALUE );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		time -= Game.elapsed;
 		if (time >= 0) {
-			
+
 			float p = time / fadeTime;
-			
+
 			switch (state) {
 			case FADE_IN:
 				tint( color, p );
@@ -79,9 +79,9 @@ public class Banner extends Image {
 				alpha( p );
 				break;
 			}
-			
+
 		} else {
-			
+
 			switch (state) {
 			case FADE_IN:
 				time = showTime;
@@ -95,7 +95,7 @@ public class Banner extends Image {
 				killAndErase();
 				break;
 			}
-				
+
 		}
 	}
 }

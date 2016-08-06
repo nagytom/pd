@@ -23,8 +23,8 @@ import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 import hu.nagytom.pd.utils.Random;
 
 public class ShaftParticle extends PixelParticle {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((ShaftParticle)emitter.recycle( ShaftParticle.class )).reset( x, y );
@@ -34,30 +34,30 @@ public class ShaftParticle extends PixelParticle {
 			return true;
 		}
 	};
-	
+
 	public ShaftParticle() {
 		super();
-		
+
 		lifespan = 1.2f;
 		speed.set( 0, -6 );
 	}
-	
+
 	private float offs;
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		offs = -Random.Float( lifespan );
 		left = lifespan - offs;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		float p = left / lifespan;
 		am = p < 0.5f ? p : 1 - p;
 		scale.x = (1 - p) * 4;

@@ -20,7 +20,7 @@ package hu.nagytom.pd.pixeldungeon;
 import hu.nagytom.pd.utils.Bundle;
 
 public class Statistics {
-	
+
 	public static int goldCollected;
 	public static int deepestFloor;
 	public static int enemiesSlain;
@@ -29,33 +29,33 @@ public class Statistics {
 	public static int piranhasKilled;
 	public static int nightHunt;
 	public static int ankhsUsed;
-	
+
 	public static float duration;
-	
+
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
-	
+
 	public static boolean amuletObtained = false;
-	
+
 	public static void reset() {
-		
+
 		goldCollected	= 0;
 		deepestFloor	= 0;
 		enemiesSlain	= 0;
 		foodEaten		= 0;
 		potionsCooked	= 0;
 		piranhasKilled	= 0;
-		nightHunt		= 0;	
+		nightHunt		= 0;
 		ankhsUsed		= 0;
-		
+
 		duration	= 0;
-		
+
 		qualifiedForNoKilling = false;
-		
+
 		amuletObtained = false;
-		
+
 	}
-	
+
 	private static final String GOLD		= "score";
 	private static final String DEEPEST		= "maxDepth";
 	private static final String SLAIN		= "enemiesSlain";
@@ -66,7 +66,7 @@ public class Statistics {
 	private static final String ANKHS		= "ankhsUsed";
 	private static final String DURATION	= "duration";
 	private static final String AMULET		= "amuletObtained";
-	
+
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( GOLD,		goldCollected );
 		bundle.put( DEEPEST,	deepestFloor );
@@ -79,7 +79,7 @@ public class Statistics {
 		bundle.put( DURATION,	duration );
 		bundle.put( AMULET,		amuletObtained );
 	}
-	
+
 	public static void restoreFromBundle( Bundle bundle ) {
 		goldCollected	= bundle.getInt( GOLD );
 		deepestFloor	= bundle.getInt( DEEPEST );

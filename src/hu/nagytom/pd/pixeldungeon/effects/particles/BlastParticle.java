@@ -23,8 +23,8 @@ import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 import hu.nagytom.pd.utils.Random;
 
 public class BlastParticle extends PixelParticle.Shrinking {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((BlastParticle)emitter.recycle( BlastParticle.class )).reset( x, y );
@@ -34,26 +34,26 @@ public class BlastParticle extends PixelParticle.Shrinking {
 			return true;
 		};
 	};
-	
+
 	public BlastParticle() {
 		super();
-		
-		color( 0xEE7722 );		
+
+		color( 0xEE7722 );
 		acc.set( 0, +50 );
 	}
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan = Random.Float();
-		
+
 		size = 8;
 		speed.polar( -Random.Float( 3.1415926f ), Random.Float( 32, 64 ) );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

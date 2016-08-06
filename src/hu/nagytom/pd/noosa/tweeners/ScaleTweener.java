@@ -23,13 +23,13 @@ import hu.nagytom.pd.utils.PointF;
 public class ScaleTweener extends Tweener {
 
 	public Visual visual;
-	
+
 	public PointF start;
 	public PointF end;
-	
+
 	public ScaleTweener( Visual visual, PointF scale, float time ) {
 		super( visual, time );
-		
+
 		this.visual = visual;
 		start = visual.scale;
 		end = scale;

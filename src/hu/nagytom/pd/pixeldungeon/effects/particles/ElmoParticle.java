@@ -22,8 +22,8 @@ import hu.nagytom.pd.noosa.particles.PixelParticle;
 import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 
 public class ElmoParticle extends PixelParticle.Shrinking {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((ElmoParticle)emitter.recycle( ElmoParticle.class )).reset( x, y );
@@ -33,28 +33,28 @@ public class ElmoParticle extends PixelParticle.Shrinking {
 			return true;
 		};
 	};
-	
+
 	public ElmoParticle() {
 		super();
-		
+
 		color( 0x22EE66 );
 		lifespan = 0.6f;
-		
+
 		acc.set( 0, -80 );
 	}
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 		left = lifespan;
-		
+
 		size = 4;
 		speed.set( 0 );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

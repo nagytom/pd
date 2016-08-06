@@ -25,11 +25,11 @@ public class Glaive extends MeleeWeapon {
 		name = "glaive";
 		image = ItemSpriteSheet.GLAIVE;
 	}
-	
+
 	public Glaive() {
 		super( 5, 1f, 1f );
 	}
-	
+
 	@Override
 	public String desc() {
 		return "A polearm consisting of a sword blade on the end of a pole.";

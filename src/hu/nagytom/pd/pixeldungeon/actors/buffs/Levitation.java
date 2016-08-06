@@ -24,7 +24,7 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 public class Levitation extends FlavourBuff {
 
 	public static final float DURATION	= 20f;
-	
+
 	@Override
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
@@ -35,19 +35,19 @@ public class Levitation extends FlavourBuff {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void detach() {
 		target.flying = false;
 		Dungeon.level.press( target.pos, target );
 		super.detach();
 	}
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.LEVITATION;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Levitating";

@@ -25,21 +25,21 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 import hu.nagytom.pd.pixeldungeon.utils.Utils;
 
 public class Ooze extends Buff {
-	
+
 	private static final String TXT_HERO_KILLED = "%s killed you...";
-	
+
 	public int damage	= 1;
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.OOZE;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Caustic ooze";
 	}
-	
+
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {

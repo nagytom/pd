@@ -20,16 +20,16 @@ package hu.nagytom.pd.pixeldungeon.items.weapon.melee;
 import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sword extends MeleeWeapon {
-	
+
 	{
 		name = "sword";
 		image = ItemSpriteSheet.SWORD;
 	}
-	
+
 	public Sword() {
 		super( 3, 1f, 1f );
 	}
-	
+
 	@Override
 	public String desc() {
 		return "The razor-sharp length of steel blade shines reassuringly.";

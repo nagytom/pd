@@ -26,18 +26,18 @@ public class RingOfHaggler extends Ring {
 	{
 		name = "Ring of Haggler";
 	}
-	
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Haggling();
 	}
-	
+
 	@Override
 	public Item random() {
 		level( +1 );
 		return this;
 	}
-	
+
 	@Override
 	public boolean doPickUp( Hero hero ) {
 		identify();
@@ -45,17 +45,17 @@ public class RingOfHaggler extends Ring {
 		Badges.validateItemLevelAquired( this );
 		return super.doPickUp(hero);
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public void use() {
 		// Do nothing (it can't degrade)
 	}
-	
+
 	@Override
 	public String desc() {
 		return isKnown() ?
@@ -66,7 +66,7 @@ public class RingOfHaggler extends Ring {
 			"bonuses." :
 			super.desc();
 	}
-	
-	public class Haggling extends RingBuff {	
+
+	public class Haggling extends RingBuff {
 	}
 }

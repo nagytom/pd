@@ -42,17 +42,17 @@ import hu.nagytom.pd.utils.Bundlable;
 public abstract class RegularLevel extends Level {
 
 	protected HashSet<Room> rooms;
-	
+
 	protected Room roomEntrance;
 	protected Room roomExit;
-	
+
 	protected ArrayList<Room.Type> specials;
-	
+
 	public int secretDoors;
-	
+
 	@Override
 	protected boolean build() {
-		
+
 		if (!initRooms()) {
 			return false;
 		}
@@ -64,48 +64,48 @@ public abstract class RegularLevel extends Level {
 			do {
 				roomEntrance = Random.element( rooms );
 			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
-			
+
 			do {
 				roomExit = Random.element( rooms );
 			} while (roomExit == roomEntrance || roomExit.width() < 4 || roomExit.height() < 4);
-	
+
 			Graph.buildDistanceMap( rooms, roomExit );
 			distance = roomEntrance.distance();
-			
+
 			if (retry++ > 10) {
 				return false;
 			}
-			
+
 		} while (distance < minDistance);
-		
+
 		roomEntrance.type = Type.ENTRANCE;
 		roomExit.type = Type.EXIT;
-		
+
 		HashSet<Room> connected = new HashSet<Room>();
 		connected.add( roomEntrance );
-		
+
 		Graph.buildDistanceMap( rooms, roomExit );
 		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		
+
 		Room room = roomEntrance;
 		for (Room next : path) {
 			room.connect( next );
 			room = next;
 			connected.add( room );
 		}
-		
+
 		Graph.setPrice( path, roomEntrance.distance );
-		
+
 		Graph.buildDistanceMap( rooms, roomExit );
 		path = Graph.buildPath( rooms, roomEntrance, roomExit );
-		
+
 		room = roomEntrance;
 		for (Room next : path) {
 			room.connect( next );
 			room = next;
 			connected.add( room );
 		}
-		
+
 		int nConnected = (int)(rooms.size() * Random.Float( 0.5f, 0.7f ));
 		while (connected.size() < nConnected) {
 			Room cr = Random.element( connected );
@@ -115,7 +115,7 @@ public abstract class RegularLevel extends Level {
 				connected.add( or );
 			}
 		}
-		
+
 		if (Dungeon.shopOnLevel()) {
 			Room shop = null;
 			for (Room r : roomEntrance.connected.keySet()) {
@@ -124,53 +124,53 @@ public abstract class RegularLevel extends Level {
 					break;
 				}
 			}
-			
+
 			if (shop == null) {
 				return false;
 			} else {
 				shop.type = Room.Type.SHOP;
 			}
 		}
-		
+
 		specials = new ArrayList<Room.Type>( Room.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
 			specials.remove( Room.Type.WEAK_FLOOR );
 		}
 		assignRoomType();
-		
+
 		paint();
 		paintWater();
 		paintGrass();
-		
+
 		placeTraps();
-		
+
 		return true;
 	}
-	
+
 	protected boolean initRooms() {
 		rooms = new HashSet<Room>();
 		split( new Rect( 0, 0, WIDTH - 1, HEIGHT - 1 ) );
-		
+
 		if (rooms.size() < 8) {
 			return false;
 		}
-		
+
 		Room[] ra = rooms.toArray( new Room[0] );
 		for (int i=0; i < ra.length-1; i++) {
 			for (int j=i+1; j < ra.length; j++) {
 				ra[i].addNeigbour( ra[j] );
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	protected void assignRoomType() {
-		
+
 		int specialRooms = 0;
-		
+
 		for (Room r : rooms) {
-			if (r.type == Type.NULL && 
+			if (r.type == Type.NULL &&
 				r.connected.size() == 1) {
 
 				if (specials.size() > 0 &&
@@ -190,13 +190,13 @@ public abstract class RegularLevel extends Level {
 						specials.remove( Type.TREASURY );
 						specials.remove( Type.VAULT );
 						specials.remove( Type.WEAK_FLOOR );
-						
+
 					} else if (Dungeon.depth % 5 == 2 && specials.contains( Type.LABORATORY )) {
-						
+
 						r.type = Type.LABORATORY;
-						
+
 					} else {
-						
+
 						int n = specials.size();
 						r.type = specials.get( Math.min( Random.Int( n ), Random.Int( n ) ) );
 						if (r.type == Type.WEAK_FLOOR) {
@@ -204,19 +204,19 @@ public abstract class RegularLevel extends Level {
 						}
 
 					}
-					
+
 					Room.useType( r.type );
 					specials.remove( r.type );
 					specialRooms++;
-					
+
 				} else if (Random.Int( 2 ) == 0){
 
 					HashSet<Room> neigbours = new HashSet<Room>();
 					for (Room n : r.neigbours) {
-						if (!r.connected.containsKey( n ) && 
+						if (!r.connected.containsKey( n ) &&
 							!Room.SPECIALS.contains( n.type ) &&
 							n.type != Type.PIT) {
-							
+
 							neigbours.add( n );
 						}
 					}
@@ -226,22 +226,22 @@ public abstract class RegularLevel extends Level {
 				}
 			}
 		}
-		
+
 		int count = 0;
 		for (Room r : rooms) {
 			if (r.type == Type.NULL) {
 				int connections = r.connected.size();
 				if (connections == 0) {
-					
+
 				} else if (Random.Int( connections * connections ) == 0) {
 					r.type = Type.STANDARD;
 					count++;
 				} else {
-					r.type = Type.TUNNEL; 
+					r.type = Type.TUNNEL;
 				}
 			}
 		}
-		
+
 		while (count < 4) {
 			Room r = randomRoom( Type.TUNNEL, 1 );
 			if (r != null) {
@@ -250,7 +250,7 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected void paintWater() {
 		boolean[] lake = water();
 		for (int i=0; i < LENGTH; i++) {
@@ -259,12 +259,12 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected void paintGrass() {
 		boolean[] grass = grass();
-		
+
 		if (feeling == Feeling.GRASS) {
-			
+
 			for (Room room : rooms) {
 				if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type != Type.TUNNEL) {
 					grass[(room.left + 1) + (room.top + 1) * WIDTH] = true;
@@ -287,19 +287,19 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected abstract boolean[] water();
 	protected abstract boolean[] grass();
-	
+
 	protected void placeTraps() {
-		
+
 		int nTraps = nTraps();
 		float[] trapChances = trapChances();
-		
+
 		for (int i=0; i < nTraps; i++) {
-			
+
 			int trapPos = Random.Int( LENGTH );
-			
+
 			if (map[trapPos] == Terrain.EMPTY) {
 				switch (Random.chances( trapChances )) {
 				case 0:
@@ -330,44 +330,44 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected int nTraps() {
 		return Dungeon.depth <= 1 ? 0 : Random.Int( 1, rooms.size() + Dungeon.depth );
 	}
-	
+
 	protected float[] trapChances() {
 		float[] chances = { 1, 1, 1, 1, 1, 1, 1, 1 };
 		return chances;
 	}
-	
+
 	protected int minRoomSize = 7;
 	protected int maxRoomSize = 9;
-	
+
 	protected void split( Rect rect ) {
-		
+
 		int w = rect.width();
 		int h = rect.height();
-		
+
 		if (w > maxRoomSize && h < minRoomSize) {
 
 			int vw = Random.Int( rect.left + 3, rect.right - 3 );
 			split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
 			split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
-			
-		} else 
+
+		} else
 		if (h > maxRoomSize && w < minRoomSize) {
 
 			int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
 			split( new Rect( rect.left, rect.top, rect.right, vh ) );
 			split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
-			
-		} else 	
+
+		} else
 		if ((Math.random() <= (minRoomSize * minRoomSize / rect.square()) && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h < minRoomSize) {
 
 			rooms.add( (Room)new Room().set( rect ) );
-			
+
 		} else {
-			
+
 			if (Random.Float() < (float)(w - 2) / (w + h - 4)) {
 				int vw = Random.Int( rect.left + 3, rect.right - 3 );
 				split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
@@ -377,12 +377,12 @@ public abstract class RegularLevel extends Level {
 				split( new Rect( rect.left, rect.top, rect.right, vh ) );
 				split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
 			}
-			
+
 		}
 	}
-	
+
 	protected void paint() {
-		
+
 		for (Room r : rooms) {
 			if (r.type != Type.NULL) {
 				placeDoors( r );
@@ -393,24 +393,24 @@ public abstract class RegularLevel extends Level {
 				}
 			}
 		}
-		
+
 		for (Room r : rooms) {
 			paintDoors( r );
 		}
 	}
-	
+
 	private void placeDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
 			Room.Door door = r.connected.get( n );
 			if (door == null) {
-				
+
 				Rect i = r.intersect( n );
 				if (i.width() == 0) {
-					door = new Room.Door( 
-						i.left, 
+					door = new Room.Door(
+						i.left,
 						Random.Int( i.top + 1, i.bottom ) );
 				} else {
-					door = new Room.Door( 
+					door = new Room.Door(
 						Random.Int( i.left + 1, i.right ),
 						i.top);
 				}
@@ -420,17 +420,17 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected void paintDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
 
 			if (joinRooms( r, n )) {
 				continue;
 			}
-			
+
 			Room.Door d = r.connected.get( n );
 			int door = d.x + d.y * WIDTH;
-			
+
 			switch (d.type) {
 			case EMPTY:
 				map[door] = Terrain.EMPTY;
@@ -465,65 +465,65 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	protected boolean joinRooms( Room r, Room n ) {
-		
+
 		if (r.type != Room.Type.STANDARD || n.type != Room.Type.STANDARD) {
 			return false;
 		}
-		
+
 		Rect w = r.intersect( n );
 		if (w.left == w.right) {
-			
+
 			if (w.bottom - w.top < 3) {
 				return false;
 			}
-			
+
 			if (w.height() == Math.max( r.height(), n.height() )) {
 				return false;
 			}
-			
+
 			if (r.width() + n.width() > maxRoomSize) {
 				return false;
 			}
-			
+
 			w.top += 1;
 			w.bottom -= 0;
-			
+
 			w.right++;
-			
+
 			Painter.fill( this, w.left, w.top, 1, w.height(), Terrain.EMPTY );
-			
+
 		} else {
-			
+
 			if (w.right - w.left < 3) {
 				return false;
 			}
-			
+
 			if (w.width() == Math.max( r.width(), n.width() )) {
 				return false;
 			}
-			
+
 			if (r.height() + n.height() > maxRoomSize) {
 				return false;
 			}
-			
+
 			w.left += 1;
 			w.right -= 0;
-			
+
 			w.bottom++;
-			
+
 			Painter.fill( this, w.left, w.top, w.width(), 1, Terrain.EMPTY );
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public int nMobs() {
 		return 2 + Dungeon.depth % 5 + Random.Int( 3 );
 	}
-	
+
 	@Override
 	protected void createMobs() {
 		int nMobs = nMobs();
@@ -536,59 +536,59 @@ public abstract class RegularLevel extends Level {
 			Actor.occupyCell( mob );
 		}
 	}
-	
+
 	@Override
 	public int randomRespawnCell() {
 		int count = 0;
 		int cell = -1;
-		
+
 		while (true) {
-			
+
 			if (++count > 10) {
 				return -1;
 			}
-			
+
 			Room room = randomRoom( Room.Type.STANDARD, 10 );
 			if (room == null) {
 				continue;
 			}
-			
+
 			cell = room.random();
 			if (!Dungeon.visible[cell] && Actor.findChar( cell ) == null && Level.passable[cell]) {
 				return cell;
 			}
-			
+
 		}
 	}
-	
+
 	@Override
 	public int randomDestination() {
-		
+
 		int cell = -1;
-		
+
 		while (true) {
-			
+
 			Room room = Random.element( rooms );
 			if (room == null) {
 				continue;
 			}
-			
+
 			cell = room.random();
 			if (Level.passable[cell]) {
 				return cell;
 			}
-			
+
 		}
 	}
-	
+
 	@Override
 	protected void createItems() {
-		
+
 		int nItems = 3;
 		while (Random.Float() < 0.4f) {
 			nItems++;
 		}
-		
+
 		for (int i=0; i < nItems; i++) {
 			Heap.Type type = null;
 			switch (Random.Int( 20 )) {
@@ -619,13 +619,13 @@ public abstract class RegularLevel extends Level {
 			}
 			drop( item, cell ).type = Heap.Type.HEAP;
 		}
-		
+
 		Item item = Bones.get();
 		if (item != null) {
 			drop( item, randomDropCell() ).type = Heap.Type.SKELETON;
 		}
 	}
-	
+
 	protected Room randomRoom( Room.Type type, int tries ) {
 		for (int i=0; i < tries; i++) {
 			Room room = Random.element( rooms );
@@ -635,17 +635,17 @@ public abstract class RegularLevel extends Level {
 		}
 		return null;
 	}
-	
+
 	public Room room( int pos ) {
 		for (Room room : rooms) {
 			if (room.type != Type.NULL && room.inside( pos )) {
 				return room;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	protected int randomDropCell() {
 		while (true) {
 			Room room = randomRoom( Room.Type.STANDARD, 1 );
@@ -657,7 +657,7 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 	@Override
 	public int pitCell() {
 		for (Room room : rooms) {
@@ -665,20 +665,20 @@ public abstract class RegularLevel extends Level {
 				return room.random();
 			}
 		}
-		
+
 		return super.pitCell();
 	}
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( "rooms", rooms );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
-		
+
 		Collection<Bundlable> tmp = bundle.getCollection( "rooms" );
 		rooms = new HashSet<Room>();
 		for (Bundlable b : tmp) {
@@ -691,5 +691,5 @@ public abstract class RegularLevel extends Level {
 			}
 		}
 	}
-	
+
 }

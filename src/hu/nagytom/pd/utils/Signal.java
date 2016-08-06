@@ -22,19 +22,19 @@ import java.util.LinkedList;
 public class Signal<T> {
 
 	private LinkedList<Listener<T>> listeners = new LinkedList<Signal.Listener<T>>();
-	
+
 	private boolean canceled;
-	
-	private boolean stackMode; 
-	
+
+	private boolean stackMode;
+
 	public Signal() {
 		this( false );
 	}
-	
+
 	public Signal( boolean stackMode ) {
 		this.stackMode = stackMode;
 	}
-	
+
 	public void add( Listener<T> listener ) {
 		if (!listeners.contains( listener )) {
 			if (stackMode) {
@@ -44,48 +44,48 @@ public class Signal<T> {
 			}
 		}
 	}
-	
+
 	public void remove( Listener<T> listener ) {
 		listeners.remove( listener );
 	}
-	
+
 	public void removeAll() {
 		listeners.clear();
 	}
-	
+
 	public void replace( Listener<T> listener ) {
 		removeAll();
 		add( listener );
 	}
-	
+
 	public int numListeners() {
 		return listeners.size();
 	}
-	
+
 	public void dispatch( T t ) {
-		
+
 		@SuppressWarnings("unchecked")
 		Listener<T>[] list = listeners.toArray( new Listener[0] );
-		
+
 		canceled = false;
 		for (int i=0; i < list.length; i++) {
-			
+
 			Listener<T> listener = list[i];
-			
+
 			if (listeners.contains( listener )) {
 				listener.onSignal( t );
 				if (canceled) {
 					return;
 				}
 			}
-			
+
 		}
 	}
-	
+
 	public void cancel() {
 		canceled = true;
 	}
-	
+
 	public static interface Listener<T> {
 		public void onSignal( T t );
 	}

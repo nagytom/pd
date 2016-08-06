@@ -29,53 +29,53 @@ import hu.nagytom.pd.pixeldungeon.utils.Utils;
 import hu.nagytom.pd.utils.Bundle;
 
 public class Poison extends Buff implements Hero.Doom {
-	
+
 	protected float left;
-	
+
 	private static final String LEFT	= "left";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( LEFT, left );
-		
+
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		left = bundle.getFloat( LEFT );
 	}
-	
+
 	public void set( float duration ) {
 		this.left = duration;
 	};
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.POISON;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Poisoned";
 	}
-	
+
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
-			
+
 			target.damage( (int)(left / 3) + 1, this );
 			spend( TICK );
-			
+
 			if ((left -= TICK) <= 0) {
 				detach();
 			}
-			
+
 		} else {
-			
+
 			detach();
-			
+
 		}
 
 		return true;
@@ -89,7 +89,7 @@ public class Poison extends Buff implements Hero.Doom {
 	@Override
 	public void onDeath() {
 		Badges.validateDeathFromPoison();
-		
+
 		Dungeon.fail( Utils.format( ResultDescriptions.POISON, Dungeon.depth ) );
 		GLog.n( "You died from poison..." );
 	}

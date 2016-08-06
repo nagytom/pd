@@ -24,15 +24,15 @@ import hu.nagytom.pd.pixeldungeon.levels.Level;
 import hu.nagytom.pd.utils.Random;
 
 public abstract class NPC extends Mob {
-	
+
 	{
 		HP = HT = 1;
 		EXP = 0;
-	
+
 		hostile = false;
 		state = PASSIVE;
 	}
-	
+
 	protected void throwItem() {
 		Heap heap = Dungeon.level.heaps.get( pos );
 		if (heap != null) {
@@ -43,10 +43,10 @@ public abstract class NPC extends Mob {
 			Dungeon.level.drop( heap.pickUp(), n ).sprite.drop( pos );
 		}
 	}
-	
+
 	@Override
 	public void beckon( int cell ) {
 	}
-	
+
 	abstract public void interact();
 }

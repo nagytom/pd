@@ -37,24 +37,24 @@ public class WandOfSlowness extends Wand {
 	protected void onZap( int cell ) {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
-			
+
 			Buff.affect( ch, Slow.class, Slow.duration( ch ) / 3 + power() );
 
 		} else {
-			
+
 			GLog.i( "nothing happened" );
-			
+
 		}
 	}
-	
+
 	protected void fx( int cell, Callback callback ) {
 		MagicMissile.slowness( curUser.sprite.parent, curUser.pos, cell, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
-	
+
 	@Override
 	public String desc() {
-		return 
+		return
 			"This wand will cause a creature to move and attack " +
 			"at half its ordinary speed until the effect ends";
 	}

@@ -21,24 +21,24 @@ import hu.nagytom.pd.pixeldungeon.items.Item;
 import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class DriedRose extends Item {
-	
+
 	{
 		name = "dried rose";
 		image = ItemSpriteSheet.ROSE;
-		
+
 		unique = true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public String info() {
 		return

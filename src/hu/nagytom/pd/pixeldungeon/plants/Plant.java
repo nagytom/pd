@@ -43,29 +43,29 @@ import hu.nagytom.pd.utils.Random;
 public class Plant implements Bundlable {
 
 	public String plantName;
-	
+
 	public int image;
 	public int pos;
-	
+
 	public PlantSprite sprite;
-	
+
 	public void activate( Char ch ) {
-		
+
 		if (ch instanceof Hero && ((Hero)ch).subClass == HeroSubClass.WARDEN) {
 			Buff.affect( ch, Barkskin.class ).level( ch.HT / 3 );
 		}
-		
+
 		wither();
 	}
-	
+
 	public void wither() {
 		Dungeon.level.uproot( pos );
-		
+
 		sprite.kill();
 		if (Dungeon.visible[pos]) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
 		}
-		
+
 		if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
 			if (Random.Int( 5 ) == 0) {
 				Dungeon.level.drop( Generator.random( Generator.Category.SEED ), pos ).sprite.drop();
@@ -75,7 +75,7 @@ public class Plant implements Bundlable {
 			}
 		}
 	}
-	
+
 	private static final String POS	= "pos";
 
 	@Override
@@ -87,36 +87,36 @@ public class Plant implements Bundlable {
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( POS, pos );
 	}
-	
+
 	public String desc() {
 		return null;
 	}
-	
+
 	public static class Seed extends Item {
-		
+
 		public static final String AC_PLANT	= "PLANT";
-		
+
 		private static final String TXT_INFO = "Throw this seed to the place where you want to grow %s.\n\n%s";
-		
+
 		private static final float TIME_TO_PLANT = 1f;
-		
+
 		{
-			stackable = true;	
+			stackable = true;
 			defaultAction = AC_THROW;
 		}
-		
+
 		protected Class<? extends Plant> plantClass;
 		protected String plantName;
-		
+
 		public Class<? extends Item> alchemyClass;
-		
+
 		@Override
 		public ArrayList<String> actions( Hero hero ) {
 			ArrayList<String> actions = super.actions( hero );
 			actions.add( AC_PLANT );
 			return actions;
 		}
-		
+
 		@Override
 		protected void onThrow( int cell ) {
 			if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
@@ -125,24 +125,24 @@ public class Plant implements Bundlable {
 				Dungeon.level.plant( this, cell );
 			}
 		}
-		
+
 		@Override
 		public void execute( Hero hero, String action ) {
 			if (action.equals( AC_PLANT )) {
-							
+
 				hero.spend( TIME_TO_PLANT );
 				hero.busy();
 				((Seed)detach( hero.belongings.backpack )).onThrow( hero.pos );
-				
+
 				hero.sprite.operate( hero.pos );
-				
+
 			} else {
-				
+
 				super.execute (hero, action );
-				
+
 			}
 		}
-		
+
 		public Plant couch( int pos ) {
 			try {
 				if (Dungeon.visible[pos]) {
@@ -155,24 +155,24 @@ public class Plant implements Bundlable {
 				return null;
 			}
 		}
-		
+
 		@Override
 		public boolean isUpgradable() {
 			return false;
 		}
-		
+
 		@Override
 		public boolean isIdentified() {
 			return true;
 		}
-		
+
 		@Override
 		public int price() {
 			return 10 * quantity;
 		}
-		
+
 		@Override
-		public String info() { 
+		public String info() {
 			return String.format( TXT_INFO, Utils.indefinite( plantName ), desc() );
 		}
 	}

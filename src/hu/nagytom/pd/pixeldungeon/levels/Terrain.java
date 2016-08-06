@@ -48,7 +48,7 @@ public class Terrain {
 	public static final int CHASM_FLOOR_SP	= 44;
 	public static final int CHASM_WALL		= 45;
 	public static final int CHASM_WATER		= 46;
-	
+
 	public static final int SECRET_DOOR				= 16;
 	public static final int TOXIC_TRAP				= 17;
 	public static final int SECRET_TOXIC_TRAP		= 18;
@@ -67,10 +67,10 @@ public class Terrain {
 	public static final int SECRET_GRIPPING_TRAP	= 38;
 	public static final int SUMMONING_TRAP			= 39;
 	public static final int SECRET_SUMMONING_TRAP	= 40;
-	
+
 	public static final int WATER_TILES	= 48;
 	public static final int WATER		= 63;
-	
+
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
 	public static final int FLAMABLE		= 0x04;
@@ -79,9 +79,9 @@ public class Terrain {
 	public static final int AVOID			= 0x20;
 	public static final int LIQUID			= 0x40;
 	public static final int PIT				= 0x80;
-	
-	public static final int UNSTITCHABLE	= 0x100; 
-	
+
+	public static final int UNSTITCHABLE	= 0x100;
+
 	public static final int[] flags = new int[256];
 	static {
 		flags[CHASM]		= AVOID	| PIT									| UNSTITCHABLE;
@@ -110,12 +110,12 @@ public class Terrain {
 		flags[STATUE_SP]	= flags[STATUE] 								| UNSTITCHABLE;
 		flags[BOOKSHELF]	= flags[BARRICADE]								| UNSTITCHABLE;
 		flags[ALCHEMY]		= PASSABLE;
-		
+
 		flags[CHASM_WALL]		= flags[CHASM];
 		flags[CHASM_FLOOR]		= flags[CHASM];
 		flags[CHASM_FLOOR_SP]	= flags[CHASM];
 		flags[CHASM_WATER]		= flags[CHASM];
-		
+
 		flags[SECRET_DOOR]				= flags[WALL] | SECRET				| UNSTITCHABLE;
 		flags[TOXIC_TRAP]				= AVOID;
 		flags[SECRET_TOXIC_TRAP]		= flags[EMPTY] | SECRET;
@@ -134,12 +134,12 @@ public class Terrain {
 		flags[SUMMONING_TRAP]			= AVOID;
 		flags[SECRET_SUMMONING_TRAP]	= flags[EMPTY] | SECRET;
 		flags[INACTIVE_TRAP]			= flags[EMPTY];
-		
+
 		for (int i=WATER_TILES; i < WATER_TILES + 16; i++) {
 			flags[i] = flags[WATER];
 		}
 	};
-	
+
 	public static int discover( int terr ) {
 		switch (terr) {
 		case SECRET_DOOR:

@@ -18,7 +18,7 @@
 package hu.nagytom.pd.pixeldungeon.actors.buffs;
 
 public class FlavourBuff extends Buff {
-	
+
 	@Override
 	public boolean act() {
 		detach();

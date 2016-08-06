@@ -21,18 +21,18 @@ import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class Blindness extends FlavourBuff {
-	
+
 	@Override
 	public void detach() {
 		super.detach();
 		Dungeon.observe();
 	}
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.BLINDNESS;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Blinded";

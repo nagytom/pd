@@ -41,24 +41,24 @@ public class SewerBossLevel extends RegularLevel {
 		color1 = 0x48763c;
 		color2 = 0x59994a;
 	}
-	
+
 	private int stairs = 0;
-	
+
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_SEWERS;
 	}
-	
+
 	@Override
 	public String waterTex() {
 		return Assets.WATER_SEWERS;
 	}
-	
+
 	@Override
 	protected boolean build() {
-		
+
 		initRooms();
-	
+
 		int distance;
 		int retry = 0;
 		int minDistance = (int)Math.sqrt( rooms.size() );
@@ -70,7 +70,7 @@ public class SewerBossLevel extends RegularLevel {
 				}
 				roomEntrance = Random.element( rooms );
 			} while (roomEntrance.width() < 4 || roomEntrance.height() < 4);
-			
+
 			innerRetry = 0;
 			do {
 				if (innerRetry++ > 10) {
@@ -78,19 +78,19 @@ public class SewerBossLevel extends RegularLevel {
 				}
 				roomExit = Random.element( rooms );
 			} while (roomExit == roomEntrance || roomExit.width() < 6 || roomExit.height() < 6 || roomExit.top == 0);
-	
+
 			Graph.buildDistanceMap( rooms, roomExit );
 			distance = roomEntrance.distance();
-			
+
 			if (retry++ > 10) {
 				return false;
 			}
-			
+
 		} while (distance < minDistance);
-		
+
 		roomEntrance.type = Type.ENTRANCE;
 		roomExit.type = Type.BOSS_EXIT;
-		
+
 		Graph.buildDistanceMap( rooms, roomExit );
 		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
 
@@ -104,18 +104,18 @@ public class SewerBossLevel extends RegularLevel {
 			room.connect( next );
 			room = next;
 		}
-		
+
 		room = (Room)roomExit.connected.keySet().toArray()[0];
 		if (roomExit.top == room.bottom) {
 			return false;
 		}
-		
+
 		for (Room r : rooms) {
 			if (r.type == Type.NULL && r.connected.size() > 0) {
-				r.type = Type.TUNNEL; 
+				r.type = Type.TUNNEL;
 			}
 		}
-		
+
 		ArrayList<Room> candidates = new ArrayList<Room>();
 		for (Room r : roomExit.neigbours) {
 			if (!roomExit.connected.containsKey( r ) &&
@@ -128,27 +128,27 @@ public class SewerBossLevel extends RegularLevel {
 			kingsRoom.connect( roomExit );
 			kingsRoom.type = Room.Type.RAT_KING;
 		}
-		
+
 		paint();
-		
+
 		paintWater();
 		paintGrass();
-		
+
 		placeTraps();
-		
+
 		return true;
 	}
-		
+
 	protected boolean[] water() {
 		return Patch.generate( 0.5f, 5 );
 	}
-	
+
 	protected boolean[] grass() {
 		return Patch.generate( 0.40f, 4 );
 	}
-	
+
 	@Override
-	protected void decorate() {	
+	protected void decorate() {
 		int start = roomExit.top * WIDTH + roomExit.left + 1;
 		int end = start + roomExit.width() - 1;
 		for (int i=start; i < end; i++) {
@@ -159,7 +159,7 @@ public class SewerBossLevel extends RegularLevel {
 				map[i + WIDTH] = Terrain.EMPTY;
 			}
 		}
-		
+
 		while (true) {
 			int pos = roomEntrance.random();
 			if (pos != entrance) {
@@ -168,24 +168,24 @@ public class SewerBossLevel extends RegularLevel {
 			}
 		}
 	}
-	
+
 	@Override
 	public void addVisuals( Scene scene ) {
 		SewerLevel.addVisuals( this, scene );
 	}
-	
-	
+
+
 	@Override
 	protected void createMobs() {
 		Mob mob = Bestiary.mob( Dungeon.depth );
 		mob.pos = roomExit.random();
 		mobs.add( mob );
 	}
-	
+
 	public Actor respawner() {
 		return null;
 	}
-	
+
 	@Override
 	protected void createItems() {
 		Item item = Bones.get();
@@ -197,44 +197,44 @@ public class SewerBossLevel extends RegularLevel {
 			drop( item, pos ).type = Heap.Type.SKELETON;
 		}
 	}
-	
+
 	public void seal() {
 		if (entrance != 0) {
-			
+
 			set( entrance, Terrain.WATER_TILES );
 			GameScene.updateMap( entrance );
 			GameScene.ripple( entrance );
-			
+
 			stairs = entrance;
 			entrance = 0;
 		}
 	}
-	
+
 	public void unseal() {
 		if (stairs != 0) {
-			
+
 			entrance = stairs;
 			stairs = 0;
-			
+
 			set( entrance, Terrain.ENTRANCE );
 			GameScene.updateMap( entrance );
 		}
 	}
-	
+
 	private static final String STAIRS	= "stairs";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( STAIRS, stairs );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		stairs = bundle.getInt( STAIRS );
 	}
-	
+
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
@@ -244,7 +244,7 @@ public class SewerBossLevel extends RegularLevel {
 			return super.tileName( tile );
 		}
 	}
-	
+
 	@Override
 	public String tileDesc( int tile ) {
 		switch (tile) {

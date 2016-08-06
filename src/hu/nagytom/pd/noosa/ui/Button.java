@@ -24,14 +24,14 @@ import hu.nagytom.pd.noosa.TouchArea;
 public class Button extends Component {
 
 	public static float longClick = 1f;
-	
+
 	protected TouchArea hotArea;
-	
+
 	protected boolean pressed;
 	protected float pressTime;
-	
+
 	protected boolean processed;
-	
+
 	@Override
 	protected void createChildren() {
 		hotArea = new TouchArea( 0, 0, 0, 0 ) {
@@ -56,13 +56,13 @@ public class Button extends Component {
 		};
 		add( hotArea );
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		
+
 		hotArea.active = visible;
-		
+
 		if (pressed) {
 			if ((pressTime += Game.elapsed) >= longClick) {
 				pressed = false;
@@ -71,21 +71,21 @@ public class Button extends Component {
 					hotArea.reset();
 					processed = true;
 					onTouchUp();
-					
+
 					Game.vibrate( 50 );
 				}
 			}
 		}
 	}
-	
+
 	protected void onTouchDown() {};
 	protected void onTouchUp() {};
 	protected void onClick() {};
-	
+
 	protected boolean onLongClick() {
 		return false;
 	};
-	
+
 	@Override
 	protected void layout() {
 		hotArea.x = x;

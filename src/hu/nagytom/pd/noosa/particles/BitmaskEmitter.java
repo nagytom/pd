@@ -27,7 +27,7 @@ import hu.nagytom.pd.utils.Random;
 public class BitmaskEmitter extends Emitter {
 
 	// DON'T USE WITH COMPLETELY TRANSPARENT IMAGES!!!
-	
+
 	private SmartTexture map;
 	private int mapW;
 	private int mapH;

@@ -23,29 +23,29 @@ import hu.nagytom.pd.noosa.particles.Emitter.Factory;
 import hu.nagytom.pd.utils.Random;
 
 public class SnowParticle extends PixelParticle {
-	
-	public static final Emitter.Factory FACTORY = new Factory() {	
+
+	public static final Emitter.Factory FACTORY = new Factory() {
 		@Override
 		public void emit( Emitter emitter, int index, float x, float y ) {
 			((SnowParticle)emitter.recycle( SnowParticle.class )).reset( x, y );
 		}
 	};
-	
+
 	public SnowParticle() {
 		super();
 		speed.set( 0, Random.Float( 5, 8 ) );
 		lifespan = 1.2f;
 	}
-	
+
 	public void reset( float x, float y ) {
 		revive();
-		
+
 		this.x = x;
 		this.y = y - speed.y * lifespan;
-		
+
 		left = lifespan;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();

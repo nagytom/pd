@@ -29,15 +29,15 @@ import hu.nagytom.pd.pixeldungeon.levels.Terrain;
 import hu.nagytom.pd.pixeldungeon.scenes.GameScene;
 
 public class Regrowth extends Blob {
-	
+
 	@Override
 	protected void evolve() {
 		super.evolve();
-		
+
 		if (volume > 0) {
-			
+
 			boolean mapUpdated = false;
-			
+
 			for (int i=0; i < LENGTH; i++) {
 				if (off[i] > 0) {
 					int c = Dungeon.level.map[i];
@@ -47,34 +47,34 @@ public class Regrowth extends Blob {
 					} else if (c == Terrain.GRASS && cur[i] > 9) {
 						c1 = Terrain.HIGH_GRASS ;
 					}
-					
+
 					if (c1 != c) {
 						Level.set( i, Terrain.HIGH_GRASS );
 						mapUpdated = true;
-						
+
 						GameScene.updateMap( i );
 						if (Dungeon.visible[i]) {
 							GameScene.discoverTile( i, c );
 						}
 					}
-					
+
 					Char ch = Actor.findChar( i );
 					if (ch != null) {
 						Buff.prolong( ch, Roots.class, TICK );
 					}
 				}
 			}
-			
+
 			if (mapUpdated) {
 				Dungeon.observe();
 			}
 		}
 	}
-	
+
 	@Override
 	public void use( BlobEmitter emitter ) {
 		super.use( emitter );
-		
+
 		emitter.start( LeafParticle.LEVEL_SPECIFIC, 0.2f, 0 );
 	}
 }

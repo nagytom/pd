@@ -21,27 +21,27 @@ import hu.nagytom.pd.pixeldungeon.items.Item;
 import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class CorpseDust extends Item {
-	
+
 	{
 		name = "corpse dust";
 		image = ItemSpriteSheet.DUST;
-		
+
 		cursed = true;
 		cursedKnown = true;
-		
+
 		unique = true;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public String info() {
 		return

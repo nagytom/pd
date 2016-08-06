@@ -32,26 +32,26 @@ public class WandOfPoison extends Wand {
 	{
 		name = "Wand of Poison";
 	}
-	
+
 	@Override
 	protected void onZap( int cell ) {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
 
 			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (5 + power()) );
-			
+
 		} else {
-			
+
 			GLog.i( "nothing happened" );
-			
+
 		}
 	}
-	
+
 	protected void fx( int cell, Callback callback ) {
 		MagicMissile.poison( curUser.sprite.parent, curUser.pos, cell, callback );
 		Sample.INSTANCE.play( Assets.SND_ZAP );
 	}
-	
+
 	@Override
 	public String desc() {
 		return

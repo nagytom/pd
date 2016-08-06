@@ -25,32 +25,32 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 import hu.nagytom.pd.pixeldungeon.utils.Utils;
 
 public class WndWandmaker extends WndQuest {
-	
-	private static final String TXT_MESSAGE	= 
+
+	private static final String TXT_MESSAGE	=
 		"Oh, I see you have succeeded! I do hope it hasn't troubled you too much. " +
 		"As I promised, you can choose one of my high quality wands.";
 	private static final String TXT_BATTLE		= "Battle wand";
 	private static final String TXT_NON_BATTLE	= "Non-battle wand";
-	
+
 	private static final String TXT_FARAWELL	= "Good luck in your quest, %s!";
-	
+
 	private Wandmaker wandmaker;
 	private Item questItem;
-	
-	
+
+
 	public WndWandmaker( final Wandmaker wandmaker, final Item item ) {
-		
+
 		super( wandmaker, TXT_MESSAGE, TXT_BATTLE, TXT_NON_BATTLE );
-		
+
 		this.wandmaker = wandmaker;
 		questItem = item;
 	}
-	
+
 	@Override
 	protected void onSelect( int index ) {
 
 		questItem.detach( Dungeon.hero.belongings.backpack );
-		
+
 		Item reward = index == 0 ? Wandmaker.Quest.wand1 : Wandmaker.Quest.wand2;
 		reward.identify();
 		if (reward.doPickUp( Dungeon.hero )) {
@@ -58,12 +58,12 @@ public class WndWandmaker extends WndQuest {
 		} else {
 			Dungeon.level.drop( reward, wandmaker.pos ).sprite.drop();
 		}
-		
+
 		wandmaker.yell( Utils.format( TXT_FARAWELL, Dungeon.hero.className() ) );
 		wandmaker.destroy();
-		
+
 		wandmaker.sprite.die();
-		
+
 		Wandmaker.Quest.complete();
 	}
 }

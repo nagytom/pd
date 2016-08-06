@@ -29,19 +29,19 @@ public class PotionOfToxicGas extends Potion {
 	{
 		name = "Potion of Toxic Gas";
 	}
-	
+
 	@Override
 	public void shatter( int cell ) {
 		if (Dungeon.visible[cell]) {
 			setKnown();
-			
+
 			splash( cell );
 			Sample.INSTANCE.play( Assets.SND_SHATTER );
 		}
-		
+
 		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
 	}
-	
+
 	@Override
 	public String desc() {
 		return
@@ -50,7 +50,7 @@ public class PotionOfToxicGas extends Potion {
 			"You might choose to fling this potion at distant enemies " +
 			"instead of uncorking it by hand.";
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 40 * quantity : super.price();

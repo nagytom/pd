@@ -30,24 +30,24 @@ public class ScrollOfIdentify extends InventoryScroll {
 		inventoryTitle = "Select an item to identify";
 		mode = WndBag.Mode.UNIDENTIFED;
 	}
-	
+
 	@Override
 	protected void onItemSelected( Item item ) {
-		
+
 		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
-		
+
 		item.identify();
 		GLog.i( "It is " + item );
-		
+
 		Badges.validateItemLevelAquired( item );
 	}
-	
+
 	@Override
 	public String desc() {
 		return
 			"Permanently reveals all of the secrets of a single item.";
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();

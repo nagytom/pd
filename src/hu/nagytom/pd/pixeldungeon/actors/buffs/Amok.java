@@ -20,12 +20,12 @@ package hu.nagytom.pd.pixeldungeon.actors.buffs;
 import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class Amok extends FlavourBuff {
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.AMOK;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Amok";

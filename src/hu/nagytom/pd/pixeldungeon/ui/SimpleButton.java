@@ -23,22 +23,22 @@ import hu.nagytom.pd.noosa.TouchArea;
 import hu.nagytom.pd.noosa.ui.Component;
 
 public class SimpleButton extends Component {
-			
+
 	private Image image;
-	
+
 	public SimpleButton( Image image ) {
 		super();
-		
+
 		this.image.copy( image );
 		width = image.width;
 		height = image.height;
 	}
-	
+
 	@Override
 	protected void createChildren() {
 		image = new Image();
 		add( image );
-		
+
 		add( new TouchArea( image ) {
 			@Override
 			protected void onTouchDown(Touch touch) {
@@ -54,12 +54,12 @@ public class SimpleButton extends Component {
 			};
 		} );
 	}
-	
+
 	@Override
 	protected void layout() {
 		image.x = x;
 		image.y = y;
 	}
-	
+
 	protected void onClick() {};
 }

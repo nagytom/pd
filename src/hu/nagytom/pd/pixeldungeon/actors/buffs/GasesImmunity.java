@@ -23,19 +23,19 @@ import hu.nagytom.pd.pixeldungeon.actors.blobs.ToxicGas;
 import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class GasesImmunity extends FlavourBuff {
-	
+
 	public static final float DURATION	= 5f;
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.IMMUNITY;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Immune to gases";
 	}
-	
+
 	public static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
 	static {
 		IMMUNITIES.add( Paralysis.class );

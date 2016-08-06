@@ -23,14 +23,14 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 public class MindVision extends FlavourBuff {
 
 	public static final float DURATION = 20f;
-	
+
 	public int distance = 2;
-	
+
 	@Override
 	public int icon() {
 		return BuffIndicator.MIND_VISION;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Mind vision";

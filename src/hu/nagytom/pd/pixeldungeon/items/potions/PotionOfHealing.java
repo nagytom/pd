@@ -32,31 +32,31 @@ public class PotionOfHealing extends Potion {
 	{
 		name = "Potion of Healing";
 	}
-	
+
 	@Override
 	protected void apply( Hero hero ) {
 		setKnown();
 		heal( Dungeon.hero );
 		GLog.p( "Your wounds heal completely." );
 	}
-	
+
 	public static void heal( Hero hero ) {
-		
+
 		hero.HP = hero.HT;
 		Buff.detach( hero, Poison.class );
 		Buff.detach( hero, Cripple.class );
 		Buff.detach( hero, Weakness.class );
 		Buff.detach( hero, Bleeding.class );
-		
+
 		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 	}
-	
+
 	@Override
 	public String desc() {
 		return
 			"An elixir that will instantly return you to full health and cure poison.";
 	}
-	
+
 	@Override
 	public int price() {
 		return isKnown() ? 30 * quantity : super.price();

@@ -26,24 +26,24 @@ public class Ankh extends Item {
 		name = "Ankh";
 		image = ItemSpriteSheet.ANKH;
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public String info() {
-		return 
+		return
 			"The ancient symbol of immortality grants an ability to return to life after death. " +
 			"Upon resurrection all non-equipped items are lost.";
 	}
-	
+
 	@Override
 	public int price() {
 		return 50 * quantity;

@@ -29,24 +29,24 @@ public abstract class InventoryScroll extends Scroll {
 
 	protected String inventoryTitle = "Select an item";
 	protected WndBag.Mode mode = WndBag.Mode.ALL;
-	
+
 	private static final String TXT_WARNING	= "Do you really want to cancel this scroll usage? It will be consumed anyway.";
 	private static final String TXT_YES		= "Yes, I'm positive";
 	private static final String TXT_NO		= "No, I changed my mind";
-	
+
 	@Override
 	protected void doRead() {
-		
+
 		if (!isKnown()) {
 			setKnown();
 			identifiedByUse = true;
 		} else {
 			identifiedByUse = false;
 		}
-		
+
 		GameScene.selectItem( itemSelector, mode, inventoryTitle );
 	}
-	
+
 	private void confirmCancelation() {
 		GameScene.show( new WndOptions( name(), TXT_WARNING, TXT_YES, TXT_NO ) {
 			@Override
@@ -64,9 +64,9 @@ public abstract class InventoryScroll extends Scroll {
 			public void onBackPressed() {};
 		} );
 	}
-	
+
 	protected abstract void onItemSelected( Item item );
-	
+
 	protected static boolean identifiedByUse = false;
 	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
 		@Override
@@ -75,18 +75,18 @@ public abstract class InventoryScroll extends Scroll {
 
 				((InventoryScroll)curItem).onItemSelected( item );
 				((InventoryScroll)curItem).readAnimation();
-				
+
 				Sample.INSTANCE.play( Assets.SND_READ );
 				Invisibility.dispel();
-				
+
 			} else if (identifiedByUse) {
-				
+
 				((InventoryScroll)curItem).confirmCancelation();
-				
+
 			} else {
 
 				curItem.collect( curUser.belongings.backpack );
-				
+
 			}
 		}
 	};

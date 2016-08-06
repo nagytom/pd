@@ -36,25 +36,25 @@ import hu.nagytom.pd.pixeldungeon.utils.Utils;
 import hu.nagytom.pd.utils.Random;
 
 public class Bomb extends Item {
-	
+
 	{
 		name = "bomb";
 		image = ItemSpriteSheet.BOMB;
 		defaultAction = AC_THROW;
 		stackable = true;
 	}
-	
+
 	@Override
 	protected void onThrow( int cell ) {
 		if (Level.pit[cell]) {
 			super.onThrow( cell );
 		} else {
 			Sample.INSTANCE.play( Assets.SND_BLAST, 2 );
-			
+
 			if (Dungeon.visible[cell]) {
 				CellEmitter.center( cell ).burst( BlastParticle.FACTORY, 30 );
 			}
-			
+
 			boolean terrainAffected = false;
 			for (int n : Level.NEIGHBOURS9) {
 				int c = cell + n;
@@ -62,13 +62,13 @@ public class Bomb extends Item {
 					if (Dungeon.visible[c]) {
 						CellEmitter.get( c ).burst( SmokeParticle.FACTORY, 4 );
 					}
-					
+
 					if (Level.flamable[c]) {
 						Dungeon.level.destroy( c );
 						GameScene.updateMap( c );
-						terrainAffected = true;	
+						terrainAffected = true;
 					}
-					
+
 					Char ch = Actor.findChar( c );
 					if (ch != null) {
 						int dmg = Random.Int( 1 + Dungeon.depth, 10 + Dungeon.depth * 2 ) - Random.Int( ch.dr() );
@@ -84,34 +84,34 @@ public class Bomb extends Item {
 					}
 				}
 			}
-			
+
 			if (terrainAffected) {
 				Dungeon.observe();
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-	
+
 	@Override
 	public Item random() {
 		quantity = Random.IntRange( 1, 3 );
 		return this;
-	}	
-	
+	}
+
 	@Override
 	public int price() {
 		return 10 * quantity;
 	}
-	
+
 	@Override
 	public String info() {
 		return

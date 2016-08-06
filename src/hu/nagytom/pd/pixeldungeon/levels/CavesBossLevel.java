@@ -38,37 +38,37 @@ import hu.nagytom.pd.utils.Bundle;
 import hu.nagytom.pd.utils.Random;
 
 public class CavesBossLevel extends Level {
-	
+
 	{
 		color1 = 0x534f3e;
 		color2 = 0xb9d661;
-		
+
 		viewDistance = 6;
 	}
-	
+
 	private static final int ROOM_LEFT		= WIDTH / 2 - 2;
 	private static final int ROOM_RIGHT		= WIDTH / 2 + 2;
 	private static final int ROOM_TOP		= HEIGHT / 2 - 2;
 	private static final int ROOM_BOTTOM	= HEIGHT / 2 + 2;
-	
+
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-	
+
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_CAVES;
 	}
-	
+
 	@Override
 	public String waterTex() {
 		return Assets.WATER_CAVES;
 	}
-	
+
 	private static final String DOOR	= "door";
 	private static final String ENTERED	= "entered";
 	private static final String DROPPED	= "droppped";
-	
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
@@ -76,7 +76,7 @@ public class CavesBossLevel extends Level {
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
 	}
-	
+
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
@@ -84,12 +84,12 @@ public class CavesBossLevel extends Level {
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
 	}
-	
+
 	@Override
 	protected boolean build() {
-		
+
 		int topMost = Integer.MAX_VALUE;
-		
+
 		for (int i=0; i < 8; i++) {
 			int left, right, top, bottom;
 			if (Random.Int( 2 ) == 0) {
@@ -106,51 +106,51 @@ public class CavesBossLevel extends Level {
 				top = ROOM_LEFT - 3;
 				bottom = Random.Int( ROOM_TOP + 3, HEIGHT - 1 );
 			}
-			
+
 			Painter.fill( this, left, top, right - left + 1, bottom - top + 1, Terrain.EMPTY );
-			
+
 			if (top < topMost) {
 				topMost = top;
 				exit = Random.Int( left, right ) + (top - 1) * WIDTH;
 			}
 		}
-		
+
 		map[exit] = Terrain.LOCKED_EXIT;
-		
+
 		for (int i=0; i < LENGTH; i++) {
 			if (map[i] == Terrain.EMPTY && Random.Int( 6 ) == 0) {
 				map[i] = Terrain.INACTIVE_TRAP;
 			}
 		}
-		
-		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1, 
+
+		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1,
 			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL );
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1, 
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1,
 			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY );
-		
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP, 
+
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
 			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.TOXIC_TRAP );
-		
+
 		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * WIDTH;
 		map[arenaDoor] = Terrain.DOOR;
-		
-		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) + 
+
+		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
 			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
 		map[entrance] = Terrain.ENTRANCE;
-		
+
 		boolean[] patch = Patch.generate( 0.45f, 6 );
 		for (int i=0; i < LENGTH; i++) {
 			if (map[i] == Terrain.EMPTY && patch[i]) {
 				map[i] = Terrain.WATER;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	@Override
-	protected void decorate() {	
-		
+	protected void decorate() {
+
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH; i++) {
 			if (map[i] == Terrain.EMPTY) {
 				int n = 0;
@@ -171,28 +171,28 @@ public class CavesBossLevel extends Level {
 				}
 			}
 		}
-		
+
 		for (int i=0; i < LENGTH; i++) {
 			if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
 				map[i] = Terrain.WALL_DECO;
 			}
 		}
-		
+
 		int sign;
 		do {
 			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * WIDTH;
 		} while (sign == entrance);
 		map[sign] = Terrain.SIGN;
 	}
-	
+
 	@Override
-	protected void createMobs() {	
+	protected void createMobs() {
 	}
-	
+
 	public Actor respawner() {
 		return null;
 	}
-	
+
 	@Override
 	protected void createItems() {
 		Item item = Bones.get();
@@ -204,21 +204,21 @@ public class CavesBossLevel extends Level {
 			drop( item, pos ).type = Heap.Type.SKELETON;
 		}
 	}
-	
+
 	@Override
 	public int randomRespawnCell() {
 		return -1;
 	}
-	
+
 	@Override
 	public void press( int cell, Char hero ) {
-		
+
 		super.press( cell, hero );
-		
+
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero == Dungeon.hero) {
-			
+
 			enteredArena = true;
-			
+
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
 			do {
@@ -228,40 +228,40 @@ public class CavesBossLevel extends Level {
 				!outsideEntraceRoom( boss.pos ) ||
 				Dungeon.visible[boss.pos]);
 			GameScene.add( boss );
-			
+
 			set( arenaDoor, Terrain.WALL );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observe();
-			
+
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 			Camera.main.shake( 3, 0.7f );
 			Sample.INSTANCE.play( Assets.SND_ROCKS );
 		}
 	}
-	
+
 	@Override
 	public Heap drop( Item item, int cell ) {
-		
+
 		if (!keyDropped && item instanceof SkeletonKey) {
-			
+
 			keyDropped = true;
-			
+
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
-			
+
 			set( arenaDoor, Terrain.EMPTY_DECO );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observe();
 		}
-		
+
 		return super.drop( item, cell );
 	}
-	
+
 	private boolean outsideEntraceRoom( int cell ) {
 		int cx = cell % WIDTH;
 		int cy = cell / WIDTH;
 		return cx < ROOM_LEFT-1 || cx > ROOM_RIGHT+1 || cy < ROOM_TOP-1 || cy > ROOM_BOTTOM+1;
 	}
-	
+
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
@@ -275,7 +275,7 @@ public class CavesBossLevel extends Level {
 			return super.tileName( tile );
 		}
 	}
-	
+
 	@Override
 	public String tileDesc( int tile ) {
 		switch (tile) {
@@ -291,7 +291,7 @@ public class CavesBossLevel extends Level {
 			return super.tileDesc( tile );
 		}
 	}
-	
+
 	@Override
 	public void addVisuals( Scene scene ) {
 		CavesLevel.addVisuals( this, scene );

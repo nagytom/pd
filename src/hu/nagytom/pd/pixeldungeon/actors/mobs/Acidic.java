@@ -28,18 +28,18 @@ public class Acidic extends Scorpio {
 		name = "acidic scorpio";
 		spriteClass = AcidicSprite.class;
 	}
-	
+
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
-		
+
 		int dmg = Random.IntRange( 0, damage );
 		if (dmg > 0) {
 			enemy.damage( dmg, this );
 		}
-		
+
 		return super.defenseProc( enemy, damage );
 	}
-	
+
 	@Override
 	public void die( Object cause ) {
 		super.die( cause );

@@ -37,14 +37,14 @@ public class MysteryMeat extends Food {
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 		message = "That food tasted... strange.";
 	}
-	
+
 	@Override
 	public void execute( Hero hero, String action ) {
-		
+
 		super.execute( hero, action );
-		
+
 		if (action.equals( AC_EAT )) {
-			
+
 			switch (Random.Int( 5 )) {
 			case 0:
 				GLog.w( "Oh it's hot!" );
@@ -65,12 +65,12 @@ public class MysteryMeat extends Food {
 			}
 		}
 	}
-	
+
 	@Override
 	public String info() {
 		return "Eat at your own risk!";
 	}
-	
+
 	public int price() {
 		return 5 * quantity;
 	};

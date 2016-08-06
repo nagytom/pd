@@ -28,24 +28,24 @@ import hu.nagytom.pd.pixeldungeon.scenes.PixelScene;
 import hu.nagytom.pd.pixeldungeon.ui.Window;
 
 public class WndInfoCell extends Window {
-	
+
 	private static final float GAP	= 2;
-	
+
 	private static final int WIDTH = 120;
-	
+
 	private static final String TXT_NOTHING	= "There is nothing here.";
-	
+
 	public WndInfoCell( int cell ) {
-		
+
 		super();
-		
+
 		int tile = Dungeon.level.map[cell];
 		if (Level.water[cell]) {
 			tile = Terrain.WATER;
 		} else if (Level.pit[cell]) {
 			tile = Terrain.CHASM;
 		}
-		
+
 		IconTitle titlebar = new IconTitle();
 		if (tile == Terrain.WATER) {
 			Image water = new Image( Dungeon.level.waterTex() );
@@ -57,12 +57,12 @@ public class WndInfoCell extends Window {
 		titlebar.label( Dungeon.level.tileName( tile ) );
 		titlebar.setRect( 0, 0, WIDTH, 0 );
 		add( titlebar );
-		
+
 		BitmapTextMultiline info = PixelScene.createMultiline( 6 );
 		add( info );
-		
+
 		StringBuilder desc = new StringBuilder( Dungeon.level.tileDesc( tile ) );
-		
+
 		final char newLine = '\n';
 		for (Blob blob:Dungeon.level.blobs.values()) {
 			if (blob.cur[cell] > 0 && blob.tileDesc() != null) {
@@ -72,13 +72,13 @@ public class WndInfoCell extends Window {
 				desc.append( blob.tileDesc() );
 			}
 		}
-		
+
 		info.text( desc.length() > 0 ? desc.toString() : TXT_NOTHING );
 		info.maxWidth = WIDTH;
 		info.measure();
 		info.x = titlebar.left();
 		info.y = titlebar.bottom() + GAP;
-		
+
 		resize( WIDTH, (int)(info.y + info.height()) );
 	}
 }

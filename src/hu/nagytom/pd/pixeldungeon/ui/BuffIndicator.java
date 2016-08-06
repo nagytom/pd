@@ -32,7 +32,7 @@ import hu.nagytom.pd.utils.SparseArray;
 public class BuffIndicator extends Component {
 
 	public static final int NONE	= -1;
-	
+
 	public static final int MIND_VISION	= 0;
 	public static final int LEVITATION	= 1;
 	public static final int FIRE		= 2;
@@ -65,48 +65,48 @@ public class BuffIndicator extends Component {
 	public static final int VERTIGO		= 29;
 	public static final int RAGE		= 30;
 	public static final int SACRIFICE	= 31;
-	
+
 	public static final int SIZE	= 7;
-	
+
 	private static BuffIndicator heroInstance;
-	
+
 	private SmartTexture texture;
 	private TextureFilm film;
-	
+
 	private SparseArray<Image> icons = new SparseArray<Image>();
-	
+
 	private Char ch;
-	
+
 	public BuffIndicator( Char ch ) {
 		super();
-		
+
 		this.ch = ch;
 		if (ch == Dungeon.hero) {
 			heroInstance = this;
 		}
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
-		
+
 		if (this == heroInstance) {
 			heroInstance = null;
 		}
 	}
-	
+
 	@Override
 	protected void createChildren() {
 		texture = TextureCache.get( Assets.BUFFS_SMALL );
 		film = new TextureFilm( texture, SIZE, SIZE );
 	}
-	
+
 	@Override
 	protected void layout() {
 		clear();
-		
+
 		SparseArray<Image> newIcons = new SparseArray<Image>();
-		
+
 		for (Buff buff : ch.buffs()) {
 			int icon = buff.icon();
 			if (icon != NONE) {
@@ -115,11 +115,11 @@ public class BuffIndicator extends Component {
 				img.x = x + members.size() * (SIZE + 2);
 				img.y = y;
 				add( img );
-				
+
 				newIcons.put( icon, img );
 			}
 		}
-		
+
 		for (Integer key : icons.keyArray()) {
 			if (newIcons.get( key ) == null) {
 				Image icon = icons.get( key );
@@ -134,10 +134,10 @@ public class BuffIndicator extends Component {
 				} );
 			}
 		}
-		
+
 		icons = newIcons;
 	}
-	
+
 	public static void refreshHero() {
 		if (heroInstance != null) {
 			heroInstance.layout();

@@ -28,13 +28,13 @@ import hu.nagytom.pd.pixeldungeon.windows.WndBag;
 public class ScrollOfUpgrade extends InventoryScroll {
 
 	private static final String TXT_LOOKS_BETTER	= "your %s certainly looks better now";
-	
+
 	{
 		name = "Scroll of Upgrade";
 		inventoryTitle = "Select an item to upgrade";
 		mode = WndBag.Mode.UPGRADEABLE;
 	}
-	
+
 	@Override
 	protected void onItemSelected( Item item ) {
 
@@ -44,17 +44,17 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		} else {
 			item.upgrade();
 		}
-		
+
 		upgrade( curUser );
 		GLog.p( TXT_LOOKS_BETTER, item.name() );
-		
+
 		Badges.validateItemLevelAquired( item );
 	}
-	
+
 	public static void upgrade( Hero hero ) {
 		hero.sprite.emitter().start( Speck.factory( Speck.UP ), 0.2f, 3 );
 	}
-	
+
 	@Override
 	public String desc() {
 		return

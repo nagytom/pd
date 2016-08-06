@@ -26,20 +26,20 @@ public class Keyring extends Bag {
 	{
 		name = "key ring";
 		image = ItemSpriteSheet.KEYRING;
-		
+
 		size = 12;
 	}
-	
+
 	@Override
 	public boolean grab( Item item ) {
 		return item instanceof Key;
 	}
-	
+
 	@Override
 	public int price() {
 		return 50;
 	}
-	
+
 	@Override
 	public String info() {
 		return
