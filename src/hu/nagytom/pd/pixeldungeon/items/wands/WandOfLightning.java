@@ -37,81 +37,81 @@ import hu.nagytom.pd.utils.Random;
 
 public class WandOfLightning extends Wand {
 
-	{
-		name = "Wand of Lightning";
-	}
+    {
+        name = "Wand of Lightning";
+    }
 
-	private ArrayList<Char> affected = new ArrayList<Char>();
+    private ArrayList<Char> affected = new ArrayList<Char>();
 
-	private int[] points = new int[20];
-	private int nPoints;
+    private int[] points = new int[20];
+    private int nPoints;
 
-	@Override
-	protected void onZap( int cell ) {
-		// Everything is processed in fx() method
-		if (!curUser.isAlive()) {
-			Dungeon.fail( Utils.format( ResultDescriptions.WAND, name, Dungeon.depth ) );
-			GLog.n( "You killed yourself with your own Wand of Lightning..." );
-		}
-	}
+    @Override
+    protected void onZap( int cell ) {
+        // Everything is processed in fx() method
+        if (!curUser.isAlive()) {
+            Dungeon.fail( Utils.format( ResultDescriptions.WAND, name, Dungeon.depth ) );
+            GLog.n( "You killed yourself with your own Wand of Lightning..." );
+        }
+    }
 
-	private void hit( Char ch, int damage ) {
+    private void hit( Char ch, int damage ) {
 
-		if (damage < 1) {
-			return;
-		}
+        if (damage < 1) {
+            return;
+        }
 
-		if (ch == Dungeon.hero) {
-			Camera.main.shake( 2, 0.3f );
-		}
+        if (ch == Dungeon.hero) {
+            Camera.main.shake( 2, 0.3f );
+        }
 
-		affected.add( ch );
-		ch.damage( Level.water[ch.pos] && !ch.flying ? (int)(damage * 2) : damage, LightningTrap.LIGHTNING  );
+        affected.add( ch );
+        ch.damage( Level.water[ch.pos] && !ch.flying ? (int)(damage * 2) : damage, LightningTrap.LIGHTNING  );
 
-		ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
-		ch.sprite.flash();
+        ch.sprite.centerEmitter().burst( SparkParticle.FACTORY, 3 );
+        ch.sprite.flash();
 
-		points[nPoints++] = ch.pos;
+        points[nPoints++] = ch.pos;
 
-		HashSet<Char> ns = new HashSet<Char>();
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			Char n = Actor.findChar( ch.pos + Level.NEIGHBOURS8[i] );
-			if (n != null && !affected.contains( n )) {
-				ns.add( n );
-			}
-		}
+        HashSet<Char> ns = new HashSet<Char>();
+        for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
+            Char n = Actor.findChar( ch.pos + Level.NEIGHBOURS8[i] );
+            if (n != null && !affected.contains( n )) {
+                ns.add( n );
+            }
+        }
 
-		if (ns.size() > 0) {
-			hit( Random.element( ns ), Random.Int( damage / 2, damage ) );
-		}
-	}
+        if (ns.size() > 0) {
+            hit( Random.element( ns ), Random.Int( damage / 2, damage ) );
+        }
+    }
 
-	@Override
-	protected void fx( int cell, Callback callback ) {
+    @Override
+    protected void fx( int cell, Callback callback ) {
 
-		nPoints = 0;
-		points[nPoints++] = Dungeon.hero.pos;
+        nPoints = 0;
+        points[nPoints++] = Dungeon.hero.pos;
 
-		Char ch = Actor.findChar( cell );
-		if (ch != null) {
+        Char ch = Actor.findChar( cell );
+        if (ch != null) {
 
-			affected.clear();
-			int lvl = power();
-			hit( ch, Random.Int( 5 + lvl / 2, 10 + lvl ) );
+            affected.clear();
+            int lvl = power();
+            hit( ch, Random.Int( 5 + lvl / 2, 10 + lvl ) );
 
-		} else {
+        } else {
 
-			points[nPoints++] = cell;
-			CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
+            points[nPoints++] = cell;
+            CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
 
-		}
-		curUser.sprite.parent.add( new Lightning( points, nPoints, callback ) );
-	}
+        }
+        curUser.sprite.parent.add( new Lightning( points, nPoints, callback ) );
+    }
 
-	@Override
-	public String desc() {
-		return
-			"This wand conjures forth deadly arcs of electricity, which deal damage " +
-			"to several creatures standing close to each other.";
-	}
+    @Override
+    public String desc() {
+        return
+            "This wand conjures forth deadly arcs of electricity, which deal damage " +
+            "to several creatures standing close to each other.";
+    }
 }

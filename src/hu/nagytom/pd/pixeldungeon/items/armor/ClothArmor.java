@@ -22,17 +22,17 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class ClothArmor extends Armor {
 
-	{
-		name = "cloth armor";
-		image = ItemSpriteSheet.ARMOR_CLOTH;
-	}
+    {
+        name = "cloth armor";
+        image = ItemSpriteSheet.ARMOR_CLOTH;
+    }
 
-	public ClothArmor() {
-		super( 1 );
-	}
+    public ClothArmor() {
+        super( 1 );
+    }
 
-	@Override
-	public String desc() {
-		return "This lightweight armor offers basic protection.";
-	}
+    @Override
+    public String desc() {
+        return "This lightweight armor offers basic protection.";
+    }
 }

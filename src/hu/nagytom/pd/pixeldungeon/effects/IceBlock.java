@@ -25,44 +25,44 @@ import hu.nagytom.pd.pixeldungeon.sprites.CharSprite;
 
 public class IceBlock extends Gizmo {
 
-	private float phase;
+    private float phase;
 
-	private CharSprite target;
+    private CharSprite target;
 
-	public IceBlock( CharSprite target ) {
-		super();
+    public IceBlock( CharSprite target ) {
+        super();
 
-		this.target = target;
-		phase = 0;
-	}
+        this.target = target;
+        phase = 0;
+    }
 
-	@Override
-	public void update() {
-		super.update();
+    @Override
+    public void update() {
+        super.update();
 
-		if ((phase += Game.elapsed * 2) < 1) {
-			target.tint( 0.83f, 1.17f, 1.33f, phase * 0.6f );
-		} else {
-			target.tint( 0.83f, 1.17f, 1.33f, 0.6f );
-		}
-	}
+        if ((phase += Game.elapsed * 2) < 1) {
+            target.tint( 0.83f, 1.17f, 1.33f, phase * 0.6f );
+        } else {
+            target.tint( 0.83f, 1.17f, 1.33f, 0.6f );
+        }
+    }
 
-	public void melt() {
+    public void melt() {
 
-		target.resetColor();
-		killAndErase();
+        target.resetColor();
+        killAndErase();
 
-		if (visible) {
-			Splash.at( target.center(), 0xFFB2D6FF, 5 );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
-	}
+        if (visible) {
+            Splash.at( target.center(), 0xFFB2D6FF, 5 );
+            Sample.INSTANCE.play( Assets.SND_SHATTER );
+        }
+    }
 
-	public static IceBlock freeze( CharSprite sprite ) {
+    public static IceBlock freeze( CharSprite sprite ) {
 
-		IceBlock iceBlock = new IceBlock( sprite );
-		sprite.parent.add( iceBlock );
+        IceBlock iceBlock = new IceBlock( sprite );
+        sprite.parent.add( iceBlock );
 
-		return iceBlock;
-	}
+        return iceBlock;
+    }
 }

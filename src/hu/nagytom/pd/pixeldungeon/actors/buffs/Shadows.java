@@ -26,71 +26,71 @@ import hu.nagytom.pd.utils.Bundle;
 
 public class Shadows extends Invisibility {
 
-	protected float left;
+    protected float left;
 
-	private static final String LEFT	= "left";
+    private static final String LEFT    = "left";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEFT, left );
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEFT, left );
 
-	}
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		left = bundle.getFloat( LEFT );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        left = bundle.getFloat( LEFT );
+    }
 
-	@Override
-	public boolean attachTo( Char target ) {
-		if (super.attachTo( target )) {
-			Sample.INSTANCE.play( Assets.SND_MELD );
-			Dungeon.observe();
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean attachTo( Char target ) {
+        if (super.attachTo( target )) {
+            Sample.INSTANCE.play( Assets.SND_MELD );
+            Dungeon.observe();
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public void detach() {
-		super.detach();
-		Dungeon.observe();
-	}
+    @Override
+    public void detach() {
+        super.detach();
+        Dungeon.observe();
+    }
 
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
+    @Override
+    public boolean act() {
+        if (target.isAlive()) {
 
-			spend( TICK * 2 );
+            spend( TICK * 2 );
 
-			if (--left <= 0 || Dungeon.hero.visibleEnemies() > 0) {
-				detach();
-			}
+            if (--left <= 0 || Dungeon.hero.visibleEnemies() > 0) {
+                detach();
+            }
 
-		} else {
+        } else {
 
-			detach();
+            detach();
 
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public void prolong() {
-		left = 2;
-	}
+    public void prolong() {
+        left = 2;
+    }
 
-	@Override
-	public int icon() {
-		return BuffIndicator.SHADOWS;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.SHADOWS;
+    }
 
-	@Override
-	public String toString() {
-		return "Shadowmelded";
-	}
+    @Override
+    public String toString() {
+        return "Shadowmelded";
+    }
 
 }

@@ -31,64 +31,64 @@ import hu.nagytom.pd.utils.Random;
 
 public class ToxicGas extends Blob implements Hero.Doom {
 
-	@Override
-	protected void evolve() {
-		super.evolve();
+    @Override
+    protected void evolve() {
+        super.evolve();
 
-		int levelDamage = 5 + Dungeon.depth * 5;
+        int levelDamage = 5 + Dungeon.depth * 5;
 
-		Char ch;
-		for (int i=0; i < LENGTH; i++) {
-			if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
+        Char ch;
+        for (int i=0; i < LENGTH; i++) {
+            if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
 
-				int damage = (ch.HT + levelDamage) / 40;
-				if (Random.Int( 40 ) < (ch.HT + levelDamage) % 40) {
-					damage++;
-				}
+                int damage = (ch.HT + levelDamage) / 40;
+                if (Random.Int( 40 ) < (ch.HT + levelDamage) % 40) {
+                    damage++;
+                }
 
-				ch.damage( damage, this );
-			}
-		}
+                ch.damage( damage, this );
+            }
+        }
 
-		Blob blob = Dungeon.level.blobs.get( ParalyticGas.class );
-		if (blob != null) {
+        Blob blob = Dungeon.level.blobs.get( ParalyticGas.class );
+        if (blob != null) {
 
-			int par[] = blob.cur;
+            int par[] = blob.cur;
 
-			for (int i=0; i < LENGTH; i++) {
+            for (int i=0; i < LENGTH; i++) {
 
-				int t = cur[i];
-				int p = par[i];
+                int t = cur[i];
+                int p = par[i];
 
-				if (p >= t) {
-					volume -= t;
-					cur[i] = 0;
-				} else {
-					blob.volume -= p;
-					par[i] = 0;
-				}
-			}
-		}
-	}
+                if (p >= t) {
+                    volume -= t;
+                    cur[i] = 0;
+                } else {
+                    blob.volume -= p;
+                    par[i] = 0;
+                }
+            }
+        }
+    }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
+    @Override
+    public void use( BlobEmitter emitter ) {
+        super.use( emitter );
 
-		emitter.pour( Speck.factory( Speck.TOXIC ), 0.6f );
-	}
+        emitter.pour( Speck.factory( Speck.TOXIC ), 0.6f );
+    }
 
-	@Override
-	public String tileDesc() {
-		return "A greenish cloud of toxic gas is swirling here.";
-	}
+    @Override
+    public String tileDesc() {
+        return "A greenish cloud of toxic gas is swirling here.";
+    }
 
-	@Override
-	public void onDeath() {
+    @Override
+    public void onDeath() {
 
-		Badges.validateDeathFromGas();
+        Badges.validateDeathFromGas();
 
-		Dungeon.fail( Utils.format( ResultDescriptions.GAS, Dungeon.depth ) );
-		GLog.n( "You died from a toxic gas.." );
-	}
+        Dungeon.fail( Utils.format( ResultDescriptions.GAS, Dungeon.depth ) );
+        GLog.n( "You died from a toxic gas.." );
+    }
 }

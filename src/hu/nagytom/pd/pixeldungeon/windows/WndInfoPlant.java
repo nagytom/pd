@@ -25,29 +25,29 @@ import hu.nagytom.pd.pixeldungeon.ui.Window;
 
 public class WndInfoPlant extends Window {
 
-	private static final float GAP	= 2;
+    private static final float GAP  = 2;
 
-	private static final int WIDTH = 120;
+    private static final int WIDTH = 120;
 
-	public WndInfoPlant( Plant plant ) {
+    public WndInfoPlant( Plant plant ) {
 
-		super();
+        super();
 
-		IconTitle titlebar = new IconTitle();
-		titlebar.icon( new PlantSprite( plant.image ) );
-		titlebar.label( plant.plantName );
-		titlebar.setRect( 0, 0, WIDTH, 0 );
-		add( titlebar );
+        IconTitle titlebar = new IconTitle();
+        titlebar.icon( new PlantSprite( plant.image ) );
+        titlebar.label( plant.plantName );
+        titlebar.setRect( 0, 0, WIDTH, 0 );
+        add( titlebar );
 
-		BitmapTextMultiline info = PixelScene.createMultiline( 6 );
-		add( info );
+        BitmapTextMultiline info = PixelScene.createMultiline( 6 );
+        add( info );
 
-		info.text( plant.desc() );
-		info.maxWidth = WIDTH;
-		info.measure();
-		info.x = titlebar.left();
-		info.y = titlebar.bottom() + GAP;
+        info.text( plant.desc() );
+        info.maxWidth = WIDTH;
+        info.measure();
+        info.x = titlebar.left();
+        info.y = titlebar.bottom() + GAP;
 
-		resize( WIDTH, (int)(info.y + info.height()) );
-	}
+        resize( WIDTH, (int)(info.y + info.height()) );
+    }
 }

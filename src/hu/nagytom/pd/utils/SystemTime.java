@@ -19,10 +19,10 @@ package hu.nagytom.pd.utils;
 
 public class SystemTime {
 
-	public static long now;
+    public static long now;
 
-	public static void tick() {
-		now = System.currentTimeMillis();
-	}
+    public static void tick() {
+        now = System.currentTimeMillis();
+    }
 }
 

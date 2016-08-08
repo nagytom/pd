@@ -22,30 +22,30 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class CorpseDust extends Item {
 
-	{
-		name = "corpse dust";
-		image = ItemSpriteSheet.DUST;
+    {
+        name = "corpse dust";
+        image = ItemSpriteSheet.DUST;
 
-		cursed = true;
-		cursedKnown = true;
+        cursed = true;
+        cursedKnown = true;
 
-		unique = true;
-	}
+        unique = true;
+    }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+    @Override
+    public boolean isUpgradable() {
+        return false;
+    }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    @Override
+    public boolean isIdentified() {
+        return true;
+    }
 
-	@Override
-	public String info() {
-		return
-			"The ball of corpse dust doesn't differ outwardly from a regular dust ball. However, " +
-			"you know somehow that it's better to get rid of it as soon as possible.";
-	}
+    @Override
+    public String info() {
+        return
+            "The ball of corpse dust doesn't differ outwardly from a regular dust ball. However, " +
+            "you know somehow that it's better to get rid of it as soon as possible.";
+    }
 }

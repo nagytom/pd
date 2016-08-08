@@ -25,52 +25,52 @@ import hu.nagytom.pd.utils.Random;
 
 public class Crab extends Mob {
 
-	{
-		name = "sewer crab";
-		spriteClass = CrabSprite.class;
+    {
+        name = "sewer crab";
+        spriteClass = CrabSprite.class;
 
-		HP = HT = 15;
-		defenseSkill = 5;
-		baseSpeed = 2f;
+        HP = HT = 15;
+        defenseSkill = 5;
+        baseSpeed = 2f;
 
-		EXP = 3;
-		maxLvl = 9;
+        EXP = 3;
+        maxLvl = 9;
 
-		loot = new MysteryMeat();
-		lootChance = 0.167f;
-	}
+        loot = new MysteryMeat();
+        lootChance = 0.167f;
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 3, 6 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 3, 6 );
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return 12;
+    }
 
-	@Override
-	public int dr() {
-		return 4;
-	}
+    @Override
+    public int dr() {
+        return 4;
+    }
 
-	@Override
-	public String defenseVerb() {
-		return "parried";
-	}
+    @Override
+    public String defenseVerb() {
+        return "parried";
+    }
 
-	@Override
-	public void die( Object cause ) {
-		Ghost.Quest.processSewersKill( pos );
-		super.die( cause );
-	}
+    @Override
+    public void die( Object cause ) {
+        Ghost.Quest.processSewersKill( pos );
+        super.die( cause );
+    }
 
-	@Override
-	public String description() {
-		return
-			"These huge crabs are at the top of the food chain in the sewers. " +
-			"They are extremely fast and their thick exoskeleton can withstand " +
-			"heavy blows.";
-	}
+    @Override
+    public String description() {
+        return
+            "These huge crabs are at the top of the food chain in the sewers. " +
+            "They are extremely fast and their thick exoskeleton can withstand " +
+            "heavy blows.";
+    }
 }

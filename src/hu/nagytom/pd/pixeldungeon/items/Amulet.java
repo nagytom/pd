@@ -30,75 +30,75 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Amulet extends Item {
 
-	private static final String AC_END = "END THE GAME";
+    private static final String AC_END = "END THE GAME";
 
-	{
-		name = "Amulet of Yendor";
-		image = ItemSpriteSheet.AMULET;
+    {
+        name = "Amulet of Yendor";
+        image = ItemSpriteSheet.AMULET;
 
-		unique = true;
-	}
+        unique = true;
+    }
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_END );
-		return actions;
-	}
+    @Override
+    public ArrayList<String> actions( Hero hero ) {
+        ArrayList<String> actions = super.actions( hero );
+        actions.add( AC_END );
+        return actions;
+    }
 
-	@Override
-	public void execute( Hero hero, String action ) {
-		if (action == AC_END) {
+    @Override
+    public void execute( Hero hero, String action ) {
+        if (action == AC_END) {
 
-			showAmuletScene( false );
+            showAmuletScene( false );
 
-		} else {
+        } else {
 
-			super.execute( hero, action );
+            super.execute( hero, action );
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public boolean doPickUp( Hero hero ) {
-		if (super.doPickUp( hero )) {
+    @Override
+    public boolean doPickUp( Hero hero ) {
+        if (super.doPickUp( hero )) {
 
-			if (!Statistics.amuletObtained) {
-				Statistics.amuletObtained = true;
-				Badges.validateVictory();
+            if (!Statistics.amuletObtained) {
+                Statistics.amuletObtained = true;
+                Badges.validateVictory();
 
-				showAmuletScene( true );
-			}
+                showAmuletScene( true );
+            }
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	private void showAmuletScene( boolean showText ) {
-		try {
-			Dungeon.saveAll();
-			AmuletScene.noText = !showText;
-			Game.switchScene( AmuletScene.class );
-		} catch (IOException e) {
-		}
-	}
+    private void showAmuletScene( boolean showText ) {
+        try {
+            Dungeon.saveAll();
+            AmuletScene.noText = !showText;
+            Game.switchScene( AmuletScene.class );
+        } catch (IOException e) {
+        }
+    }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    @Override
+    public boolean isIdentified() {
+        return true;
+    }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+    @Override
+    public boolean isUpgradable() {
+        return false;
+    }
 
-	@Override
-	public String info() {
-		return
-			"The Amulet of Yendor is the most powerful known artifact of unknown origin. It is said that the amulet " +
-			"is able to fulfil any wish if its owner's will-power is strong enough to \"persuade\" it to do it.";
-	}
+    @Override
+    public String info() {
+        return
+            "The Amulet of Yendor is the most powerful known artifact of unknown origin. It is said that the amulet " +
+            "is able to fulfil any wish if its owner's will-power is strong enough to \"persuade\" it to do it.";
+    }
 }

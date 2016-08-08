@@ -26,57 +26,57 @@ import hu.nagytom.pd.utils.PointF;
 
 public class MissileSprite extends ItemSprite implements Tweener.Listener {
 
-	private static final float SPEED	= 240f;
+    private static final float SPEED    = 240f;
 
-	private Callback callback;
+    private Callback callback;
 
-	public MissileSprite() {
-		super();
-		originToCenter();
-	}
+    public MissileSprite() {
+        super();
+        originToCenter();
+    }
 
-	public void reset( int from, int to, Item item, Callback listener ) {
-		if (item == null) {
-			reset( from, to, 0, null, listener );
-		} else {
-			reset( from, to, item.image(), item.glowing(), listener );
-		}
-	}
+    public void reset( int from, int to, Item item, Callback listener ) {
+        if (item == null) {
+            reset( from, to, 0, null, listener );
+        } else {
+            reset( from, to, item.image(), item.glowing(), listener );
+        }
+    }
 
-	public void reset( int from, int to, int image, Glowing glowing, Callback listener ) {
-		revive();
+    public void reset( int from, int to, int image, Glowing glowing, Callback listener ) {
+        revive();
 
-		view( image, glowing );
+        view( image, glowing );
 
-		this.callback = listener;
+        this.callback = listener;
 
-		point( DungeonTilemap.tileToWorld( from ) );
-		PointF dest = DungeonTilemap.tileToWorld( to );
+        point( DungeonTilemap.tileToWorld( from ) );
+        PointF dest = DungeonTilemap.tileToWorld( to );
 
-		PointF d = PointF.diff( dest, point() );
-		speed.set( d ).normalize().scale( SPEED );
+        PointF d = PointF.diff( dest, point() );
+        speed.set( d ).normalize().scale( SPEED );
 
-		if (image == 31 || image == 108 || image == 109 || image == 110) {
+        if (image == 31 || image == 108 || image == 109 || image == 110) {
 
-			angularSpeed = 0;
-			angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
+            angularSpeed = 0;
+            angle = 135 - (float)(Math.atan2( d.x, d.y ) / 3.1415926 * 180);
 
-		} else {
+        } else {
 
-			angularSpeed = image == 15 || image == 106 ? 1440 : 720;
+            angularSpeed = image == 15 || image == 106 ? 1440 : 720;
 
-		}
+        }
 
-		PosTweener tweener = new PosTweener( this, dest, d.length() / SPEED );
-		tweener.listener = this;
-		parent.add( tweener );
-	}
+        PosTweener tweener = new PosTweener( this, dest, d.length() / SPEED );
+        tweener.listener = this;
+        parent.add( tweener );
+    }
 
-	@Override
-	public void onComplete( Tweener tweener ) {
-		kill();
-		if (callback != null) {
-			callback.call();
-		}
-	}
+    @Override
+    public void onComplete( Tweener tweener ) {
+        kill();
+        if (callback != null) {
+            callback.call();
+        }
+    }
 }

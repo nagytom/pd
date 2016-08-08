@@ -27,67 +27,67 @@ import hu.nagytom.pd.pixeldungeon.windows.WndOptions;
 
 public abstract class InventoryScroll extends Scroll {
 
-	protected String inventoryTitle = "Select an item";
-	protected WndBag.Mode mode = WndBag.Mode.ALL;
+    protected String inventoryTitle = "Select an item";
+    protected WndBag.Mode mode = WndBag.Mode.ALL;
 
-	private static final String TXT_WARNING	= "Do you really want to cancel this scroll usage? It will be consumed anyway.";
-	private static final String TXT_YES		= "Yes, I'm positive";
-	private static final String TXT_NO		= "No, I changed my mind";
+    private static final String TXT_WARNING = "Do you really want to cancel this scroll usage? It will be consumed anyway.";
+    private static final String TXT_YES     = "Yes, I'm positive";
+    private static final String TXT_NO      = "No, I changed my mind";
 
-	@Override
-	protected void doRead() {
+    @Override
+    protected void doRead() {
 
-		if (!isKnown()) {
-			setKnown();
-			identifiedByUse = true;
-		} else {
-			identifiedByUse = false;
-		}
+        if (!isKnown()) {
+            setKnown();
+            identifiedByUse = true;
+        } else {
+            identifiedByUse = false;
+        }
 
-		GameScene.selectItem( itemSelector, mode, inventoryTitle );
-	}
+        GameScene.selectItem( itemSelector, mode, inventoryTitle );
+    }
 
-	private void confirmCancelation() {
-		GameScene.show( new WndOptions( name(), TXT_WARNING, TXT_YES, TXT_NO ) {
-			@Override
-			protected void onSelect( int index ) {
-				switch (index) {
-				case 0:
-					curUser.spendAndNext( TIME_TO_READ );
-					identifiedByUse = false;
-					break;
-				case 1:
-					GameScene.selectItem( itemSelector, mode, inventoryTitle );
-					break;
-				}
-			}
-			public void onBackPressed() {};
-		} );
-	}
+    private void confirmCancelation() {
+        GameScene.show( new WndOptions( name(), TXT_WARNING, TXT_YES, TXT_NO ) {
+            @Override
+            protected void onSelect( int index ) {
+                switch (index) {
+                case 0:
+                    curUser.spendAndNext( TIME_TO_READ );
+                    identifiedByUse = false;
+                    break;
+                case 1:
+                    GameScene.selectItem( itemSelector, mode, inventoryTitle );
+                    break;
+                }
+            }
+            public void onBackPressed() {};
+        } );
+    }
 
-	protected abstract void onItemSelected( Item item );
+    protected abstract void onItemSelected( Item item );
 
-	protected static boolean identifiedByUse = false;
-	protected static WndBag.Listener itemSelector = new WndBag.Listener() {
-		@Override
-		public void onSelect( Item item ) {
-			if (item != null) {
+    protected static boolean identifiedByUse = false;
+    protected static WndBag.Listener itemSelector = new WndBag.Listener() {
+        @Override
+        public void onSelect( Item item ) {
+            if (item != null) {
 
-				((InventoryScroll)curItem).onItemSelected( item );
-				((InventoryScroll)curItem).readAnimation();
+                ((InventoryScroll)curItem).onItemSelected( item );
+                ((InventoryScroll)curItem).readAnimation();
 
-				Sample.INSTANCE.play( Assets.SND_READ );
-				Invisibility.dispel();
+                Sample.INSTANCE.play( Assets.SND_READ );
+                Invisibility.dispel();
 
-			} else if (identifiedByUse) {
+            } else if (identifiedByUse) {
 
-				((InventoryScroll)curItem).confirmCancelation();
+                ((InventoryScroll)curItem).confirmCancelation();
 
-			} else {
+            } else {
 
-				curItem.collect( curUser.belongings.backpack );
+                curItem.collect( curUser.belongings.backpack );
 
-			}
-		}
-	};
+            }
+        }
+    };
 }

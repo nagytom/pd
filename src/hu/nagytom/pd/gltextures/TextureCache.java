@@ -31,130 +31,130 @@ import hu.nagytom.pd.glwrap.Texture;
 
 public class TextureCache {
 
-	public static Context context;
+    public static Context context;
 
-	private static HashMap<Object,SmartTexture> all = new HashMap<Object, SmartTexture>();
+    private static HashMap<Object,SmartTexture> all = new HashMap<Object, SmartTexture>();
 
-	// No dithering, no scaling, 32 bits per pixel
-	private static BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-	static {
-		bitmapOptions.inScaled = false;
-		bitmapOptions.inDither = false;
-		bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
-	}
+    // No dithering, no scaling, 32 bits per pixel
+    private static BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+    static {
+        bitmapOptions.inScaled = false;
+        bitmapOptions.inDither = false;
+        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    }
 
-	public static SmartTexture createSolid( int color ) {
-		final String key = "1x1:" + color;
+    public static SmartTexture createSolid( int color ) {
+        final String key = "1x1:" + color;
 
-		if (all.containsKey( key )) {
+        if (all.containsKey( key )) {
 
-			return all.get( key );
+            return all.get( key );
 
-		} else {
+        } else {
 
-			Bitmap bmp = Bitmap.createBitmap( 1, 1, Bitmap.Config.ARGB_8888 );
-			bmp.eraseColor( color );
+            Bitmap bmp = Bitmap.createBitmap( 1, 1, Bitmap.Config.ARGB_8888 );
+            bmp.eraseColor( color );
 
-			SmartTexture tx = new SmartTexture( bmp );
-			all.put( key, tx );
+            SmartTexture tx = new SmartTexture( bmp );
+            all.put( key, tx );
 
-			return tx;
-		}
-	}
+            return tx;
+        }
+    }
 
-	public static SmartTexture createGradient( int width, int height, int... colors ) {
+    public static SmartTexture createGradient( int width, int height, int... colors ) {
 
-		final String key = "" + width + "x" + height + ":" + colors;
+        final String key = "" + width + "x" + height + ":" + colors;
 
-		if (all.containsKey( key )) {
+        if (all.containsKey( key )) {
 
-			return all.get( key );
+            return all.get( key );
 
-		} else {
+        } else {
 
-			Bitmap bmp = Bitmap.createBitmap( width, height, Bitmap.Config.ARGB_8888 );
-			Canvas canvas = new Canvas( bmp );
-			Paint paint = new Paint();
-			paint.setShader( new LinearGradient( 0, 0, 0, height, colors, null, TileMode.CLAMP ) );
-			canvas.drawPaint( paint );
+            Bitmap bmp = Bitmap.createBitmap( width, height, Bitmap.Config.ARGB_8888 );
+            Canvas canvas = new Canvas( bmp );
+            Paint paint = new Paint();
+            paint.setShader( new LinearGradient( 0, 0, 0, height, colors, null, TileMode.CLAMP ) );
+            canvas.drawPaint( paint );
 
-			SmartTexture tx = new SmartTexture( bmp );
-			all.put( key, tx );
-			return tx;
-		}
+            SmartTexture tx = new SmartTexture( bmp );
+            all.put( key, tx );
+            return tx;
+        }
 
-	}
+    }
 
-	public static void add( Object key, SmartTexture tx ) {
-		all.put( key, tx );
-	}
+    public static void add( Object key, SmartTexture tx ) {
+        all.put( key, tx );
+    }
 
-	public static SmartTexture get( Object src ) {
+    public static SmartTexture get( Object src ) {
 
-		if (all.containsKey( src )) {
+        if (all.containsKey( src )) {
 
-			return all.get( src );
+            return all.get( src );
 
-		} else if (src instanceof SmartTexture) {
+        } else if (src instanceof SmartTexture) {
 
-			return (SmartTexture)src;
+            return (SmartTexture)src;
 
-		} else {
+        } else {
 
-			SmartTexture tx = new SmartTexture( getBitmap( src ) );
-			all.put( src, tx );
-			return tx;
-		}
+            SmartTexture tx = new SmartTexture( getBitmap( src ) );
+            all.put( src, tx );
+            return tx;
+        }
 
-	}
+    }
 
-	public static void clear() {
+    public static void clear() {
 
-		for (Texture txt:all.values()) {
-			txt.delete();
-		}
-		all.clear();
+        for (Texture txt:all.values()) {
+            txt.delete();
+        }
+        all.clear();
 
-	}
+    }
 
-	public static void reload() {
-		for (SmartTexture tx:all.values()) {
-			tx.reload();
-		}
-	}
+    public static void reload() {
+        for (SmartTexture tx:all.values()) {
+            tx.reload();
+        }
+    }
 
-	public static Bitmap getBitmap( Object src ) {
+    public static Bitmap getBitmap( Object src ) {
 
-		try {
-			if (src instanceof Integer){
+        try {
+            if (src instanceof Integer){
 
-				return BitmapFactory.decodeResource(
-					context.getResources(), (Integer)src, bitmapOptions );
+                return BitmapFactory.decodeResource(
+                    context.getResources(), (Integer)src, bitmapOptions );
 
-			} else if (src instanceof String) {
+            } else if (src instanceof String) {
 
-				return BitmapFactory.decodeStream(
-					context.getAssets().open( (String)src ), null, bitmapOptions );
+                return BitmapFactory.decodeStream(
+                    context.getAssets().open( (String)src ), null, bitmapOptions );
 
-			} else if (src instanceof Bitmap) {
+            } else if (src instanceof Bitmap) {
 
-				return (Bitmap)src;
+                return (Bitmap)src;
 
-			} else {
+            } else {
 
-				return null;
+                return null;
 
-			}
-		} catch (Exception e) {
+            }
+        } catch (Exception e) {
 
-			e.printStackTrace();
-			return null;
+            e.printStackTrace();
+            return null;
 
-		}
-	}
+        }
+    }
 
-	public static boolean contains( Object key ) {
-		return all.containsKey( key );
-	}
+    public static boolean contains( Object key ) {
+        return all.containsKey( key );
+    }
 
 }

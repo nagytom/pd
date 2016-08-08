@@ -31,67 +31,67 @@ import hu.nagytom.pd.utils.Random;
 
 public class FetidRat extends Mob {
 
-	{
-		name = "fetid rat";
-		spriteClass = FetidRatSprite.class;
+    {
+        name = "fetid rat";
+        spriteClass = FetidRatSprite.class;
 
-		HP = HT = 15;
-		defenseSkill = 5;
+        HP = HT = 15;
+        defenseSkill = 5;
 
-		EXP = 3;
-		maxLvl = 5;
+        EXP = 3;
+        maxLvl = 5;
 
-		state = WANDERING;
-	}
+        state = WANDERING;
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 2, 6 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 2, 6 );
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return 12;
+    }
 
-	@Override
-	public int dr() {
-		return 2;
-	}
+    @Override
+    public int dr() {
+        return 2;
+    }
 
-	@Override
-	public String defenseVerb() {
-		return "evaded";
-	}
+    @Override
+    public String defenseVerb() {
+        return "evaded";
+    }
 
-	@Override
-	public int defenseProc( Char enemy, int damage ) {
+    @Override
+    public int defenseProc( Char enemy, int damage ) {
 
-		GameScene.add( Blob.seed( pos, 20, ParalyticGas.class ) );
+        GameScene.add( Blob.seed( pos, 20, ParalyticGas.class ) );
 
-		return super.defenseProc(enemy, damage);
-	}
+        return super.defenseProc(enemy, damage);
+    }
 
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
+    @Override
+    public void die( Object cause ) {
+        super.die( cause );
 
-		Dungeon.level.drop( new RatSkull(), pos ).sprite.drop();
-	}
+        Dungeon.level.drop( new RatSkull(), pos ).sprite.drop();
+    }
 
-	@Override
-	public String description() {
-		return
-			"This marsupial rat is much larger than a regular one. It is surrounded by a foul cloud.";
-	}
+    @Override
+    public String description() {
+        return
+            "This marsupial rat is much larger than a regular one. It is surrounded by a foul cloud.";
+    }
 
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-	static {
-		IMMUNITIES.add( Paralysis.class );
-	}
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+    static {
+        IMMUNITIES.add( Paralysis.class );
+    }
 
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
-	}
+    @Override
+    public HashSet<Class<?>> immunities() {
+        return IMMUNITIES;
+    }
 }

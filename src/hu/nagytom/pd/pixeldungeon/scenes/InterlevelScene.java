@@ -36,265 +36,265 @@ import hu.nagytom.pd.pixeldungeon.windows.WndStory;
 
 public class InterlevelScene extends PixelScene {
 
-	private static final float TIME_TO_FADE = 0.3f;
+    private static final float TIME_TO_FADE = 0.3f;
 
-	private static final String TXT_DESCENDING	= "Descending...";
-	private static final String TXT_ASCENDING	= "Ascending...";
-	private static final String TXT_LOADING		= "Loading...";
-	private static final String TXT_RESURRECTING= "Resurrecting...";
-	private static final String TXT_RETURNING	= "Returning...";
-	private static final String TXT_FALLING		= "Falling...";
+    private static final String TXT_DESCENDING  = "Descending...";
+    private static final String TXT_ASCENDING   = "Ascending...";
+    private static final String TXT_LOADING     = "Loading...";
+    private static final String TXT_RESURRECTING= "Resurrecting...";
+    private static final String TXT_RETURNING   = "Returning...";
+    private static final String TXT_FALLING     = "Falling...";
 
-	private static final String ERR_FILE_NOT_FOUND	= "File not found. For some reason.";
-	private static final String ERR_GENERIC			= "Something went wrong..."	;
+    private static final String ERR_FILE_NOT_FOUND  = "File not found. For some reason.";
+    private static final String ERR_GENERIC         = "Something went wrong..." ;
 
-	public static enum Mode {
-		DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, NONE
-	};
-	public static Mode mode;
+    public static enum Mode {
+        DESCEND, ASCEND, CONTINUE, RESURRECT, RETURN, FALL, NONE
+    };
+    public static Mode mode;
 
-	public static int returnDepth;
-	public static int returnPos;
+    public static int returnDepth;
+    public static int returnPos;
 
-	public static boolean noStory = false;
+    public static boolean noStory = false;
 
-	public static boolean fallIntoPit;
+    public static boolean fallIntoPit;
 
-	private enum Phase {
-		FADE_IN, STATIC, FADE_OUT
-	};
-	private Phase phase;
-	private float timeLeft;
+    private enum Phase {
+        FADE_IN, STATIC, FADE_OUT
+    };
+    private Phase phase;
+    private float timeLeft;
 
-	private BitmapText message;
+    private BitmapText message;
 
-	private Thread thread;
-	private String error = null;
+    private Thread thread;
+    private String error = null;
 
-	@Override
-	public void create() {
-		super.create();
+    @Override
+    public void create() {
+        super.create();
 
-		String text = "";
-		switch (mode) {
-		case DESCEND:
-			text = TXT_DESCENDING;
-			break;
-		case ASCEND:
-			text = TXT_ASCENDING;
-			break;
-		case CONTINUE:
-			text = TXT_LOADING;
-			break;
-		case RESURRECT:
-			text = TXT_RESURRECTING;
-			break;
-		case RETURN:
-			text = TXT_RETURNING;
-			break;
-		case FALL:
-			text = TXT_FALLING;
-			break;
-		default:
-		}
+        String text = "";
+        switch (mode) {
+        case DESCEND:
+            text = TXT_DESCENDING;
+            break;
+        case ASCEND:
+            text = TXT_ASCENDING;
+            break;
+        case CONTINUE:
+            text = TXT_LOADING;
+            break;
+        case RESURRECT:
+            text = TXT_RESURRECTING;
+            break;
+        case RETURN:
+            text = TXT_RETURNING;
+            break;
+        case FALL:
+            text = TXT_FALLING;
+            break;
+        default:
+        }
 
-		message = PixelScene.createText( text, 9 );
-		message.measure();
-		message.x = (Camera.main.width - message.width()) / 2;
-		message.y = (Camera.main.height - message.height()) / 2;
-		add( message );
+        message = PixelScene.createText( text, 9 );
+        message.measure();
+        message.x = (Camera.main.width - message.width()) / 2;
+        message.y = (Camera.main.height - message.height()) / 2;
+        add( message );
 
-		phase = Phase.FADE_IN;
-		timeLeft = TIME_TO_FADE;
+        phase = Phase.FADE_IN;
+        timeLeft = TIME_TO_FADE;
 
-		thread = new Thread() {
-			@Override
-			public void run() {
+        thread = new Thread() {
+            @Override
+            public void run() {
 
-				try {
+                try {
 
-					Generator.reset();
+                    Generator.reset();
 
-					switch (mode) {
-					case DESCEND:
-						descend();
-						break;
-					case ASCEND:
-						ascend();
-						break;
-					case CONTINUE:
-						restore();
-						break;
-					case RESURRECT:
-						resurrect();
-						break;
-					case RETURN:
-						returnTo();
-						break;
-					case FALL:
-						fall();
-						break;
-					default:
-					}
+                    switch (mode) {
+                    case DESCEND:
+                        descend();
+                        break;
+                    case ASCEND:
+                        ascend();
+                        break;
+                    case CONTINUE:
+                        restore();
+                        break;
+                    case RESURRECT:
+                        resurrect();
+                        break;
+                    case RETURN:
+                        returnTo();
+                        break;
+                    case FALL:
+                        fall();
+                        break;
+                    default:
+                    }
 
-					if ((Dungeon.depth % 5) == 0) {
-						Sample.INSTANCE.load( Assets.SND_BOSS );
-					}
+                    if ((Dungeon.depth % 5) == 0) {
+                        Sample.INSTANCE.load( Assets.SND_BOSS );
+                    }
 
-				} catch (FileNotFoundException e) {
+                } catch (FileNotFoundException e) {
 
-					error = ERR_FILE_NOT_FOUND;
+                    error = ERR_FILE_NOT_FOUND;
 
-				} catch (Exception e ) {
+                } catch (Exception e ) {
 
-					error = ERR_GENERIC;
+                    error = ERR_GENERIC;
 
-				}
+                }
 
-				if (phase == Phase.STATIC && error == null) {
-					phase = Phase.FADE_OUT;
-					timeLeft = TIME_TO_FADE;
-				}
-			}
-		};
-		thread.start();
-	}
+                if (phase == Phase.STATIC && error == null) {
+                    phase = Phase.FADE_OUT;
+                    timeLeft = TIME_TO_FADE;
+                }
+            }
+        };
+        thread.start();
+    }
 
-	@Override
-	public void update() {
-		super.update();
+    @Override
+    public void update() {
+        super.update();
 
-		float p = timeLeft / TIME_TO_FADE;
+        float p = timeLeft / TIME_TO_FADE;
 
-		switch (phase) {
+        switch (phase) {
 
-		case FADE_IN:
-			message.alpha( 1 - p );
-			if ((timeLeft -= Game.elapsed) <= 0) {
-				if (!thread.isAlive() && error == null) {
-					phase = Phase.FADE_OUT;
-					timeLeft = TIME_TO_FADE;
-				} else {
-					phase = Phase.STATIC;
-				}
-			}
-			break;
+        case FADE_IN:
+            message.alpha( 1 - p );
+            if ((timeLeft -= Game.elapsed) <= 0) {
+                if (!thread.isAlive() && error == null) {
+                    phase = Phase.FADE_OUT;
+                    timeLeft = TIME_TO_FADE;
+                } else {
+                    phase = Phase.STATIC;
+                }
+            }
+            break;
 
-		case FADE_OUT:
-			message.alpha( p );
-			if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth == 1)) {
-				Music.INSTANCE.volume( p );
-			}
-			if ((timeLeft -= Game.elapsed) <= 0) {
-				Game.switchScene( GameScene.class );
-			}
-			break;
+        case FADE_OUT:
+            message.alpha( p );
+            if (mode == Mode.CONTINUE || (mode == Mode.DESCEND && Dungeon.depth == 1)) {
+                Music.INSTANCE.volume( p );
+            }
+            if ((timeLeft -= Game.elapsed) <= 0) {
+                Game.switchScene( GameScene.class );
+            }
+            break;
 
-		case STATIC:
-			if (error != null) {
-				add( new WndError( error ) {
-					public void onBackPressed() {
-						super.onBackPressed();
-						Game.switchScene( StartScene.class );
-					};
-				} );
-				error = null;
-			}
-			break;
-		}
-	}
+        case STATIC:
+            if (error != null) {
+                add( new WndError( error ) {
+                    public void onBackPressed() {
+                        super.onBackPressed();
+                        Game.switchScene( StartScene.class );
+                    };
+                } );
+                error = null;
+            }
+            break;
+        }
+    }
 
-	private void descend() throws Exception {
+    private void descend() throws Exception {
 
-		Actor.fixTime();
-		if (Dungeon.hero == null) {
-			Dungeon.init();
-			if (noStory) {
-				Dungeon.chapters.add( WndStory.ID_SEWERS );
-				noStory = false;
-			}
-			GameLog.wipe();
-		} else {
-			Dungeon.saveLevel();
-		}
+        Actor.fixTime();
+        if (Dungeon.hero == null) {
+            Dungeon.init();
+            if (noStory) {
+                Dungeon.chapters.add( WndStory.ID_SEWERS );
+                noStory = false;
+            }
+            GameLog.wipe();
+        } else {
+            Dungeon.saveLevel();
+        }
 
-		Level level;
-		if (Dungeon.depth >= Statistics.deepestFloor) {
-			level = Dungeon.newLevel();
-		} else {
-			Dungeon.depth++;
-			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
-		}
-		Dungeon.switchLevel( level, level.entrance );
-	}
+        Level level;
+        if (Dungeon.depth >= Statistics.deepestFloor) {
+            level = Dungeon.newLevel();
+        } else {
+            Dungeon.depth++;
+            level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+        }
+        Dungeon.switchLevel( level, level.entrance );
+    }
 
-	private void fall() throws Exception {
+    private void fall() throws Exception {
 
-		Actor.fixTime();
-		Dungeon.saveLevel();
+        Actor.fixTime();
+        Dungeon.saveLevel();
 
-		Level level;
-		if (Dungeon.depth >= Statistics.deepestFloor) {
-			level = Dungeon.newLevel();
-		} else {
-			Dungeon.depth++;
-			level = Dungeon.loadLevel( Dungeon.hero.heroClass );
-		}
-		Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
-	}
+        Level level;
+        if (Dungeon.depth >= Statistics.deepestFloor) {
+            level = Dungeon.newLevel();
+        } else {
+            Dungeon.depth++;
+            level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+        }
+        Dungeon.switchLevel( level, fallIntoPit ? level.pitCell() : level.randomRespawnCell() );
+    }
 
-	private void ascend() throws Exception {
-		Actor.fixTime();
+    private void ascend() throws Exception {
+        Actor.fixTime();
 
-		Dungeon.saveLevel();
-		Dungeon.depth--;
-		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
-		Dungeon.switchLevel( level, level.exit );
-	}
+        Dungeon.saveLevel();
+        Dungeon.depth--;
+        Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+        Dungeon.switchLevel( level, level.exit );
+    }
 
-	private void returnTo() throws Exception {
+    private void returnTo() throws Exception {
 
-		Actor.fixTime();
+        Actor.fixTime();
 
-		Dungeon.saveLevel();
-		Dungeon.depth = returnDepth;
-		Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
-		Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( returnPos ) : returnPos );
-	}
+        Dungeon.saveLevel();
+        Dungeon.depth = returnDepth;
+        Level level = Dungeon.loadLevel( Dungeon.hero.heroClass );
+        Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( returnPos ) : returnPos );
+    }
 
-	private void restore() throws Exception {
+    private void restore() throws Exception {
 
-		Actor.fixTime();
+        Actor.fixTime();
 
-		GameLog.wipe();
+        GameLog.wipe();
 
-		Dungeon.loadGame( StartScene.curClass );
-		if (Dungeon.depth == -1) {
-			Dungeon.depth = Statistics.deepestFloor;
-			Dungeon.switchLevel( Dungeon.loadLevel( StartScene.curClass ), -1 );
-		} else {
-			Level level = Dungeon.loadLevel( StartScene.curClass );
-			Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( Dungeon.hero.pos ) : Dungeon.hero.pos );
-		}
-	}
+        Dungeon.loadGame( StartScene.curClass );
+        if (Dungeon.depth == -1) {
+            Dungeon.depth = Statistics.deepestFloor;
+            Dungeon.switchLevel( Dungeon.loadLevel( StartScene.curClass ), -1 );
+        } else {
+            Level level = Dungeon.loadLevel( StartScene.curClass );
+            Dungeon.switchLevel( level, Level.resizingNeeded ? level.adjustPos( Dungeon.hero.pos ) : Dungeon.hero.pos );
+        }
+    }
 
-	private void resurrect() throws Exception {
+    private void resurrect() throws Exception {
 
-		Actor.fixTime();
+        Actor.fixTime();
 
-		if (Dungeon.bossLevel()) {
-			Dungeon.hero.resurrect( Dungeon.depth );
-			Dungeon.depth--;
-			Level level = Dungeon.newLevel();
-			Dungeon.switchLevel( level, level.entrance );
-		} else {
-			Dungeon.hero.resurrect( -1 );
-			Dungeon.resetLevel();
-		}
-	}
+        if (Dungeon.bossLevel()) {
+            Dungeon.hero.resurrect( Dungeon.depth );
+            Dungeon.depth--;
+            Level level = Dungeon.newLevel();
+            Dungeon.switchLevel( level, level.entrance );
+        } else {
+            Dungeon.hero.resurrect( -1 );
+            Dungeon.resetLevel();
+        }
+    }
 
-	@Override
-	protected void onBackPressed() {
-		// Do nothing
-	}
+    @Override
+    protected void onBackPressed() {
+        // Do nothing
+    }
 }

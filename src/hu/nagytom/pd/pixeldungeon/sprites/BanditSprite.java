@@ -22,24 +22,24 @@ import hu.nagytom.pd.pixeldungeon.Assets;
 
 public class BanditSprite extends MobSprite {
 
-	public BanditSprite() {
-		super();
+    public BanditSprite() {
+        super();
 
-		texture( Assets.THIEF );
-		TextureFilm film = new TextureFilm( texture, 12, 13 );
+        texture( Assets.THIEF );
+        TextureFilm film = new TextureFilm( texture, 12, 13 );
 
-		idle = new Animation( 1, true );
-		idle.frames( film, 21, 21, 21, 22, 21, 21, 21, 21, 22 );
+        idle = new Animation( 1, true );
+        idle.frames( film, 21, 21, 21, 22, 21, 21, 21, 21, 22 );
 
-		run = new Animation( 15, true );
-		run.frames( film, 21, 21, 23, 24, 24, 25 );
+        run = new Animation( 15, true );
+        run.frames( film, 21, 21, 23, 24, 24, 25 );
 
-		die = new Animation( 10, false );
-		die.frames( film, 25, 27, 28, 29, 30 );
+        die = new Animation( 10, false );
+        die.frames( film, 25, 27, 28, 29, 30 );
 
-		attack = new Animation( 12, false );
-		attack.frames( film, 31, 32, 33 );
+        attack = new Animation( 12, false );
+        attack.frames( film, 31, 32, 33 );
 
-		idle();
-	}
+        idle();
+    }
 }

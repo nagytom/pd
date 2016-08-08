@@ -19,7 +19,7 @@ package hu.nagytom.pd.utils;
 
 public interface Bundlable {
 
-	void restoreFromBundle( Bundle bundle );
-	void storeInBundle( Bundle bundle );
+    void restoreFromBundle( Bundle bundle );
+    void storeInBundle( Bundle bundle );
 
 }

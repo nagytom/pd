@@ -24,30 +24,30 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class PotionOfStrength extends Potion {
 
-	{
-		name = "Potion of Strength";
-	}
+    {
+        name = "Potion of Strength";
+    }
 
-	@Override
-	protected void apply( Hero hero ) {
-		setKnown();
+    @Override
+    protected void apply( Hero hero ) {
+        setKnown();
 
-		hero.STR++;
-		hero.sprite.showStatus( CharSprite.POSITIVE, "+1 str" );
-		GLog.p( "Newfound strength surges through your body." );
+        hero.STR++;
+        hero.sprite.showStatus( CharSprite.POSITIVE, "+1 str" );
+        GLog.p( "Newfound strength surges through your body." );
 
-		Badges.validateStrengthAttained();
-	}
+        Badges.validateStrengthAttained();
+    }
 
-	@Override
-	public String desc() {
-		return
-			"This powerful liquid will course through your muscles, " +
-			"permanently increasing your strength by one point.";
-	}
+    @Override
+    public String desc() {
+        return
+            "This powerful liquid will course through your muscles, " +
+            "permanently increasing your strength by one point.";
+    }
 
-	@Override
-	public int price() {
-		return isKnown() ? 100 * quantity : super.price();
-	}
+    @Override
+    public int price() {
+        return isKnown() ? 100 * quantity : super.price();
+    }
 }

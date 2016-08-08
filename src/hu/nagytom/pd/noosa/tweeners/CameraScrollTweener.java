@@ -22,21 +22,21 @@ import hu.nagytom.pd.utils.PointF;
 
 public class CameraScrollTweener extends Tweener {
 
-	public Camera camera;
+    public Camera camera;
 
-	public PointF start;
-	public PointF end;
+    public PointF start;
+    public PointF end;
 
-	public CameraScrollTweener( Camera camera, PointF pos, float time ) {
-		super( camera, time );
+    public CameraScrollTweener( Camera camera, PointF pos, float time ) {
+        super( camera, time );
 
-		this.camera = camera;
-		start = camera.scroll;
-		end = pos;
-	}
+        this.camera = camera;
+        start = camera.scroll;
+        end = pos;
+    }
 
-	@Override
-	protected void updateValues( float progress ) {
-		camera.scroll = PointF.inter( start, end, progress );
-	}
+    @Override
+    protected void updateValues( float progress ) {
+        camera.scroll = PointF.inter( start, end, progress );
+    }
 }

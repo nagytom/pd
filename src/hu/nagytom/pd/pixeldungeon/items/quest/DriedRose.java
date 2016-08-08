@@ -22,26 +22,26 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class DriedRose extends Item {
 
-	{
-		name = "dried rose";
-		image = ItemSpriteSheet.ROSE;
+    {
+        name = "dried rose";
+        image = ItemSpriteSheet.ROSE;
 
-		unique = true;
-	}
+        unique = true;
+    }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+    @Override
+    public boolean isUpgradable() {
+        return false;
+    }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    @Override
+    public boolean isIdentified() {
+        return true;
+    }
 
-	@Override
-	public String info() {
-		return
-			"The rose has dried long ago, but it has kept all its petals somehow.";
-	}
+    @Override
+    public String info() {
+        return
+            "The rose has dried long ago, but it has kept all its petals somehow.";
+    }
 }

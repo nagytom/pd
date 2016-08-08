@@ -24,27 +24,27 @@ import hu.nagytom.pd.pixeldungeon.DungeonTilemap;
 
 public class CheckedCell extends Image {
 
-	private float alpha;
+    private float alpha;
 
-	public CheckedCell( int pos ) {
-		super( TextureCache.createSolid( 0xFF55AAFF ) );
+    public CheckedCell( int pos ) {
+        super( TextureCache.createSolid( 0xFF55AAFF ) );
 
-		origin.set( 0.5f );
+        origin.set( 0.5f );
 
-		point( DungeonTilemap.tileToWorld( pos ).offset(
-			DungeonTilemap.SIZE / 2,
-			DungeonTilemap.SIZE / 2 ) );
+        point( DungeonTilemap.tileToWorld( pos ).offset(
+            DungeonTilemap.SIZE / 2,
+            DungeonTilemap.SIZE / 2 ) );
 
-		alpha = 0.8f;
-	}
+        alpha = 0.8f;
+    }
 
-	@Override
-	public void update() {
-		if ((alpha -= Game.elapsed) > 0) {
-			alpha( alpha );
-			scale.set( DungeonTilemap.SIZE * alpha );
-		} else {
-			killAndErase();
-		}
-	}
+    @Override
+    public void update() {
+        if ((alpha -= Game.elapsed) > 0) {
+            alpha( alpha );
+            scale.set( DungeonTilemap.SIZE * alpha );
+        } else {
+            killAndErase();
+        }
+    }
 }

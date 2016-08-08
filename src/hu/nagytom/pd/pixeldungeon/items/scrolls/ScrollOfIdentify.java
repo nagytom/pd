@@ -25,31 +25,31 @@ import hu.nagytom.pd.pixeldungeon.windows.WndBag;
 
 public class ScrollOfIdentify extends InventoryScroll {
 
-	{
-		name = "Scroll of Identify";
-		inventoryTitle = "Select an item to identify";
-		mode = WndBag.Mode.UNIDENTIFED;
-	}
+    {
+        name = "Scroll of Identify";
+        inventoryTitle = "Select an item to identify";
+        mode = WndBag.Mode.UNIDENTIFED;
+    }
 
-	@Override
-	protected void onItemSelected( Item item ) {
+    @Override
+    protected void onItemSelected( Item item ) {
 
-		curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
+        curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
 
-		item.identify();
-		GLog.i( "It is " + item );
+        item.identify();
+        GLog.i( "It is " + item );
 
-		Badges.validateItemLevelAquired( item );
-	}
+        Badges.validateItemLevelAquired( item );
+    }
 
-	@Override
-	public String desc() {
-		return
-			"Permanently reveals all of the secrets of a single item.";
-	}
+    @Override
+    public String desc() {
+        return
+            "Permanently reveals all of the secrets of a single item.";
+    }
 
-	@Override
-	public int price() {
-		return isKnown() ? 30 * quantity : super.price();
-	}
+    @Override
+    public int price() {
+        return isKnown() ? 30 * quantity : super.price();
+    }
 }

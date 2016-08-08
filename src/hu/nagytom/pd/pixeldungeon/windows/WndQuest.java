@@ -26,55 +26,55 @@ import hu.nagytom.pd.pixeldungeon.utils.Utils;
 
 public class WndQuest extends Window {
 
-	private static final int WIDTH_P	= 120;
-	private static final int WIDTH_L	= 144;
+    private static final int WIDTH_P    = 120;
+    private static final int WIDTH_L    = 144;
 
-	private static final int BTN_HEIGHT	= 20;
-	private static final int GAP		= 2;
+    private static final int BTN_HEIGHT = 20;
+    private static final int GAP        = 2;
 
-	public WndQuest( NPC questgiver, String text, String... options ) {
+    public WndQuest( NPC questgiver, String text, String... options ) {
 
-		super();
+        super();
 
-		int width = PixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+        int width = PixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
 
-		IconTitle titlebar = new IconTitle( questgiver.sprite(), Utils.capitalize( questgiver.name ) );
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
+        IconTitle titlebar = new IconTitle( questgiver.sprite(), Utils.capitalize( questgiver.name ) );
+        titlebar.setRect( 0, 0, width, 0 );
+        add( titlebar );
 
-		HighlightedText hl = new HighlightedText( 6 );
-		hl.text( text, width );
-		hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
-		add( hl );
+        HighlightedText hl = new HighlightedText( 6 );
+        hl.text( text, width );
+        hl.setPos( titlebar.left(), titlebar.bottom() + GAP );
+        add( hl );
 
-		if (options.length > 0) {
-			float pos = hl.bottom();
+        if (options.length > 0) {
+            float pos = hl.bottom();
 
-			for (int i=0; i < options.length; i++) {
+            for (int i=0; i < options.length; i++) {
 
-				pos += GAP;
+                pos += GAP;
 
-				final int index = i;
-				RedButton btn = new RedButton( options[i] ) {
-					@Override
-					protected void onClick() {
-						hide();
-						onSelect( index );
-					}
-				};
-				btn.setRect( 0, pos, width, BTN_HEIGHT );
-				add( btn );
+                final int index = i;
+                RedButton btn = new RedButton( options[i] ) {
+                    @Override
+                    protected void onClick() {
+                        hide();
+                        onSelect( index );
+                    }
+                };
+                btn.setRect( 0, pos, width, BTN_HEIGHT );
+                add( btn );
 
-				pos += BTN_HEIGHT;
-			}
+                pos += BTN_HEIGHT;
+            }
 
-			resize( width, (int)pos );
+            resize( width, (int)pos );
 
-		} else {
+        } else {
 
-			resize( width, (int)hl.bottom() );
-		}
-	}
+            resize( width, (int)hl.bottom() );
+        }
+    }
 
-	protected void onSelect( int index ) {};
+    protected void onSelect( int index ) {};
 }

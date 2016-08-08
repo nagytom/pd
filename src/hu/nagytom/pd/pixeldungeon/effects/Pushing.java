@@ -26,75 +26,75 @@ import hu.nagytom.pd.utils.PointF;
 
 public class Pushing extends Actor {
 
-	private CharSprite sprite;
-	private int from;
-	private int to;
+    private CharSprite sprite;
+    private int from;
+    private int to;
 
-	private Effect effect;
+    private Effect effect;
 
-	public Pushing( Char ch, int from, int to ) {
-		sprite = ch.sprite;
-		this.from = from;
-		this.to = to;
-	}
+    public Pushing( Char ch, int from, int to ) {
+        sprite = ch.sprite;
+        this.from = from;
+        this.to = to;
+    }
 
-	@Override
-	protected boolean act() {
-		if (sprite != null) {
+    @Override
+    protected boolean act() {
+        if (sprite != null) {
 
-			if (effect == null) {
-				new Effect();
-			}
-			return false;
+            if (effect == null) {
+                new Effect();
+            }
+            return false;
 
-		} else {
+        } else {
 
-			Actor.remove( Pushing.this );
-			return true;
-		}
-	}
+            Actor.remove( Pushing.this );
+            return true;
+        }
+    }
 
-	public class Effect extends Visual {
+    public class Effect extends Visual {
 
-		private static final float DELAY = 0.15f;
+        private static final float DELAY = 0.15f;
 
-		private PointF end;
+        private PointF end;
 
-		private float delay;
+        private float delay;
 
-		public Effect() {
-			super( 0, 0, 0, 0 );
+        public Effect() {
+            super( 0, 0, 0, 0 );
 
-			point( sprite.worldToCamera( from ) );
-			end = sprite.worldToCamera( to );
+            point( sprite.worldToCamera( from ) );
+            end = sprite.worldToCamera( to );
 
-			speed.set( 2 * (end.x - x) / DELAY, 2 * (end.y - y) / DELAY );
-			acc.set( -speed.x / DELAY, -speed.y / DELAY );
+            speed.set( 2 * (end.x - x) / DELAY, 2 * (end.y - y) / DELAY );
+            acc.set( -speed.x / DELAY, -speed.y / DELAY );
 
-			delay = 0;
+            delay = 0;
 
-			sprite.parent.add( this );
-		}
+            sprite.parent.add( this );
+        }
 
-		@Override
-		public void update() {
-			super.update();
+        @Override
+        public void update() {
+            super.update();
 
-			if ((delay += Game.elapsed) < DELAY) {
+            if ((delay += Game.elapsed) < DELAY) {
 
-				sprite.x = x;
-				sprite.y = y;
+                sprite.x = x;
+                sprite.y = y;
 
-			} else {
+            } else {
 
-				sprite.point( end );
+                sprite.point( end );
 
-				killAndErase();
-				Actor.remove( Pushing.this );
+                killAndErase();
+                Actor.remove( Pushing.this );
 
-				next();
-			}
-		}
-	}
+                next();
+            }
+        }
+    }
 
 }

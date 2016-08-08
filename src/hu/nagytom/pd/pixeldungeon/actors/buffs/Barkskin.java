@@ -21,43 +21,43 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class Barkskin extends Buff {
 
-	private int level = 0;
+    private int level = 0;
 
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
+    @Override
+    public boolean act() {
+        if (target.isAlive()) {
 
-			spend( TICK );
-			if (--level <= 0) {
-				detach();
-			}
+            spend( TICK );
+            if (--level <= 0) {
+                detach();
+            }
 
-		} else {
+        } else {
 
-			detach();
+            detach();
 
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public int level() {
-		return level;
-	}
+    public int level() {
+        return level;
+    }
 
-	public void level( int value ) {
-		if (level < value) {
-			level = value;
-		}
-	}
+    public void level( int value ) {
+        if (level < value) {
+            level = value;
+        }
+    }
 
-	@Override
-	public int icon() {
-		return BuffIndicator.BARKSKIN;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.BARKSKIN;
+    }
 
-	@Override
-	public String toString() {
-		return "Barkskin";
-	}
+    @Override
+    public String toString() {
+        return "Barkskin";
+    }
 }

@@ -43,191 +43,191 @@ import hu.nagytom.pd.utils.Random;
 
 public class Goo extends Mob {
 
-	private static final float PUMP_UP_DELAY	= 2f;
+    private static final float PUMP_UP_DELAY    = 2f;
 
-	{
-		name = Dungeon.depth == Statistics.deepestFloor ? "Goo" : "spawn of Goo";
+    {
+        name = Dungeon.depth == Statistics.deepestFloor ? "Goo" : "spawn of Goo";
 
-		HP = HT = 80;
-		EXP = 10;
-		defenseSkill = 12;
-		spriteClass = GooSprite.class;
+        HP = HT = 80;
+        EXP = 10;
+        defenseSkill = 12;
+        spriteClass = GooSprite.class;
 
-		loot = new LloydsBeacon();
-		lootChance = 0.333f;
-	}
+        loot = new LloydsBeacon();
+        lootChance = 0.333f;
+    }
 
-	private boolean pumpedUp	= false;
-	private boolean jumped		= false;
+    private boolean pumpedUp    = false;
+    private boolean jumped      = false;
 
-	@Override
-	public int damageRoll() {
-		if (pumpedUp) {
-			return Random.NormalIntRange( 5, 30 );
-		} else {
-			return Random.NormalIntRange( 2, 12 );
-		}
-	}
+    @Override
+    public int damageRoll() {
+        if (pumpedUp) {
+            return Random.NormalIntRange( 5, 30 );
+        } else {
+            return Random.NormalIntRange( 2, 12 );
+        }
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return pumpedUp && !jumped ? 30 : 15;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return pumpedUp && !jumped ? 30 : 15;
+    }
 
-	@Override
-	public int dr() {
-		return 2;
-	}
+    @Override
+    public int dr() {
+        return 2;
+    }
 
-	@Override
-	public boolean act() {
+    @Override
+    public boolean act() {
 
-		if (Level.water[pos] && HP < HT) {
-			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-			HP++;
-		}
+        if (Level.water[pos] && HP < HT) {
+            sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+            HP++;
+        }
 
-		return super.act();
-	}
+        return super.act();
+    }
 
-	@Override
-	protected boolean canAttack( Char enemy ) {
-		return pumpedUp ? distance( enemy ) <= 2 : super.canAttack( enemy );
-	}
+    @Override
+    protected boolean canAttack( Char enemy ) {
+        return pumpedUp ? distance( enemy ) <= 2 : super.canAttack( enemy );
+    }
 
-	@Override
-	public int attackProc( Char enemy, int damage ) {
-		if (Random.Int( 3 ) == 0) {
-			Buff.affect( enemy, Ooze.class );
-			enemy.sprite.burst( 0x000000, 5 );
-		}
+    @Override
+    public int attackProc( Char enemy, int damage ) {
+        if (Random.Int( 3 ) == 0) {
+            Buff.affect( enemy, Ooze.class );
+            enemy.sprite.burst( 0x000000, 5 );
+        }
 
-		return damage;
-	}
+        return damage;
+    }
 
-	@Override
-	protected boolean doAttack( final Char enemy ) {
-		if (pumpedUp) {
+    @Override
+    protected boolean doAttack( final Char enemy ) {
+        if (pumpedUp) {
 
-			if (Level.adjacent( pos, enemy.pos )) {
+            if (Level.adjacent( pos, enemy.pos )) {
 
-				// Pumped up attack WITHOUT accuracy penalty
-				jumped = false;
-				return super.doAttack( enemy );
+                // Pumped up attack WITHOUT accuracy penalty
+                jumped = false;
+                return super.doAttack( enemy );
 
-			} else {
+            } else {
 
-				// Pumped up attack WITH accuracy penalty
-				jumped = true;
-				if (Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos) {
-					final int dest = Ballistica.trace[Ballistica.distance - 2];
+                // Pumped up attack WITH accuracy penalty
+                jumped = true;
+                if (Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos) {
+                    final int dest = Ballistica.trace[Ballistica.distance - 2];
 
-					Callback afterJump = new Callback() {
-						@Override
-						public void call() {
-							move( dest );
-							Dungeon.level.mobPress( Goo.this );
-							Goo.super.doAttack( enemy );
-						}
-					};
+                    Callback afterJump = new Callback() {
+                        @Override
+                        public void call() {
+                            move( dest );
+                            Dungeon.level.mobPress( Goo.this );
+                            Goo.super.doAttack( enemy );
+                        }
+                    };
 
-					if (Dungeon.visible[pos] || Dungeon.visible[dest]) {
+                    if (Dungeon.visible[pos] || Dungeon.visible[dest]) {
 
-						sprite.jump( pos, dest, afterJump );
-						return false;
+                        sprite.jump( pos, dest, afterJump );
+                        return false;
 
-					} else {
+                    } else {
 
-						afterJump.call();
-						return true;
+                        afterJump.call();
+                        return true;
 
-					}
-				} else {
+                    }
+                } else {
 
-					sprite.idle();
-					pumpedUp = false;
-					return true;
-				}
-			}
+                    sprite.idle();
+                    pumpedUp = false;
+                    return true;
+                }
+            }
 
-		} else if (Random.Int( 3 ) > 0) {
+        } else if (Random.Int( 3 ) > 0) {
 
-			// Normal attack
-			return super.doAttack( enemy );
+            // Normal attack
+            return super.doAttack( enemy );
 
-		} else {
+        } else {
 
-			// Pumping up
-			pumpedUp = true;
-			spend( PUMP_UP_DELAY );
+            // Pumping up
+            pumpedUp = true;
+            spend( PUMP_UP_DELAY );
 
-			((GooSprite)sprite).pumpUp();
+            ((GooSprite)sprite).pumpUp();
 
-			if (Dungeon.visible[pos]) {
-				sprite.showStatus( CharSprite.NEGATIVE, "!!!" );
-				GLog.n( "Goo is pumping itself up!" );
-			}
+            if (Dungeon.visible[pos]) {
+                sprite.showStatus( CharSprite.NEGATIVE, "!!!" );
+                GLog.n( "Goo is pumping itself up!" );
+            }
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 
-	@Override
-	public boolean attack( Char enemy ) {
-		boolean result = super.attack( enemy );
-		pumpedUp = false;
-		return result;
-	}
+    @Override
+    public boolean attack( Char enemy ) {
+        boolean result = super.attack( enemy );
+        pumpedUp = false;
+        return result;
+    }
 
-	@Override
-	protected boolean getCloser( int target ) {
-		pumpedUp = false;
-		return super.getCloser( target );
-	}
+    @Override
+    protected boolean getCloser( int target ) {
+        pumpedUp = false;
+        return super.getCloser( target );
+    }
 
-	@Override
-	public void move( int step ) {
-		((SewerBossLevel)Dungeon.level).seal();
-		super.move( step );
-	}
+    @Override
+    public void move( int step ) {
+        ((SewerBossLevel)Dungeon.level).seal();
+        super.move( step );
+    }
 
-	@Override
-	public void die( Object cause ) {
+    @Override
+    public void die( Object cause ) {
 
-		super.die( cause );
+        super.die( cause );
 
-		((SewerBossLevel)Dungeon.level).unseal();
+        ((SewerBossLevel)Dungeon.level).unseal();
 
-		GameScene.bossSlain();
-		Dungeon.level.drop( new SkeletonKey(), pos ).sprite.drop();
+        GameScene.bossSlain();
+        Dungeon.level.drop( new SkeletonKey(), pos ).sprite.drop();
 
-		Badges.validateBossSlain();
+        Badges.validateBossSlain();
 
-		yell( "glurp... glurp..." );
-	}
+        yell( "glurp... glurp..." );
+    }
 
-	@Override
-	public void notice() {
-		super.notice();
-		yell( "GLURP-GLURP!" );
-	}
+    @Override
+    public void notice() {
+        super.notice();
+        yell( "GLURP-GLURP!" );
+    }
 
-	@Override
-	public String description() {
-		return
-			"Little known about The Goo. It's quite possible that it is not even a creature, but rather a " +
-			"conglomerate of substances from the sewers that gained rudiments of free will.";
-	}
+    @Override
+    public String description() {
+        return
+            "Little known about The Goo. It's quite possible that it is not even a creature, but rather a " +
+            "conglomerate of substances from the sewers that gained rudiments of free will.";
+    }
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-	static {
-		RESISTANCES.add( ToxicGas.class );
-		RESISTANCES.add( Death.class );
-		RESISTANCES.add( ScrollOfPsionicBlast.class );
-	}
+    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+    static {
+        RESISTANCES.add( ToxicGas.class );
+        RESISTANCES.add( Death.class );
+        RESISTANCES.add( ScrollOfPsionicBlast.class );
+    }
 
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
+    @Override
+    public HashSet<Class<?>> resistances() {
+        return RESISTANCES;
+    }
 }

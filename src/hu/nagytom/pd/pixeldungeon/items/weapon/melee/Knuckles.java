@@ -21,17 +21,17 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Knuckles extends MeleeWeapon {
 
-	{
-		name = "knuckleduster";
-		image = ItemSpriteSheet.KNUCKLEDUSTER;
-	}
+    {
+        name = "knuckleduster";
+        image = ItemSpriteSheet.KNUCKLEDUSTER;
+    }
 
-	public Knuckles() {
-		super( 1, 1f, 0.5f );
-	}
+    public Knuckles() {
+        super( 1, 1f, 0.5f );
+    }
 
-	@Override
-	public String desc() {
-		return "A piece of iron shaped to fit around the knuckles.";
-	}
+    @Override
+    public String desc() {
+        return "A piece of iron shaped to fit around the knuckles.";
+    }
 }

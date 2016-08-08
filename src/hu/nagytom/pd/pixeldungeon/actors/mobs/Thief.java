@@ -33,128 +33,128 @@ import hu.nagytom.pd.utils.Random;
 
 public class Thief extends Mob {
 
-	protected static final String TXT_STOLE	= "%s stole %s from you!";
-	protected static final String TXT_CARRIES	= "\n\n%s is carrying a _%s_. Stolen obviously.";
+    protected static final String TXT_STOLE = "%s stole %s from you!";
+    protected static final String TXT_CARRIES   = "\n\n%s is carrying a _%s_. Stolen obviously.";
 
-	public Item item;
+    public Item item;
 
-	{
-		name = "crazy thief";
-		spriteClass = ThiefSprite.class;
+    {
+        name = "crazy thief";
+        spriteClass = ThiefSprite.class;
 
-		HP = HT = 20;
-		defenseSkill = 12;
+        HP = HT = 20;
+        defenseSkill = 12;
 
-		EXP = 5;
-		maxLvl = 10;
+        EXP = 5;
+        maxLvl = 10;
 
-		loot = RingOfHaggler.class;
-		lootChance = 0.01f;
+        loot = RingOfHaggler.class;
+        lootChance = 0.01f;
 
-		FLEEING = new Fleeing();
-	}
+        FLEEING = new Fleeing();
+    }
 
-	private static final String ITEM = "item";
+    private static final String ITEM = "item";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( ITEM, item );
-	}
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( ITEM, item );
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		item = (Item)bundle.get( ITEM );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        item = (Item)bundle.get( ITEM );
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 7 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 1, 7 );
+    }
 
-	@Override
-	protected float attackDelay() {
-		return 0.5f;
-	}
+    @Override
+    protected float attackDelay() {
+        return 0.5f;
+    }
 
-	@Override
-	public void die( Object cause ) {
+    @Override
+    public void die( Object cause ) {
 
-		super.die( cause );
+        super.die( cause );
 
-		if (item != null) {
-			Dungeon.level.drop( item, pos ).sprite.drop();
-		}
-	}
+        if (item != null) {
+            Dungeon.level.drop( item, pos ).sprite.drop();
+        }
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 12;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return 12;
+    }
 
-	@Override
-	public int dr() {
-		return 3;
-	}
+    @Override
+    public int dr() {
+        return 3;
+    }
 
-	@Override
-	public int attackProc( Char enemy, int damage ) {
-		if (item == null && enemy instanceof Hero && steal( (Hero)enemy )) {
-			state = FLEEING;
-		}
+    @Override
+    public int attackProc( Char enemy, int damage ) {
+        if (item == null && enemy instanceof Hero && steal( (Hero)enemy )) {
+            state = FLEEING;
+        }
 
-		return damage;
-	}
+        return damage;
+    }
 
-	@Override
-	public int defenseProc(Char enemy, int damage) {
-		if (state == FLEEING) {
-			Dungeon.level.drop( new Gold(), pos ).sprite.drop();
-		}
+    @Override
+    public int defenseProc(Char enemy, int damage) {
+        if (state == FLEEING) {
+            Dungeon.level.drop( new Gold(), pos ).sprite.drop();
+        }
 
-		return damage;
-	}
+        return damage;
+    }
 
-	protected boolean steal( Hero hero ) {
+    protected boolean steal( Hero hero ) {
 
-		Item item = hero.belongings.randomUnequipped();
-		if (item != null) {
+        Item item = hero.belongings.randomUnequipped();
+        if (item != null) {
 
-			GLog.w( TXT_STOLE, this.name, item.name() );
+            GLog.w( TXT_STOLE, this.name, item.name() );
 
-			item.detachAll( hero.belongings.backpack );
-			this.item = item;
+            item.detachAll( hero.belongings.backpack );
+            this.item = item;
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public String description() {
-		String desc =
-			"Deeper levels of the dungeon have always been a hiding place for all kinds of criminals. " +
-			"Not all of them could keep a clear mind during their extended periods so far from daylight. Long ago, " +
-			"these crazy thieves and bandits have forgotten who they are and why they steal.";
+    @Override
+    public String description() {
+        String desc =
+            "Deeper levels of the dungeon have always been a hiding place for all kinds of criminals. " +
+            "Not all of them could keep a clear mind during their extended periods so far from daylight. Long ago, " +
+            "these crazy thieves and bandits have forgotten who they are and why they steal.";
 
-		if (item != null) {
-			desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );
-		}
+        if (item != null) {
+            desc += String.format( TXT_CARRIES, Utils.capitalize( this.name ), item.name() );
+        }
 
-		return desc;
-	}
+        return desc;
+    }
 
-	private class Fleeing extends Mob.Fleeing {
-		@Override
-		protected void nowhereToRun() {
-			if (buff( Terror.class ) == null) {
-				sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
-				state = HUNTING;
-			} else {
-				super.nowhereToRun();
-			}
-		}
-	}
+    private class Fleeing extends Mob.Fleeing {
+        @Override
+        protected void nowhereToRun() {
+            if (buff( Terror.class ) == null) {
+                sprite.showStatus( CharSprite.NEGATIVE, TXT_RAGE );
+                state = HUNTING;
+            } else {
+                super.nowhereToRun();
+            }
+        }
+    }
 }

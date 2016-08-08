@@ -38,71 +38,71 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class WaterOfAwareness extends WellWater {
 
-	private static final String TXT_PROCCED =
-		"As you take a sip, you feel the knowledge pours into your mind. " +
-		"Now you know everything about your equipped items. Also you sense " +
-		"all items on the level and know all its secrets.";
+    private static final String TXT_PROCCED =
+        "As you take a sip, you feel the knowledge pours into your mind. " +
+        "Now you know everything about your equipped items. Also you sense " +
+        "all items on the level and know all its secrets.";
 
-	@Override
-	protected boolean affectHero( Hero hero ) {
+    @Override
+    protected boolean affectHero( Hero hero ) {
 
-		Sample.INSTANCE.play( Assets.SND_DRINK );
-		emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
+        Sample.INSTANCE.play( Assets.SND_DRINK );
+        emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
 
-		hero.belongings.observe();
+        hero.belongings.observe();
 
-		for (int i=0; i < Level.LENGTH; i++) {
+        for (int i=0; i < Level.LENGTH; i++) {
 
-			int terr = Dungeon.level.map[i];
-			if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
+            int terr = Dungeon.level.map[i];
+            if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-				Level.set( i, Terrain.discover( terr ) );
-				GameScene.updateMap( i );
+                Level.set( i, Terrain.discover( terr ) );
+                GameScene.updateMap( i );
 
-				if (Dungeon.visible[i]) {
-					GameScene.discoverTile( i, terr );
-				}
-			}
-		}
+                if (Dungeon.visible[i]) {
+                    GameScene.discoverTile( i, terr );
+                }
+            }
+        }
 
-		Buff.affect( hero, Awareness.class, Awareness.DURATION );
-		Dungeon.observe();
+        Buff.affect( hero, Awareness.class, Awareness.DURATION );
+        Dungeon.observe();
 
-		Dungeon.hero.interrupt();
+        Dungeon.hero.interrupt();
 
-		GLog.p( TXT_PROCCED );
+        GLog.p( TXT_PROCCED );
 
-		Journal.remove( Feature.WELL_OF_AWARENESS );
+        Journal.remove( Feature.WELL_OF_AWARENESS );
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	protected Item affectItem( Item item ) {
-		if (item.isIdentified()) {
-			return null;
-		} else {
-			item.identify();
-			Badges.validateItemLevelAquired( item );
+    @Override
+    protected Item affectItem( Item item ) {
+        if (item.isIdentified()) {
+            return null;
+        } else {
+            item.identify();
+            Badges.validateItemLevelAquired( item );
 
-			emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
+            emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
 
-			Journal.remove( Feature.WELL_OF_AWARENESS );
+            Journal.remove( Feature.WELL_OF_AWARENESS );
 
-			return item;
-		}
-	}
+            return item;
+        }
+    }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.pour( Speck.factory( Speck.QUESTION ), 0.3f );
-	}
+    @Override
+    public void use( BlobEmitter emitter ) {
+        super.use( emitter );
+        emitter.pour( Speck.factory( Speck.QUESTION ), 0.3f );
+    }
 
-	@Override
-	public String tileDesc() {
-		return
-			"Power of knowledge radiates from the water of this well. " +
-			"Take a sip from it to reveal all secrets of equipped items.";
-	}
+    @Override
+    public String tileDesc() {
+        return
+            "Power of knowledge radiates from the water of this well. " +
+            "Take a sip from it to reveal all secrets of equipped items.";
+    }
 }

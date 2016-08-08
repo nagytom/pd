@@ -26,27 +26,27 @@ import hu.nagytom.pd.pixeldungeon.effects.Speck;
 
 public class ParalyticGas extends Blob {
 
-	@Override
-	protected void evolve() {
-		super.evolve();
+    @Override
+    protected void evolve() {
+        super.evolve();
 
-		Char ch;
-		for (int i=0; i < LENGTH; i++) {
-			if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
-				Buff.prolong( ch, Paralysis.class, Paralysis.duration( ch ) );
-			}
-		}
-	}
+        Char ch;
+        for (int i=0; i < LENGTH; i++) {
+            if (cur[i] > 0 && (ch = Actor.findChar( i )) != null) {
+                Buff.prolong( ch, Paralysis.class, Paralysis.duration( ch ) );
+            }
+        }
+    }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
+    @Override
+    public void use( BlobEmitter emitter ) {
+        super.use( emitter );
 
-		emitter.pour( Speck.factory( Speck.PARALYSIS ), 0.6f );
-	}
+        emitter.pour( Speck.factory( Speck.PARALYSIS ), 0.6f );
+    }
 
-	@Override
-	public String tileDesc() {
-		return "A cloud of paralytic gas is swirling here.";
-	}
+    @Override
+    public String tileDesc() {
+        return "A cloud of paralytic gas is swirling here.";
+    }
 }

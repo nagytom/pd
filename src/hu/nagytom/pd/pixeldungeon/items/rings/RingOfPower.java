@@ -19,23 +19,23 @@ package hu.nagytom.pd.pixeldungeon.items.rings;
 
 public class RingOfPower extends Ring {
 
-	{
-		name = "Ring of Power";
-	}
+    {
+        name = "Ring of Power";
+    }
 
-	@Override
-	protected RingBuff buff( ) {
-		return new Power();
-	}
+    @Override
+    protected RingBuff buff( ) {
+        return new Power();
+    }
 
-	@Override
-	public String desc() {
-		return isKnown() ?
-			"Your wands will become more powerful in the energy field " +
-			"that radiates from this ring. Degraded rings of power will instead weaken your wands." :
-			super.desc();
-	}
+    @Override
+    public String desc() {
+        return isKnown() ?
+            "Your wands will become more powerful in the energy field " +
+            "that radiates from this ring. Degraded rings of power will instead weaken your wands." :
+            super.desc();
+    }
 
-	public class Power extends RingBuff {
-	}
+    public class Power extends RingBuff {
+    }
 }

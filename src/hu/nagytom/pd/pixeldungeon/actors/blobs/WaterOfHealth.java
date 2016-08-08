@@ -35,50 +35,50 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class WaterOfHealth extends WellWater {
 
-	private static final String TXT_PROCCED =
-		"As you take a sip, you feel your wounds heal completely.";
+    private static final String TXT_PROCCED =
+        "As you take a sip, you feel your wounds heal completely.";
 
-	@Override
-	protected boolean affectHero( Hero hero ) {
+    @Override
+    protected boolean affectHero( Hero hero ) {
 
-		Sample.INSTANCE.play( Assets.SND_DRINK );
+        Sample.INSTANCE.play( Assets.SND_DRINK );
 
-		PotionOfHealing.heal( hero );
-		hero.belongings.uncurseEquipped();
-		((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
+        PotionOfHealing.heal( hero );
+        hero.belongings.uncurseEquipped();
+        ((Hunger)hero.buff( Hunger.class )).satisfy( Hunger.STARVING );
 
-		CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
+        CellEmitter.get( pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 
-		Dungeon.hero.interrupt();
+        Dungeon.hero.interrupt();
 
-		GLog.p( TXT_PROCCED );
+        GLog.p( TXT_PROCCED );
 
-		Journal.remove( Feature.WELL_OF_HEALTH );
+        Journal.remove( Feature.WELL_OF_HEALTH );
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	protected Item affectItem( Item item ) {
-		if (item instanceof DewVial && !((DewVial)item).isFull()) {
-			((DewVial)item).fill();
-			Journal.remove( Feature.WELL_OF_HEALTH );
-			return item;
-		}
+    @Override
+    protected Item affectItem( Item item ) {
+        if (item instanceof DewVial && !((DewVial)item).isFull()) {
+            ((DewVial)item).fill();
+            Journal.remove( Feature.WELL_OF_HEALTH );
+            return item;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public void use( BlobEmitter emitter ) {
-		super.use( emitter );
-		emitter.start( Speck.factory( Speck.HEALING ), 0.5f, 0 );
-	}
+    @Override
+    public void use( BlobEmitter emitter ) {
+        super.use( emitter );
+        emitter.start( Speck.factory( Speck.HEALING ), 0.5f, 0 );
+    }
 
-	@Override
-	public String tileDesc() {
-		return
-			"Power of health radiates from the water of this well. " +
-			"Take a sip from it to heal your wounds and satisfy hunger.";
-	}
+    @Override
+    public String tileDesc() {
+        return
+            "Power of health radiates from the water of this well. " +
+            "Take a sip from it to heal your wounds and satisfy hunger.";
+    }
 }

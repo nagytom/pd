@@ -21,17 +21,17 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Mace extends MeleeWeapon {
 
-	{
-		name = "mace";
-		image = ItemSpriteSheet.MACE;
-	}
+    {
+        name = "mace";
+        image = ItemSpriteSheet.MACE;
+    }
 
-	public Mace() {
-		super( 3, 1f, 0.8f );
-	}
+    public Mace() {
+        super( 3, 1f, 0.8f );
+    }
 
-	@Override
-	public String desc() {
-		return "The iron head of this weapon inflicts substantial damage.";
-	}
+    @Override
+    public String desc() {
+        return "The iron head of this weapon inflicts substantial damage.";
+    }
 }

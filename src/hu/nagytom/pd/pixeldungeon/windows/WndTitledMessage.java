@@ -25,31 +25,31 @@ import hu.nagytom.pd.pixeldungeon.ui.Window;
 
 public class WndTitledMessage extends Window {
 
-	private static final int WIDTH_P	= 120;
-	private static final int WIDTH_L	= 144;
+    private static final int WIDTH_P    = 120;
+    private static final int WIDTH_L    = 144;
 
-	private static final int GAP	= 2;
+    private static final int GAP    = 2;
 
-	public WndTitledMessage( Image icon, String title, String message ) {
+    public WndTitledMessage( Image icon, String title, String message ) {
 
-		this( new IconTitle( icon, title ), message );
+        this( new IconTitle( icon, title ), message );
 
-	}
+    }
 
-	public WndTitledMessage( Component titlebar, String message ) {
+    public WndTitledMessage( Component titlebar, String message ) {
 
-		super();
+        super();
 
-		int width = PixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
+        int width = PixelDungeon.landscape() ? WIDTH_L : WIDTH_P;
 
-		titlebar.setRect( 0, 0, width, 0 );
-		add( titlebar );
+        titlebar.setRect( 0, 0, width, 0 );
+        add( titlebar );
 
-		HighlightedText text = new HighlightedText( 6 );
-		text.text( message, width );
-		text.setPos( titlebar.left(), titlebar.bottom() + GAP );
-		add( text );
+        HighlightedText text = new HighlightedText( 6 );
+        text.text( message, width );
+        text.setPos( titlebar.left(), titlebar.bottom() + GAP );
+        add( text );
 
-		resize( width, (int)text.bottom() );
-	}
+        resize( width, (int)text.bottom() );
+    }
 }

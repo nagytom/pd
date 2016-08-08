@@ -26,32 +26,32 @@ import hu.nagytom.pd.pixeldungeon.scenes.GameScene;
 
 public class PotionOfLiquidFlame extends Potion {
 
-	{
-		name = "Potion of Liquid Flame";
-	}
+    {
+        name = "Potion of Liquid Flame";
+    }
 
-	@Override
-	public void shatter( int cell ) {
+    @Override
+    public void shatter( int cell ) {
 
-		if (Dungeon.visible[cell]) {
-			setKnown();
+        if (Dungeon.visible[cell]) {
+            setKnown();
 
-			splash( cell );
-			Sample.INSTANCE.play( Assets.SND_SHATTER );
-		}
+            splash( cell );
+            Sample.INSTANCE.play( Assets.SND_SHATTER );
+        }
 
-		GameScene.add( Blob.seed( cell, 2, Fire.class ) );
-	}
+        GameScene.add( Blob.seed( cell, 2, Fire.class ) );
+    }
 
-	@Override
-	public String desc() {
-		return
-			"This flask contains an unstable compound which will burst " +
-			"violently into flame upon exposure to open air.";
-	}
+    @Override
+    public String desc() {
+        return
+            "This flask contains an unstable compound which will burst " +
+            "violently into flame upon exposure to open air.";
+    }
 
-	@Override
-	public int price() {
-		return isKnown() ? 40 * quantity : super.price();
-	}
+    @Override
+    public int price() {
+        return isKnown() ? 40 * quantity : super.price();
+    }
 }

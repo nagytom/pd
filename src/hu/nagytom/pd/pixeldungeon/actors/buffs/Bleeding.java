@@ -29,65 +29,65 @@ import hu.nagytom.pd.utils.Random;
 
 public class Bleeding extends Buff {
 
-	protected int level;
+    protected int level;
 
-	private static final String LEVEL	= "level";
+    private static final String LEVEL   = "level";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEVEL, level );
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEVEL, level );
 
-	}
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		level = bundle.getInt( LEVEL );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        level = bundle.getInt( LEVEL );
+    }
 
-	public void set( int level ) {
-		this.level = level;
-	};
+    public void set( int level ) {
+        this.level = level;
+    };
 
-	@Override
-	public int icon() {
-		return BuffIndicator.BLEEDING;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.BLEEDING;
+    }
 
-	@Override
-	public String toString() {
-		return "Bleeding";
-	}
+    @Override
+    public String toString() {
+        return "Bleeding";
+    }
 
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
+    @Override
+    public boolean act() {
+        if (target.isAlive()) {
 
-			if ((level = Random.Int( level / 2, level )) > 0) {
+            if ((level = Random.Int( level / 2, level )) > 0) {
 
-				target.damage( level, this );
-				if (target.sprite.visible) {
-					Splash.at( target.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
-							target.sprite.blood(), Math.min( 10 * level / target.HT, 10 ) );
-				}
+                target.damage( level, this );
+                if (target.sprite.visible) {
+                    Splash.at( target.sprite.center(), -PointF.PI / 2, PointF.PI / 6,
+                            target.sprite.blood(), Math.min( 10 * level / target.HT, 10 ) );
+                }
 
-				if (target == Dungeon.hero && !target.isAlive()) {
-					Dungeon.fail( Utils.format( ResultDescriptions.BLEEDING, Dungeon.depth ) );
-					GLog.n( "You bled to death..." );
-				}
+                if (target == Dungeon.hero && !target.isAlive()) {
+                    Dungeon.fail( Utils.format( ResultDescriptions.BLEEDING, Dungeon.depth ) );
+                    GLog.n( "You bled to death..." );
+                }
 
-				spend( TICK );
-			} else {
-				detach();
-			}
+                spend( TICK );
+            } else {
+                detach();
+            }
 
-		} else {
+        } else {
 
-			detach();
+            detach();
 
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

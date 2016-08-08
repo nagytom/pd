@@ -21,28 +21,28 @@ import hu.nagytom.pd.noosa.Game;
 
 public class DiscardedItemSprite extends ItemSprite {
 
-	public DiscardedItemSprite() {
+    public DiscardedItemSprite() {
 
-		super();
+        super();
 
-		originToCenter();
-		angularSpeed = 720;
-	}
+        originToCenter();
+        angularSpeed = 720;
+    }
 
-	@Override
-	public void drop() {
-		scale.set( 1 );
-		am = 1;
-	}
+    @Override
+    public void drop() {
+        scale.set( 1 );
+        am = 1;
+    }
 
-	@Override
-	public void update() {
+    @Override
+    public void update() {
 
-		super.update();
+        super.update();
 
-		scale.set( scale.x * 0.9f );
-		if ((am -= Game.elapsed) <= 0) {
-			remove();
-		}
-	}
+        scale.set( scale.x * 0.9f );
+        if ((am -= Game.elapsed) <= 0) {
+            remove();
+        }
+    }
 }

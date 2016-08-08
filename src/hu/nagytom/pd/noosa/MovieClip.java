@@ -21,115 +21,115 @@ import android.graphics.RectF;
 
 public class MovieClip extends Image {
 
-	protected Animation curAnim;
-	protected int curFrame;
-	protected float frameTimer;
-	protected boolean finished;
+    protected Animation curAnim;
+    protected int curFrame;
+    protected float frameTimer;
+    protected boolean finished;
 
-	public boolean paused = false;
+    public boolean paused = false;
 
-	public Listener listener;
+    public Listener listener;
 
-	public MovieClip() {
-		super();
-	}
+    public MovieClip() {
+        super();
+    }
 
-	public MovieClip( Object tx ) {
-		super( tx );
-	}
+    public MovieClip( Object tx ) {
+        super( tx );
+    }
 
-	@Override
-	public void update() {
-		super.update();
-		if (!paused) {
-			updateAnimation();
-		}
-	}
+    @Override
+    public void update() {
+        super.update();
+        if (!paused) {
+            updateAnimation();
+        }
+    }
 
-	protected void updateAnimation() {
-		if (curAnim != null && curAnim.delay > 0 && (curAnim.looped || !finished)) {
+    protected void updateAnimation() {
+        if (curAnim != null && curAnim.delay > 0 && (curAnim.looped || !finished)) {
 
-			int lastFrame = curFrame;
+            int lastFrame = curFrame;
 
-			frameTimer += Game.elapsed;
-			while (frameTimer > curAnim.delay) {
-				frameTimer -= curAnim.delay;
-				if (curFrame == curAnim.frames.length - 1) {
-					if (curAnim.looped) {
-						curFrame = 0;
-					}
-					finished = true;
-					if (listener != null) {
-						listener.onComplete( curAnim );
-						// This check can probably be removed
-						if (curAnim == null) {
-							return;
-						}
-					}
+            frameTimer += Game.elapsed;
+            while (frameTimer > curAnim.delay) {
+                frameTimer -= curAnim.delay;
+                if (curFrame == curAnim.frames.length - 1) {
+                    if (curAnim.looped) {
+                        curFrame = 0;
+                    }
+                    finished = true;
+                    if (listener != null) {
+                        listener.onComplete( curAnim );
+                        // This check can probably be removed
+                        if (curAnim == null) {
+                            return;
+                        }
+                    }
 
-				} else {
-					curFrame++;
-				}
-			}
+                } else {
+                    curFrame++;
+                }
+            }
 
-			if (curFrame != lastFrame) {
-				frame( curAnim.frames[curFrame] );
-			}
+            if (curFrame != lastFrame) {
+                frame( curAnim.frames[curFrame] );
+            }
 
-		}
-	}
+        }
+    }
 
-	public void play( Animation anim ) {
-		play( anim, false );
-	}
+    public void play( Animation anim ) {
+        play( anim, false );
+    }
 
-	public void play( Animation anim, boolean force ) {
+    public void play( Animation anim, boolean force ) {
 
-		if (!force && (curAnim != null) && (curAnim == anim) && (curAnim.looped || !finished)) {
-			return;
-		}
+        if (!force && (curAnim != null) && (curAnim == anim) && (curAnim.looped || !finished)) {
+            return;
+        }
 
-		curAnim = anim;
-		curFrame = 0;
-		finished = false;
+        curAnim = anim;
+        curFrame = 0;
+        finished = false;
 
-		frameTimer = 0;
+        frameTimer = 0;
 
-		if (anim != null) {
-			frame( anim.frames[curFrame] );
-		}
-	}
+        if (anim != null) {
+            frame( anim.frames[curFrame] );
+        }
+    }
 
-	public static class Animation {
+    public static class Animation {
 
-		public float delay;
-		public RectF[] frames;
-		public boolean looped;
+        public float delay;
+        public RectF[] frames;
+        public boolean looped;
 
-		public Animation( int fps, boolean looped ) {
-			this.delay = 1f / fps;
-			this.looped = looped;
-		}
+        public Animation( int fps, boolean looped ) {
+            this.delay = 1f / fps;
+            this.looped = looped;
+        }
 
-		public Animation frames( RectF... frames ) {
-			this.frames = frames;
-			return this;
-		}
+        public Animation frames( RectF... frames ) {
+            this.frames = frames;
+            return this;
+        }
 
-		public Animation frames( TextureFilm film, Object... frames ) {
-			this.frames = new RectF[frames.length];
-			for (int i=0; i < frames.length; i++) {
-				this.frames[i] = film.get( frames[i] );
-			}
-			return this;
-		}
+        public Animation frames( TextureFilm film, Object... frames ) {
+            this.frames = new RectF[frames.length];
+            for (int i=0; i < frames.length; i++) {
+                this.frames[i] = film.get( frames[i] );
+            }
+            return this;
+        }
 
-		public Animation clone() {
-			return new Animation( Math.round( 1 / delay ), looped ).frames( frames );
-		}
-	}
+        public Animation clone() {
+            return new Animation( Math.round( 1 / delay ), looped ).frames( frames );
+        }
+    }
 
-	public interface Listener {
-		void onComplete( Animation anim );
-	}
+    public interface Listener {
+        void onComplete( Animation anim );
+    }
 }

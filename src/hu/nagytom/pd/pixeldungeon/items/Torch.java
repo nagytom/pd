@@ -28,67 +28,67 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Torch extends Item {
 
-	public static final String AC_LIGHT	= "LIGHT";
+    public static final String AC_LIGHT = "LIGHT";
 
-	public static final float TIME_TO_LIGHT = 1;
+    public static final float TIME_TO_LIGHT = 1;
 
-	{
-		name = "torch";
-		image = ItemSpriteSheet.TORCH;
+    {
+        name = "torch";
+        image = ItemSpriteSheet.TORCH;
 
-		stackable = true;
+        stackable = true;
 
-		defaultAction = AC_LIGHT;
-	}
+        defaultAction = AC_LIGHT;
+    }
 
-	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_LIGHT );
-		return actions;
-	}
+    @Override
+    public ArrayList<String> actions( Hero hero ) {
+        ArrayList<String> actions = super.actions( hero );
+        actions.add( AC_LIGHT );
+        return actions;
+    }
 
-	@Override
-	public void execute( Hero hero, String action ) {
+    @Override
+    public void execute( Hero hero, String action ) {
 
-		if (action == AC_LIGHT) {
+        if (action == AC_LIGHT) {
 
-			hero.spend( TIME_TO_LIGHT );
-			hero.busy();
+            hero.spend( TIME_TO_LIGHT );
+            hero.busy();
 
-			hero.sprite.operate( hero.pos );
+            hero.sprite.operate( hero.pos );
 
-			detach( hero.belongings.backpack );
-			Buff.affect( hero, Light.class, Light.DURATION );
+            detach( hero.belongings.backpack );
+            Buff.affect( hero, Light.class, Light.DURATION );
 
-			Emitter emitter = hero.sprite.centerEmitter();
-			emitter.start( FlameParticle.FACTORY, 0.2f, 3 );
+            Emitter emitter = hero.sprite.centerEmitter();
+            emitter.start( FlameParticle.FACTORY, 0.2f, 3 );
 
-		} else {
+        } else {
 
-			super.execute( hero, action );
+            super.execute( hero, action );
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
+    @Override
+    public boolean isUpgradable() {
+        return false;
+    }
 
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
+    @Override
+    public boolean isIdentified() {
+        return true;
+    }
 
-	@Override
-	public int price() {
-		return 10 * quantity;
-	}
+    @Override
+    public int price() {
+        return 10 * quantity;
+    }
 
-	@Override
-	public String info() {
-		return
-			"It's an indispensable item in The Demon Halls, which are notorious for their poor ambient lighting.";
-	}
+    @Override
+    public String info() {
+        return
+            "It's an indispensable item in The Demon Halls, which are notorious for their poor ambient lighting.";
+    }
 }

@@ -25,53 +25,53 @@ import hu.nagytom.pd.utils.Callback;
 
 public class BurningFistSprite extends MobSprite {
 
-	public BurningFistSprite() {
-		super();
+    public BurningFistSprite() {
+        super();
 
-		texture( Assets.BURNING );
+        texture( Assets.BURNING );
 
-		TextureFilm frames = new TextureFilm( texture, 24, 17 );
+        TextureFilm frames = new TextureFilm( texture, 24, 17 );
 
-		idle = new Animation( 2, true );
-		idle.frames( frames, 0, 0, 1 );
+        idle = new Animation( 2, true );
+        idle.frames( frames, 0, 0, 1 );
 
-		run = new Animation( 3, true );
-		run.frames( frames, 0, 1 );
+        run = new Animation( 3, true );
+        run.frames( frames, 0, 1 );
 
-		attack = new Animation( 8, false );
-		attack.frames( frames, 0, 5, 6 );
+        attack = new Animation( 8, false );
+        attack.frames( frames, 0, 5, 6 );
 
-		die = new Animation( 10, false );
-		die.frames( frames, 0, 2, 3, 4 );
+        die = new Animation( 10, false );
+        die.frames( frames, 0, 2, 3, 4 );
 
-		play( idle );
-	}
+        play( idle );
+    }
 
-	private int posToShoot;
+    private int posToShoot;
 
-	@Override
-	public void attack( int cell ) {
-		posToShoot = cell;
-		super.attack( cell );
-	}
+    @Override
+    public void attack( int cell ) {
+        posToShoot = cell;
+        super.attack( cell );
+    }
 
-	@Override
-	public void onComplete( Animation anim ) {
-		if (anim == attack) {
+    @Override
+    public void onComplete( Animation anim ) {
+        if (anim == attack) {
 
-			Sample.INSTANCE.play( Assets.SND_ZAP );
-			MagicMissile.shadow( parent, ch.pos, posToShoot,
-				new Callback() {
-					@Override
-					public void call() {
-						ch.onAttackComplete();
-					}
-				} );
+            Sample.INSTANCE.play( Assets.SND_ZAP );
+            MagicMissile.shadow( parent, ch.pos, posToShoot,
+                new Callback() {
+                    @Override
+                    public void call() {
+                        ch.onAttackComplete();
+                    }
+                } );
 
-			idle();
+            idle();
 
-		} else {
-			super.onComplete( anim );
-		}
-	}
+        } else {
+            super.onComplete( anim );
+        }
+    }
 }

@@ -25,37 +25,37 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class WndSadGhost extends WndQuest {
 
-	private static final String TXT_WEAPON	= "Ghost's weapon";
-	private static final String TXT_ARMOR	= "Ghost's armor";
+    private static final String TXT_WEAPON  = "Ghost's weapon";
+    private static final String TXT_ARMOR   = "Ghost's armor";
 
-	private Ghost ghost;
-	private Item questItem;
+    private Ghost ghost;
+    private Item questItem;
 
-	public WndSadGhost( final Ghost ghost, final Item item, String text ) {
+    public WndSadGhost( final Ghost ghost, final Item item, String text ) {
 
-		super( ghost, text, TXT_WEAPON, TXT_ARMOR );
+        super( ghost, text, TXT_WEAPON, TXT_ARMOR );
 
-		this.ghost = ghost;
-		questItem = item;
-	}
+        this.ghost = ghost;
+        questItem = item;
+    }
 
-	@Override
-	protected void onSelect( int index ) {
+    @Override
+    protected void onSelect( int index ) {
 
-		if (questItem != null) {
-			questItem.detach( Dungeon.hero.belongings.backpack );
-		}
+        if (questItem != null) {
+            questItem.detach( Dungeon.hero.belongings.backpack );
+        }
 
-		Item reward = index == 0 ? Ghost.Quest.weapon : Ghost.Quest.armor;
-		if (reward.doPickUp( Dungeon.hero )) {
-			GLog.i( Hero.TXT_YOU_NOW_HAVE, reward.name() );
-		} else {
-			Dungeon.level.drop( reward, ghost.pos ).sprite.drop();
-		}
+        Item reward = index == 0 ? Ghost.Quest.weapon : Ghost.Quest.armor;
+        if (reward.doPickUp( Dungeon.hero )) {
+            GLog.i( Hero.TXT_YOU_NOW_HAVE, reward.name() );
+        } else {
+            Dungeon.level.drop( reward, ghost.pos ).sprite.drop();
+        }
 
-		ghost.yell( "Farewell, adventurer!" );
-		ghost.die( null );
+        ghost.yell( "Farewell, adventurer!" );
+        ghost.die( null );
 
-		Ghost.Quest.complete();
-	}
+        Ghost.Quest.complete();
+    }
 }

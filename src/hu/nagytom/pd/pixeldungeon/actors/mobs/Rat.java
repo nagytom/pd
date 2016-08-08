@@ -24,42 +24,42 @@ import hu.nagytom.pd.utils.Random;
 
 public class Rat extends Mob {
 
-	{
-		name = "marsupial rat";
-		spriteClass = RatSprite.class;
+    {
+        name = "marsupial rat";
+        spriteClass = RatSprite.class;
 
-		HP = HT = 8;
-		defenseSkill = 3;
+        HP = HT = 8;
+        defenseSkill = 3;
 
-		maxLvl = 5;
-	}
+        maxLvl = 5;
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 1, 5 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 1, 5 );
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 8;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return 8;
+    }
 
-	@Override
-	public int dr() {
-		return 1;
-	}
+    @Override
+    public int dr() {
+        return 1;
+    }
 
-	@Override
-	public void die( Object cause ) {
-		Ghost.Quest.processSewersKill( pos );
+    @Override
+    public void die( Object cause ) {
+        Ghost.Quest.processSewersKill( pos );
 
-		super.die( cause );
-	}
+        super.die( cause );
+    }
 
-	@Override
-	public String description() {
-		return
-			"Marsupial rats are aggressive, but rather weak denizens " +
-			"of the sewers. They can be dangerous only in big numbers.";
-	}
+    @Override
+    public String description() {
+        return
+            "Marsupial rats are aggressive, but rather weak denizens " +
+            "of the sewers. They can be dangerous only in big numbers.";
+    }
 }

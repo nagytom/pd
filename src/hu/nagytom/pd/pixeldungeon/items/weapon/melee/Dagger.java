@@ -21,17 +21,17 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Dagger extends MeleeWeapon {
 
-	{
-		name = "dagger";
-		image = ItemSpriteSheet.DAGGER;
-	}
+    {
+        name = "dagger";
+        image = ItemSpriteSheet.DAGGER;
+    }
 
-	public Dagger() {
-		super( 1, 1.2f, 1f );
-	}
+    public Dagger() {
+        super( 1, 1.2f, 1f );
+    }
 
-	@Override
-	public String desc() {
-		return "A simple iron dagger with a well worn wooden handle.";
-	}
+    @Override
+    public String desc() {
+        return "A simple iron dagger with a well worn wooden handle.";
+    }
 }

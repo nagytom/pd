@@ -29,47 +29,47 @@ import hu.nagytom.pd.utils.PathFinder;
 
 public class Icecap extends Plant {
 
-	private static final String TXT_DESC = "Upon touching an Icecap excretes a pollen, which freezes everything in its vicinity.";
+    private static final String TXT_DESC = "Upon touching an Icecap excretes a pollen, which freezes everything in its vicinity.";
 
-	{
-		image = 1;
-		plantName = "Icecap";
-	}
+    {
+        image = 1;
+        plantName = "Icecap";
+    }
 
-	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+    @Override
+    public void activate( Char ch ) {
+        super.activate( ch );
 
-		PathFinder.buildDistanceMap( pos, BArray.not( Level.losBlocking, null ), 1 );
+        PathFinder.buildDistanceMap( pos, BArray.not( Level.losBlocking, null ), 1 );
 
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+        Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
 
-		for (int i=0; i < Level.LENGTH; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Freezing.affect( i, fire );
-			}
-		}
-	}
+        for (int i=0; i < Level.LENGTH; i++) {
+            if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                Freezing.affect( i, fire );
+            }
+        }
+    }
 
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
+    @Override
+    public String desc() {
+        return TXT_DESC;
+    }
 
-	public static class Seed extends Plant.Seed {
-		{
-			plantName = "Icecap";
+    public static class Seed extends Plant.Seed {
+        {
+            plantName = "Icecap";
 
-			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_ICECAP;
+            name = "seed of " + plantName;
+            image = ItemSpriteSheet.SEED_ICECAP;
 
-			plantClass = Icecap.class;
-			alchemyClass = PotionOfFrost.class;
-		}
+            plantClass = Icecap.class;
+            alchemyClass = PotionOfFrost.class;
+        }
 
-		@Override
-		public String desc() {
-			return TXT_DESC;
-		}
-	}
+        @Override
+        public String desc() {
+            return TXT_DESC;
+        }
+    }
 }

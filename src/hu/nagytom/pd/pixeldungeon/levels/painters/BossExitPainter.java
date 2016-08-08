@@ -23,17 +23,17 @@ import hu.nagytom.pd.pixeldungeon.levels.Terrain;
 
 public class BossExitPainter extends Painter {
 
-	public static void paint( Level level, Room room ) {
+    public static void paint( Level level, Room room ) {
 
-		fill( level, room, Terrain.WALL );
-		fill( level, room, 1, Terrain.EMPTY );
+        fill( level, room, Terrain.WALL );
+        fill( level, room, 1, Terrain.EMPTY );
 
-		for (Room.Door door : room.connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
-		}
+        for (Room.Door door : room.connected.values()) {
+            door.set( Room.Door.Type.REGULAR );
+        }
 
-		level.exit = room.top * Level.WIDTH + (room.left + room.right) / 2;
-		set( level, level.exit, Terrain.LOCKED_EXIT );
-	}
+        level.exit = room.top * Level.WIDTH + (room.left + room.right) / 2;
+        set( level, level.exit, Terrain.LOCKED_EXIT );
+    }
 
 }

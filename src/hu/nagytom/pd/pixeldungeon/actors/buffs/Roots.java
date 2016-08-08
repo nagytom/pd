@@ -22,29 +22,29 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 
 public class Roots extends FlavourBuff {
 
-	@Override
-	public boolean attachTo( Char target ) {
-		if (!target.flying && super.attachTo( target )) {
-			target.rooted = true;
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean attachTo( Char target ) {
+        if (!target.flying && super.attachTo( target )) {
+            target.rooted = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	@Override
-	public void detach() {
-		target.rooted = false;
-		super.detach();
-	}
+    @Override
+    public void detach() {
+        target.rooted = false;
+        super.detach();
+    }
 
-	@Override
-	public int icon() {
-		return BuffIndicator.ROOTS;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.ROOTS;
+    }
 
-	@Override
-	public String toString() {
-		return "Rooted";
-	}
+    @Override
+    public String toString() {
+        return "Rooted";
+    }
 }

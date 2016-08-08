@@ -31,37 +31,37 @@ import hu.nagytom.pd.utils.Callback;
 
 public class WandOfAmok extends Wand {
 
-	{
-		name = "Wand of Amok";
-	}
+    {
+        name = "Wand of Amok";
+    }
 
-	@Override
-	protected void onZap( int cell ) {
-		Char ch = Actor.findChar( cell );
-		if (ch != null) {
+    @Override
+    protected void onZap( int cell ) {
+        Char ch = Actor.findChar( cell );
+        if (ch != null) {
 
-			if (ch == Dungeon.hero) {
-				Buff.affect( ch, Vertigo.class, Vertigo.duration( ch ) );
-			} else {
-				Buff.affect( ch, Amok.class, 3f + power() );
-			}
+            if (ch == Dungeon.hero) {
+                Buff.affect( ch, Vertigo.class, Vertigo.duration( ch ) );
+            } else {
+                Buff.affect( ch, Amok.class, 3f + power() );
+            }
 
-		} else {
+        } else {
 
-			GLog.i( "nothing happened" );
+            GLog.i( "nothing happened" );
 
-		}
-	}
+        }
+    }
 
-	protected void fx( int cell, Callback callback ) {
-		MagicMissile.purpleLight( curUser.sprite.parent, curUser.pos, cell, callback );
-		Sample.INSTANCE.play( Assets.SND_ZAP );
-	}
+    protected void fx( int cell, Callback callback ) {
+        MagicMissile.purpleLight( curUser.sprite.parent, curUser.pos, cell, callback );
+        Sample.INSTANCE.play( Assets.SND_ZAP );
+    }
 
-	@Override
-	public String desc() {
-		return
-			"The purple light from this wand will make the target run amok " +
-			"attacking random creatures in its vicinity.";
-	}
+    @Override
+    public String desc() {
+        return
+            "The purple light from this wand will make the target run amok " +
+            "attacking random creatures in its vicinity.";
+    }
 }

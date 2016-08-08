@@ -19,29 +19,29 @@ package hu.nagytom.pd.noosa.ui;
 
 public class CheckBox extends Button {
 
-	protected boolean checked;
+    protected boolean checked;
 
-	public boolean checked() {
-		return checked;
-	}
+    public boolean checked() {
+        return checked;
+    }
 
-	public void checked( boolean value ) {
-		if (checked != value) {
-			checked = value;
-			updateState();
-		}
-	}
+    public void checked( boolean value ) {
+        if (checked != value) {
+            checked = value;
+            updateState();
+        }
+    }
 
-	protected void updateState() {
+    protected void updateState() {
 
-	}
+    }
 
-	@Override
-	protected void onClick() {
-		checked( !checked );
-		onChange();
-	}
+    @Override
+    protected void onClick() {
+        checked( !checked );
+        onChange();
+    }
 
-	protected void onChange() {
-	}
+    protected void onChange() {
+    }
 }

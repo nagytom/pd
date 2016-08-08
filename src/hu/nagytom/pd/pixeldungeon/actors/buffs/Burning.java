@@ -42,113 +42,113 @@ import hu.nagytom.pd.utils.Random;
 
 public class Burning extends Buff implements Hero.Doom {
 
-	private static final String TXT_BURNS_UP		= "%s burns up!";
-	private static final String TXT_BURNED_TO_DEATH	= "You burned to death...";
+    private static final String TXT_BURNS_UP        = "%s burns up!";
+    private static final String TXT_BURNED_TO_DEATH = "You burned to death...";
 
-	private static final float DURATION = 8f;
+    private static final float DURATION = 8f;
 
-	private float left;
+    private float left;
 
-	private static final String LEFT	= "left";
+    private static final String LEFT    = "left";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEFT, left );
-	}
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEFT, left );
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle(bundle);
-		left = bundle.getFloat( LEFT );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle(bundle);
+        left = bundle.getFloat( LEFT );
+    }
 
-	@Override
-	public boolean act() {
+    @Override
+    public boolean act() {
 
-		if (target.isAlive()) {
+        if (target.isAlive()) {
 
-			if (target instanceof Hero) {
-				Buff.prolong( target, Light.class, TICK * 1.01f );
-			}
+            if (target instanceof Hero) {
+                Buff.prolong( target, Light.class, TICK * 1.01f );
+            }
 
-			target.damage( Random.Int( 1, 5 ), this );
+            target.damage( Random.Int( 1, 5 ), this );
 
-			if (target instanceof Hero) {
+            if (target instanceof Hero) {
 
-				Item item = ((Hero)target).belongings.randomUnequipped();
-				if (item instanceof Scroll) {
+                Item item = ((Hero)target).belongings.randomUnequipped();
+                if (item instanceof Scroll) {
 
-					item = item.detach( ((Hero)target).belongings.backpack );
-					GLog.w( TXT_BURNS_UP, item.toString() );
+                    item = item.detach( ((Hero)target).belongings.backpack );
+                    GLog.w( TXT_BURNS_UP, item.toString() );
 
-					Heap.burnFX( target.pos );
+                    Heap.burnFX( target.pos );
 
-				} else if (item instanceof MysteryMeat) {
+                } else if (item instanceof MysteryMeat) {
 
-					item = item.detach( ((Hero)target).belongings.backpack );
-					ChargrilledMeat steak = new ChargrilledMeat();
-					if (!steak.collect( ((Hero)target).belongings.backpack )) {
-						Dungeon.level.drop( steak, target.pos ).sprite.drop();
-					}
-					GLog.w( TXT_BURNS_UP, item.toString() );
+                    item = item.detach( ((Hero)target).belongings.backpack );
+                    ChargrilledMeat steak = new ChargrilledMeat();
+                    if (!steak.collect( ((Hero)target).belongings.backpack )) {
+                        Dungeon.level.drop( steak, target.pos ).sprite.drop();
+                    }
+                    GLog.w( TXT_BURNS_UP, item.toString() );
 
-					Heap.burnFX( target.pos );
+                    Heap.burnFX( target.pos );
 
-				}
+                }
 
-			} else if (target instanceof Thief && ((Thief)target).item instanceof Scroll) {
+            } else if (target instanceof Thief && ((Thief)target).item instanceof Scroll) {
 
-				((Thief)target).item = null;
-				target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
-			}
+                ((Thief)target).item = null;
+                target.sprite.emitter().burst( ElmoParticle.FACTORY, 6 );
+            }
 
-		} else {
-			detach();
-		}
+        } else {
+            detach();
+        }
 
-		if (Level.flamable[target.pos]) {
-			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
-		}
+        if (Level.flamable[target.pos]) {
+            GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+        }
 
-		spend( TICK );
-		left -= TICK;
+        spend( TICK );
+        left -= TICK;
 
-		if (left <= 0 ||
-			Random.Float() > (2 + (float)target.HP / target.HT) / 3 ||
-			(Level.water[target.pos] && !target.flying)) {
+        if (left <= 0 ||
+            Random.Float() > (2 + (float)target.HP / target.HT) / 3 ||
+            (Level.water[target.pos] && !target.flying)) {
 
-			detach();
-		}
+            detach();
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public void reignite( Char ch ) {
-		left = duration( ch );
-	}
+    public void reignite( Char ch ) {
+        left = duration( ch );
+    }
 
-	@Override
-	public int icon() {
-		return BuffIndicator.FIRE;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.FIRE;
+    }
 
-	@Override
-	public String toString() {
-		return "Burning";
-	}
+    @Override
+    public String toString() {
+        return "Burning";
+    }
 
-	public static float duration( Char ch ) {
-		Resistance r = ch.buff( Resistance.class );
-		return r != null ? r.durationFactor() * DURATION : DURATION;
-	}
+    public static float duration( Char ch ) {
+        Resistance r = ch.buff( Resistance.class );
+        return r != null ? r.durationFactor() * DURATION : DURATION;
+    }
 
-	@Override
-	public void onDeath() {
+    @Override
+    public void onDeath() {
 
-		Badges.validateDeathFromFire();
+        Badges.validateDeathFromFire();
 
-		Dungeon.fail( Utils.format( ResultDescriptions.BURNING, Dungeon.depth ) );
-		GLog.n( TXT_BURNED_TO_DEATH );
-	}
+        Dungeon.fail( Utils.format( ResultDescriptions.BURNING, Dungeon.depth ) );
+        GLog.n( TXT_BURNED_TO_DEATH );
+    }
 }

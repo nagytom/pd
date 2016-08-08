@@ -31,152 +31,152 @@ import hu.nagytom.pd.utils.Random;
 
 public class Bee extends NPC {
 
-	{
-		name = "golden bee";
-		spriteClass = BeeSprite.class;
+    {
+        name = "golden bee";
+        spriteClass = BeeSprite.class;
 
-		viewDistance = 4;
+        viewDistance = 4;
 
-		WANDERING = new Wandering();
+        WANDERING = new Wandering();
 
-		flying = true;
-		state = WANDERING;
-	}
+        flying = true;
+        state = WANDERING;
+    }
 
-	private int level;
+    private int level;
 
-	private static final String LEVEL	= "level";
+    private static final String LEVEL   = "level";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEVEL, level );
-	}
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEVEL, level );
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		spawn( bundle.getInt( LEVEL ) );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        spawn( bundle.getInt( LEVEL ) );
+    }
 
-	public void spawn( int level ) {
-		this.level = level;
+    public void spawn( int level ) {
+        this.level = level;
 
-		HT = (3 + level) * 5;
-		defenseSkill = 9 + level;
-	}
+        HT = (3 + level) * 5;
+        defenseSkill = 9 + level;
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return defenseSkill;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return defenseSkill;
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( HT / 10, HT / 4 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( HT / 10, HT / 4 );
+    }
 
-	@Override
-	public int attackProc( Char enemy, int damage ) {
-		if (enemy instanceof Mob) {
-			((Mob)enemy).aggro( this );
-		}
-		return damage;
-	}
+    @Override
+    public int attackProc( Char enemy, int damage ) {
+        if (enemy instanceof Mob) {
+            ((Mob)enemy).aggro( this );
+        }
+        return damage;
+    }
 
-	@Override
-	protected boolean act() {
-		HP--;
-		if (HP <= 0) {
-			die( null );
-			return true;
-		} else {
-			return super.act();
-		}
-	}
+    @Override
+    protected boolean act() {
+        HP--;
+        if (HP <= 0) {
+            die( null );
+            return true;
+        } else {
+            return super.act();
+        }
+    }
 
-	protected Char chooseEnemy() {
+    protected Char chooseEnemy() {
 
-		if (enemy == null || !enemy.isAlive()) {
-			HashSet<Mob> enemies = new HashSet<Mob>();
-			for (Mob mob:Dungeon.level.mobs) {
-				if (mob.hostile && Level.fieldOfView[mob.pos]) {
-					enemies.add( mob );
-				}
-			}
+        if (enemy == null || !enemy.isAlive()) {
+            HashSet<Mob> enemies = new HashSet<Mob>();
+            for (Mob mob:Dungeon.level.mobs) {
+                if (mob.hostile && Level.fieldOfView[mob.pos]) {
+                    enemies.add( mob );
+                }
+            }
 
-			return enemies.size() > 0 ? Random.element( enemies ) : null;
+            return enemies.size() > 0 ? Random.element( enemies ) : null;
 
-		} else {
+        } else {
 
-			return enemy;
+            return enemy;
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public String description() {
-		return
-			"Despite their small size, golden bees tend " +
-			"to protect their master fiercely. They don't live long though.";
-	}
+    @Override
+    public String description() {
+        return
+            "Despite their small size, golden bees tend " +
+            "to protect their master fiercely. They don't live long though.";
+    }
 
-	@Override
-	public void interact() {
+    @Override
+    public void interact() {
 
-		int curPos = pos;
+        int curPos = pos;
 
-		moveSprite( pos, Dungeon.hero.pos );
-		move( Dungeon.hero.pos );
+        moveSprite( pos, Dungeon.hero.pos );
+        move( Dungeon.hero.pos );
 
-		Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
-		Dungeon.hero.move( curPos );
+        Dungeon.hero.sprite.move( Dungeon.hero.pos, curPos );
+        Dungeon.hero.move( curPos );
 
-		Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
-		Dungeon.hero.busy();
-	}
+        Dungeon.hero.spend( 1 / Dungeon.hero.speed() );
+        Dungeon.hero.busy();
+    }
 
-	private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
-	static {
-		IMMUNITIES.add( Poison.class );
-	}
+    private static final HashSet<Class<?>> IMMUNITIES = new HashSet<Class<?>>();
+    static {
+        IMMUNITIES.add( Poison.class );
+    }
 
-	@Override
-	public HashSet<Class<?>> immunities() {
-		return IMMUNITIES;
-	}
+    @Override
+    public HashSet<Class<?>> immunities() {
+        return IMMUNITIES;
+    }
 
-	private class Wandering implements AiState {
+    private class Wandering implements AiState {
 
-		@Override
-		public boolean act( boolean enemyInFOV, boolean justAlerted ) {
-			if (enemyInFOV) {
+        @Override
+        public boolean act( boolean enemyInFOV, boolean justAlerted ) {
+            if (enemyInFOV) {
 
-				enemySeen = true;
+                enemySeen = true;
 
-				notice();
-				state = HUNTING;
-				target = enemy.pos;
+                notice();
+                state = HUNTING;
+                target = enemy.pos;
 
-			} else {
+            } else {
 
-				enemySeen = false;
+                enemySeen = false;
 
-				int oldPos = pos;
-				if (getCloser( Dungeon.hero.pos )) {
-					spend( 1 / speed() );
-					return moveSprite( oldPos, pos );
-				} else {
-					spend( TICK );
-				}
+                int oldPos = pos;
+                if (getCloser( Dungeon.hero.pos )) {
+                    spend( 1 / speed() );
+                    return moveSprite( oldPos, pos );
+                } else {
+                    spend( TICK );
+                }
 
-			}
-			return true;
-		}
+            }
+            return true;
+        }
 
-		@Override
-		public String status() {
-			return Utils.format( "This %s is wandering", name );
-		}
-	}
+        @Override
+        public String status() {
+            return Utils.format( "This %s is wandering", name );
+        }
+    }
 }

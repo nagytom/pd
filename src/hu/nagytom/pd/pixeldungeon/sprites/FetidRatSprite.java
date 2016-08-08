@@ -23,34 +23,34 @@ import hu.nagytom.pd.pixeldungeon.effects.Speck;
 
 public class FetidRatSprite extends RatSprite {
 
-	private Emitter cloud;
+    private Emitter cloud;
 
-	@Override
-	public void link( Char ch ) {
-		super.link( ch );
+    @Override
+    public void link( Char ch ) {
+        super.link( ch );
 
-		if (cloud == null) {
-			cloud = emitter();
-			cloud.pour( Speck.factory( Speck.PARALYSIS ), 0.7f );
-		}
-	}
+        if (cloud == null) {
+            cloud = emitter();
+            cloud.pour( Speck.factory( Speck.PARALYSIS ), 0.7f );
+        }
+    }
 
-	@Override
-	public void update() {
+    @Override
+    public void update() {
 
-		super.update();
+        super.update();
 
-		if (cloud != null) {
-			cloud.visible = visible;
-		}
-	}
+        if (cloud != null) {
+            cloud.visible = visible;
+        }
+    }
 
-	@Override
-	public void die() {
-		super.die();
+    @Override
+    public void die() {
+        super.die();
 
-		if (cloud != null) {
-			cloud.on = false;
-		}
-	}
+        if (cloud != null) {
+            cloud.on = false;
+        }
+    }
 }

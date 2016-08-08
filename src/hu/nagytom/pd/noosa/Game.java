@@ -47,262 +47,262 @@ import android.view.View;
 
 public class Game extends Activity implements GLSurfaceView.Renderer, View.OnTouchListener {
 
-	public static Game instance;
+    public static Game instance;
 
-	// Actual size of the screen
-	public static int width;
-	public static int height;
+    // Actual size of the screen
+    public static int width;
+    public static int height;
 
-	// Density: mdpi=1, hdpi=1.5, xhdpi=2...
-	public static float density = 1;
+    // Density: mdpi=1, hdpi=1.5, xhdpi=2...
+    public static float density = 1;
 
-	public static String version;
+    public static String version;
 
-	// Current scene
-	protected Scene scene;
-	// New scene we are going to switch to
-	protected Scene requestedScene;
-	// true if scene switch is requested
-	protected boolean requestedReset = true;
-	// New scene class
-	protected Class<? extends Scene> sceneClass;
+    // Current scene
+    protected Scene scene;
+    // New scene we are going to switch to
+    protected Scene requestedScene;
+    // true if scene switch is requested
+    protected boolean requestedReset = true;
+    // New scene class
+    protected Class<? extends Scene> sceneClass;
 
-	// Current time in milliseconds
-	protected long now;
-	// Milliseconds passed since previous update
-	protected long step;
+    // Current time in milliseconds
+    protected long now;
+    // Milliseconds passed since previous update
+    protected long step;
 
-	public static float timeScale = 1f;
-	public static float elapsed = 0f;
+    public static float timeScale = 1f;
+    public static float elapsed = 0f;
 
-	protected GLSurfaceView view;
-	protected SurfaceHolder holder;
+    protected GLSurfaceView view;
+    protected SurfaceHolder holder;
 
-	// Accumulated touch events
-	protected ArrayList<MotionEvent> motionEvents = new ArrayList<MotionEvent>();
+    // Accumulated touch events
+    protected ArrayList<MotionEvent> motionEvents = new ArrayList<MotionEvent>();
 
-	// Accumulated key events
-	protected ArrayList<KeyEvent> keysEvents = new ArrayList<KeyEvent>();
+    // Accumulated key events
+    protected ArrayList<KeyEvent> keysEvents = new ArrayList<KeyEvent>();
 
-	public Game( Class<? extends Scene> c ) {
-		super();
-		sceneClass = c;
-	}
+    public Game( Class<? extends Scene> c ) {
+        super();
+        sceneClass = c;
+    }
 
-	@Override
-	protected void onCreate( Bundle savedInstanceState ) {
-		super.onCreate( savedInstanceState );
+    @Override
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
 
-		BitmapCache.context = TextureCache.context = instance = this;
+        BitmapCache.context = TextureCache.context = instance = this;
 
-		DisplayMetrics m = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics( m );
-		density = m.density;
+        DisplayMetrics m = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics( m );
+        density = m.density;
 
-		try {
-			version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;
-		} catch (NameNotFoundException e) {
-			version = "???";
-		}
+        try {
+            version = getPackageManager().getPackageInfo( getPackageName(), 0 ).versionName;
+        } catch (NameNotFoundException e) {
+            version = "???";
+        }
 
-		setVolumeControlStream( AudioManager.STREAM_MUSIC );
+        setVolumeControlStream( AudioManager.STREAM_MUSIC );
 
-		view = new GLSurfaceView( this );
-		view.setEGLContextClientVersion( 2 );
-		view.setEGLConfigChooser( false );
-		view.setRenderer( this );
-		view.setOnTouchListener( this );
-		setContentView( view );
-	}
+        view = new GLSurfaceView( this );
+        view.setEGLContextClientVersion( 2 );
+        view.setEGLConfigChooser( false );
+        view.setRenderer( this );
+        view.setOnTouchListener( this );
+        setContentView( view );
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-		now = 0;
-		view.onResume();
+        now = 0;
+        view.onResume();
 
-		Music.INSTANCE.resume();
-		Sample.INSTANCE.resume();
-	}
+        Music.INSTANCE.resume();
+        Sample.INSTANCE.resume();
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
+    @Override
+    public void onPause() {
+        super.onPause();
 
-		if (scene != null) {
-			scene.pause();
-		}
+        if (scene != null) {
+            scene.pause();
+        }
 
-		view.onPause();
-		Script.reset();
+        view.onPause();
+        Script.reset();
 
-		Music.INSTANCE.pause();
-		Sample.INSTANCE.pause();
-	}
+        Music.INSTANCE.pause();
+        Sample.INSTANCE.pause();
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		destroyGame();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        destroyGame();
 
-		Music.INSTANCE.mute();
-		Sample.INSTANCE.reset();
-	}
+        Music.INSTANCE.mute();
+        Sample.INSTANCE.reset();
+    }
 
-	@SuppressLint({ "Recycle", "ClickableViewAccessibility" })
-	@Override
-	public boolean onTouch( View view, MotionEvent event ) {
-		synchronized (motionEvents) {
-			motionEvents.add( MotionEvent.obtain( event ) );
-		}
-		return true;
-	}
+    @SuppressLint({ "Recycle", "ClickableViewAccessibility" })
+    @Override
+    public boolean onTouch( View view, MotionEvent event ) {
+        synchronized (motionEvents) {
+            motionEvents.add( MotionEvent.obtain( event ) );
+        }
+        return true;
+    }
 
-	@Override
-	public boolean onKeyDown( int keyCode, KeyEvent event ) {
+    @Override
+    public boolean onKeyDown( int keyCode, KeyEvent event ) {
 
-		if (keyCode == Keys.VOLUME_DOWN ||
-			keyCode == Keys.VOLUME_UP) {
+        if (keyCode == Keys.VOLUME_DOWN ||
+            keyCode == Keys.VOLUME_UP) {
 
-			return false;
-		}
+            return false;
+        }
 
-		synchronized (motionEvents) {
-			keysEvents.add( event );
-		}
-		return true;
-	}
+        synchronized (motionEvents) {
+            keysEvents.add( event );
+        }
+        return true;
+    }
 
-	@Override
-	public boolean onKeyUp( int keyCode, KeyEvent event ) {
+    @Override
+    public boolean onKeyUp( int keyCode, KeyEvent event ) {
 
-		if (keyCode == Keys.VOLUME_DOWN ||
-			keyCode == Keys.VOLUME_UP) {
+        if (keyCode == Keys.VOLUME_DOWN ||
+            keyCode == Keys.VOLUME_UP) {
 
-			return false;
-		}
+            return false;
+        }
 
-		synchronized (motionEvents) {
-			keysEvents.add( event );
-		}
-		return true;
-	}
+        synchronized (motionEvents) {
+            keysEvents.add( event );
+        }
+        return true;
+    }
 
-	@Override
-	public void onDrawFrame( GL10 gl ) {
+    @Override
+    public void onDrawFrame( GL10 gl ) {
 
-		if (width == 0 || height == 0) {
-			return;
-		}
+        if (width == 0 || height == 0) {
+            return;
+        }
 
-		SystemTime.tick();
-		long rightNow = SystemTime.now;
-		step = (now == 0 ? 0 : rightNow - now);
-		now = rightNow;
+        SystemTime.tick();
+        long rightNow = SystemTime.now;
+        step = (now == 0 ? 0 : rightNow - now);
+        now = rightNow;
 
-		step();
+        step();
 
-		NoosaScript.get().resetCamera();
-		GLES20.glScissor( 0, 0, width, height );
-		GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
-		draw();
-	}
+        NoosaScript.get().resetCamera();
+        GLES20.glScissor( 0, 0, width, height );
+        GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
+        draw();
+    }
 
-	@Override
-	public void onSurfaceChanged( GL10 gl, int width, int height ) {
+    @Override
+    public void onSurfaceChanged( GL10 gl, int width, int height ) {
 
-		GLES20.glViewport( 0, 0, width, height );
+        GLES20.glViewport( 0, 0, width, height );
 
-		Game.width = width;
-		Game.height = height;
+        Game.width = width;
+        Game.height = height;
 
-	}
+    }
 
-	@Override
-	public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
-		GLES20.glEnable( GL10.GL_BLEND );
-		// For premultiplied alpha:
-		// GLES20.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
-		GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+    @Override
+    public void onSurfaceCreated( GL10 gl, EGLConfig config ) {
+        GLES20.glEnable( GL10.GL_BLEND );
+        // For premultiplied alpha:
+        // GLES20.glBlendFunc( GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA );
+        GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
 
-		GLES20.glEnable( GL10.GL_SCISSOR_TEST );
+        GLES20.glEnable( GL10.GL_SCISSOR_TEST );
 
-		TextureCache.reload();
-	}
+        TextureCache.reload();
+    }
 
-	protected void destroyGame() {
-		if (scene != null) {
-			scene.destroy();
-			scene = null;
-		}
+    protected void destroyGame() {
+        if (scene != null) {
+            scene.destroy();
+            scene = null;
+        }
 
-		instance = null;
-	}
+        instance = null;
+    }
 
-	public static void resetScene() {
-		switchScene( instance.sceneClass );
-	}
+    public static void resetScene() {
+        switchScene( instance.sceneClass );
+    }
 
-	public static void switchScene( Class<? extends Scene> c ) {
-		instance.sceneClass = c;
-		instance.requestedReset = true;
-	}
+    public static void switchScene( Class<? extends Scene> c ) {
+        instance.sceneClass = c;
+        instance.requestedReset = true;
+    }
 
-	public static Scene scene() {
-		return instance.scene;
-	}
+    public static Scene scene() {
+        return instance.scene;
+    }
 
-	protected void step() {
+    protected void step() {
 
-		if (requestedReset) {
-			requestedReset = false;
-			try {
-				requestedScene = sceneClass.newInstance();
-				switchScene();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+        if (requestedReset) {
+            requestedReset = false;
+            try {
+                requestedScene = sceneClass.newInstance();
+                switchScene();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-		update();
-	}
+        update();
+    }
 
-	protected void draw() {
-		scene.draw();
-	}
+    protected void draw() {
+        scene.draw();
+    }
 
-	protected void switchScene() {
+    protected void switchScene() {
 
-		Camera.reset();
+        Camera.reset();
 
-		if (scene != null) {
-			scene.destroy();
-		}
-		scene = requestedScene;
-		scene.create();
+        if (scene != null) {
+            scene.destroy();
+        }
+        scene = requestedScene;
+        scene.create();
 
-		Game.elapsed = 0f;
-		Game.timeScale = 1f;
-	}
+        Game.elapsed = 0f;
+        Game.timeScale = 1f;
+    }
 
-	protected void update() {
-		Game.elapsed = Game.timeScale * step * 0.001f;
+    protected void update() {
+        Game.elapsed = Game.timeScale * step * 0.001f;
 
-		synchronized (motionEvents) {
-			Touchscreen.processTouchEvents( motionEvents );
-			motionEvents.clear();
-		}
-		synchronized (keysEvents) {
-			Keys.processTouchEvents( keysEvents );
-			keysEvents.clear();
-		}
+        synchronized (motionEvents) {
+            Touchscreen.processTouchEvents( motionEvents );
+            motionEvents.clear();
+        }
+        synchronized (keysEvents) {
+            Keys.processTouchEvents( keysEvents );
+            keysEvents.clear();
+        }
 
-		scene.update();
-		Camera.updateAll();
-	}
+        scene.update();
+        Camera.updateAll();
+    }
 
-	public static void vibrate( int milliseconds ) {
-		((Vibrator)instance.getSystemService( VIBRATOR_SERVICE )).vibrate( milliseconds );
-	}
+    public static void vibrate( int milliseconds ) {
+        ((Vibrator)instance.getSystemService( VIBRATOR_SERVICE )).vibrate( milliseconds );
+    }
 }

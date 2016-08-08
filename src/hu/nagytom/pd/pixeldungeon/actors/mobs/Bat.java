@@ -28,70 +28,70 @@ import hu.nagytom.pd.utils.Random;
 
 public class Bat extends Mob {
 
-	{
-		name = "vampire bat";
-		spriteClass = BatSprite.class;
+    {
+        name = "vampire bat";
+        spriteClass = BatSprite.class;
 
-		HP = HT = 30;
-		defenseSkill = 15;
-		baseSpeed = 2f;
+        HP = HT = 30;
+        defenseSkill = 15;
+        baseSpeed = 2f;
 
-		EXP = 7;
-		maxLvl = 15;
+        EXP = 7;
+        maxLvl = 15;
 
-		flying = true;
+        flying = true;
 
-		loot = new PotionOfHealing();
-		lootChance = 0.125f;
-	}
+        loot = new PotionOfHealing();
+        lootChance = 0.125f;
+    }
 
-	@Override
-	public int damageRoll() {
-		return Random.NormalIntRange( 6, 12 );
-	}
+    @Override
+    public int damageRoll() {
+        return Random.NormalIntRange( 6, 12 );
+    }
 
-	@Override
-	public int attackSkill( Char target ) {
-		return 16;
-	}
+    @Override
+    public int attackSkill( Char target ) {
+        return 16;
+    }
 
-	@Override
-	public int dr() {
-		return 4;
-	}
+    @Override
+    public int dr() {
+        return 4;
+    }
 
-	@Override
-	public String defenseVerb() {
-		return "evaded";
-	}
+    @Override
+    public String defenseVerb() {
+        return "evaded";
+    }
 
-	@Override
-	public int attackProc( Char enemy, int damage ) {
+    @Override
+    public int attackProc( Char enemy, int damage ) {
 
-		int reg = Math.min( damage, HT - HP );
+        int reg = Math.min( damage, HT - HP );
 
-		if (reg > 0) {
-			HP += reg;
-			sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-		}
+        if (reg > 0) {
+            HP += reg;
+            sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+        }
 
-		return damage;
-	}
+        return damage;
+    }
 
-	@Override
-	public String description() {
-		return
-			"These brisk and tenacious inhabitants of cave domes may defeat much larger opponents by " +
-			"replenishing their health with each successful attack.";
-	}
+    @Override
+    public String description() {
+        return
+            "These brisk and tenacious inhabitants of cave domes may defeat much larger opponents by " +
+            "replenishing their health with each successful attack.";
+    }
 
-	private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
-	static {
-		RESISTANCES.add( Leech.class );
-	}
+    private static final HashSet<Class<?>> RESISTANCES = new HashSet<Class<?>>();
+    static {
+        RESISTANCES.add( Leech.class );
+    }
 
-	@Override
-	public HashSet<Class<?>> resistances() {
-		return RESISTANCES;
-	}
+    @Override
+    public HashSet<Class<?>> resistances() {
+        return RESISTANCES;
+    }
 }

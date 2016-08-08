@@ -24,44 +24,44 @@ import hu.nagytom.pd.pixeldungeon.utils.GLog;
 
 public class Combo extends Buff {
 
-	private static String TXT_COMBO = "%d hit combo!";
+    private static String TXT_COMBO = "%d hit combo!";
 
-	public int count = 0;
+    public int count = 0;
 
-	@Override
-	public int icon() {
-		return BuffIndicator.COMBO;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.COMBO;
+    }
 
-	@Override
-	public String toString() {
-		return "Combo";
-	}
+    @Override
+    public String toString() {
+        return "Combo";
+    }
 
-	public int hit( Char enemy, int damage ) {
+    public int hit( Char enemy, int damage ) {
 
-		count++;
+        count++;
 
-		if (count >= 3) {
+        if (count >= 3) {
 
-			Badges.validateMasteryCombo( count );
+            Badges.validateMasteryCombo( count );
 
-			GLog.p( TXT_COMBO, count );
-			postpone( 1.41f - count / 10f );
-			return (int)(damage * (count - 2) / 5f);
+            GLog.p( TXT_COMBO, count );
+            postpone( 1.41f - count / 10f );
+            return (int)(damage * (count - 2) / 5f);
 
-		} else {
+        } else {
 
-			postpone( 1.1f );
-			return 0;
+            postpone( 1.1f );
+            return 0;
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public boolean act() {
-		detach();
-		return true;
-	}
+    @Override
+    public boolean act() {
+        detach();
+        return true;
+    }
 
 }

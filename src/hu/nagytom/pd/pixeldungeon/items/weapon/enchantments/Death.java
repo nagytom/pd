@@ -28,43 +28,43 @@ import hu.nagytom.pd.utils.Random;
 
 public class Death extends Weapon.Enchantment {
 
-	private static final String TXT_GRIM	= "grim %s";
+    private static final String TXT_GRIM    = "grim %s";
 
-	private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
+    private static ItemSprite.Glowing BLACK = new ItemSprite.Glowing( 0x000000 );
 
-	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		// lvl 0 - 8%
-		// lvl 1 ~ 9%
-		// lvl 2 ~ 10%
-		int level = Math.max( 0, weapon.effectiveLevel() );
+    @Override
+    public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
+        // lvl 0 - 8%
+        // lvl 1 ~ 9%
+        // lvl 2 ~ 10%
+        int level = Math.max( 0, weapon.effectiveLevel() );
 
-		if (Random.Int( level + 100 ) >= 92) {
+        if (Random.Int( level + 100 ) >= 92) {
 
-			defender.damage( defender.HP, this );
-			defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
+            defender.damage( defender.HP, this );
+            defender.sprite.emitter().burst( ShadowParticle.UP, 5 );
 
-			if (!defender.isAlive() && attacker instanceof Hero) {
-				Badges.validateGrimWeapon();
-			}
+            if (!defender.isAlive() && attacker instanceof Hero) {
+                Badges.validateGrimWeapon();
+            }
 
-			return true;
+            return true;
 
-		} else {
+        } else {
 
-			return false;
+            return false;
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public Glowing glowing() {
-		return BLACK;
-	}
+    @Override
+    public Glowing glowing() {
+        return BLACK;
+    }
 
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_GRIM, weaponName );
-	}
+    @Override
+    public String name( String weaponName) {
+        return String.format( TXT_GRIM, weaponName );
+    }
 
 }

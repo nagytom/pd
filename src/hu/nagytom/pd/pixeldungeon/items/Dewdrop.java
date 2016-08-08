@@ -28,48 +28,48 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Dewdrop extends Item {
 
-	private static final String TXT_VALUE	= "%+dHP";
+    private static final String TXT_VALUE   = "%+dHP";
 
-	{
-		name = "dewdrop";
-		image = ItemSpriteSheet.DEWDROP;
+    {
+        name = "dewdrop";
+        image = ItemSpriteSheet.DEWDROP;
 
-		stackable = true;
-	}
+        stackable = true;
+    }
 
-	@Override
-	public boolean doPickUp( Hero hero ) {
+    @Override
+    public boolean doPickUp( Hero hero ) {
 
-		DewVial vial = hero.belongings.getItem( DewVial.class );
+        DewVial vial = hero.belongings.getItem( DewVial.class );
 
-		if (hero.HP < hero.HT || vial == null || vial.isFull()) {
+        if (hero.HP < hero.HT || vial == null || vial.isFull()) {
 
-			int value = 1 + (Dungeon.depth - 1) / 5;
-			if (hero.heroClass == HeroClass.HUNTRESS) {
-				value++;
-			}
+            int value = 1 + (Dungeon.depth - 1) / 5;
+            if (hero.heroClass == HeroClass.HUNTRESS) {
+                value++;
+            }
 
-			int effect = Math.min( hero.HT - hero.HP, value * quantity );
-			if (effect > 0) {
-				hero.HP += effect;
-				hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
-				hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
-			}
+            int effect = Math.min( hero.HT - hero.HP, value * quantity );
+            if (effect > 0) {
+                hero.HP += effect;
+                hero.sprite.emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+                hero.sprite.showStatus( CharSprite.POSITIVE, TXT_VALUE, effect );
+            }
 
-		} else if (vial != null) {
+        } else if (vial != null) {
 
-			vial.collectDew( this );
+            vial.collectDew( this );
 
-		}
+        }
 
-		Sample.INSTANCE.play( Assets.SND_DEWDROP );
-		hero.spendAndNext( TIME_TO_PICK_UP );
+        Sample.INSTANCE.play( Assets.SND_DEWDROP );
+        hero.spendAndNext( TIME_TO_PICK_UP );
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public String info() {
-		return "A crystal clear dewdrop.";
-	}
+    @Override
+    public String info() {
+        return "A crystal clear dewdrop.";
+    }
 }

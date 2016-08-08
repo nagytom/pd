@@ -23,91 +23,91 @@ import hu.nagytom.pd.utils.Signal;
 
 public class TouchArea extends Visual implements Signal.Listener<Touchscreen.Touch> {
 
-	// Its target can be toucharea itself
-	public Visual target;
+    // Its target can be toucharea itself
+    public Visual target;
 
-	protected Touchscreen.Touch touch = null;
+    protected Touchscreen.Touch touch = null;
 
-	public TouchArea( Visual target ) {
-		super( 0, 0, 0, 0 );
-		this.target = target;
+    public TouchArea( Visual target ) {
+        super( 0, 0, 0, 0 );
+        this.target = target;
 
-		Touchscreen.event.add( this );
-	}
+        Touchscreen.event.add( this );
+    }
 
-	public TouchArea( float x, float y, float width, float height ) {
-		super( x, y, width, height );
-		this.target = this;
+    public TouchArea( float x, float y, float width, float height ) {
+        super( x, y, width, height );
+        this.target = this;
 
-		visible = false;
+        visible = false;
 
-		Touchscreen.event.add( this );
-	}
+        Touchscreen.event.add( this );
+    }
 
-	@Override
-	public void onSignal( Touch touch ) {
+    @Override
+    public void onSignal( Touch touch ) {
 
-		if (!isActive()) {
-			return;
-		}
+        if (!isActive()) {
+            return;
+        }
 
-		boolean hit = touch != null && target.overlapsScreenPoint( (int)touch.start.x, (int)touch.start.y );
+        boolean hit = touch != null && target.overlapsScreenPoint( (int)touch.start.x, (int)touch.start.y );
 
-		if (hit) {
+        if (hit) {
 
-			Touchscreen.event.cancel();
+            Touchscreen.event.cancel();
 
-			if (touch.down) {
+            if (touch.down) {
 
-				if (this.touch == null) {
-					this.touch = touch;
-				}
-				onTouchDown( touch );
+                if (this.touch == null) {
+                    this.touch = touch;
+                }
+                onTouchDown( touch );
 
-			} else {
+            } else {
 
-				onTouchUp( touch );
+                onTouchUp( touch );
 
-				if (this.touch == touch) {
-					this.touch = null;
-					onClick( touch );
-				}
+                if (this.touch == touch) {
+                    this.touch = null;
+                    onClick( touch );
+                }
 
-			}
+            }
 
-		} else {
+        } else {
 
-			if (touch == null && this.touch != null) {
-				onDrag( this.touch );
-			}
+            if (touch == null && this.touch != null) {
+                onDrag( this.touch );
+            }
 
-			else if (this.touch != null && touch != null && !touch.down) {
-				onTouchUp( touch );
-				this.touch = null;
-			}
+            else if (this.touch != null && touch != null && !touch.down) {
+                onTouchUp( touch );
+                this.touch = null;
+            }
 
-		}
-	}
+        }
+    }
 
-	protected void onTouchDown( Touch touch ) {
-	}
+    protected void onTouchDown( Touch touch ) {
+    }
 
-	protected void onTouchUp( Touch touch ) {
-	}
+    protected void onTouchUp( Touch touch ) {
+    }
 
-	protected void onClick( Touch touch ) {
-	}
+    protected void onClick( Touch touch ) {
+    }
 
-	protected void onDrag( Touch touch ) {
-	}
+    protected void onDrag( Touch touch ) {
+    }
 
-	public void reset() {
-		touch = null;
-	}
+    public void reset() {
+        touch = null;
+    }
 
-	@Override
-	public void destroy() {
-		Touchscreen.event.remove( this );
-		super.destroy();
-	}
+    @Override
+    public void destroy() {
+        Touchscreen.event.remove( this );
+        super.destroy();
+    }
 }

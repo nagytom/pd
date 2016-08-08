@@ -30,67 +30,67 @@ import hu.nagytom.pd.utils.Bundle;
 
 public class Poison extends Buff implements Hero.Doom {
 
-	protected float left;
+    protected float left;
 
-	private static final String LEFT	= "left";
+    private static final String LEFT    = "left";
 
-	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		bundle.put( LEFT, left );
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( LEFT, left );
 
-	}
+    }
 
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		left = bundle.getFloat( LEFT );
-	}
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        left = bundle.getFloat( LEFT );
+    }
 
-	public void set( float duration ) {
-		this.left = duration;
-	};
+    public void set( float duration ) {
+        this.left = duration;
+    };
 
-	@Override
-	public int icon() {
-		return BuffIndicator.POISON;
-	}
+    @Override
+    public int icon() {
+        return BuffIndicator.POISON;
+    }
 
-	@Override
-	public String toString() {
-		return "Poisoned";
-	}
+    @Override
+    public String toString() {
+        return "Poisoned";
+    }
 
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
+    @Override
+    public boolean act() {
+        if (target.isAlive()) {
 
-			target.damage( (int)(left / 3) + 1, this );
-			spend( TICK );
+            target.damage( (int)(left / 3) + 1, this );
+            spend( TICK );
 
-			if ((left -= TICK) <= 0) {
-				detach();
-			}
+            if ((left -= TICK) <= 0) {
+                detach();
+            }
 
-		} else {
+        } else {
 
-			detach();
+            detach();
 
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public static float durationFactor( Char ch ) {
-		Resistance r = ch.buff( Resistance.class );
-		return r != null ? r.durationFactor() : 1;
-	}
+    public static float durationFactor( Char ch ) {
+        Resistance r = ch.buff( Resistance.class );
+        return r != null ? r.durationFactor() : 1;
+    }
 
-	@Override
-	public void onDeath() {
-		Badges.validateDeathFromPoison();
+    @Override
+    public void onDeath() {
+        Badges.validateDeathFromPoison();
 
-		Dungeon.fail( Utils.format( ResultDescriptions.POISON, Dungeon.depth ) );
-		GLog.n( "You died from poison..." );
-	}
+        Dungeon.fail( Utils.format( ResultDescriptions.POISON, Dungeon.depth ) );
+        GLog.n( "You died from poison..." );
+    }
 }

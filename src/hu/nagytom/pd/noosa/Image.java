@@ -27,141 +27,141 @@ import hu.nagytom.pd.glwrap.Quad;
 
 public class Image extends Visual {
 
-	public SmartTexture texture;
-	protected RectF frame;
+    public SmartTexture texture;
+    protected RectF frame;
 
-	public boolean flipHorizontal;
-	public boolean flipVertical;
+    public boolean flipHorizontal;
+    public boolean flipVertical;
 
-	protected float[] vertices;
-	protected FloatBuffer verticesBuffer;
+    protected float[] vertices;
+    protected FloatBuffer verticesBuffer;
 
-	protected boolean dirty;
+    protected boolean dirty;
 
-	public Image() {
-		super( 0, 0, 0, 0 );
+    public Image() {
+        super( 0, 0, 0, 0 );
 
-		vertices = new float[16];
-		verticesBuffer = Quad.create();
-	}
+        vertices = new float[16];
+        verticesBuffer = Quad.create();
+    }
 
-	public Image( Image src ) {
-		this();
-		copy( src );
-	}
+    public Image( Image src ) {
+        this();
+        copy( src );
+    }
 
-	public Image( Object tx ) {
-		this();
-		texture( tx );
-	}
+    public Image( Object tx ) {
+        this();
+        texture( tx );
+    }
 
-	public Image( Object tx, int left, int top, int width, int height ) {
-		this( tx );
-		frame( texture.uvRect( left,  top,  left + width, top + height ) );
-	}
+    public Image( Object tx, int left, int top, int width, int height ) {
+        this( tx );
+        frame( texture.uvRect( left,  top,  left + width, top + height ) );
+    }
 
-	public void texture( Object tx ) {
-		texture = tx instanceof SmartTexture ? (SmartTexture)tx : TextureCache.get( tx );
-		frame( new RectF( 0, 0, 1, 1 ) );
-	}
+    public void texture( Object tx ) {
+        texture = tx instanceof SmartTexture ? (SmartTexture)tx : TextureCache.get( tx );
+        frame( new RectF( 0, 0, 1, 1 ) );
+    }
 
-	public void frame( RectF frame ) {
-		this.frame = frame;
+    public void frame( RectF frame ) {
+        this.frame = frame;
 
-		width = frame.width() * texture.width;
-		height = frame.height() * texture.height;
+        width = frame.width() * texture.width;
+        height = frame.height() * texture.height;
 
-		updateFrame();
-		updateVertices();
-	}
+        updateFrame();
+        updateVertices();
+    }
 
-	public void frame( int left, int top, int width, int height ) {
-		frame( texture.uvRect( left, top, left + width, top + height ) );
-	}
+    public void frame( int left, int top, int width, int height ) {
+        frame( texture.uvRect( left, top, left + width, top + height ) );
+    }
 
-	public RectF frame() {
-		return new RectF( frame );
-	}
+    public RectF frame() {
+        return new RectF( frame );
+    }
 
-	public void copy( Image other ) {
-		texture = other.texture;
-		frame = new RectF( other.frame );
+    public void copy( Image other ) {
+        texture = other.texture;
+        frame = new RectF( other.frame );
 
-		width = other.width;
-		height = other.height;
+        width = other.width;
+        height = other.height;
 
-		updateFrame();
-		updateVertices();
-	}
+        updateFrame();
+        updateVertices();
+    }
 
-	protected void updateFrame() {
+    protected void updateFrame() {
 
-		if (flipHorizontal) {
-			vertices[2]		= frame.right;
-			vertices[6]		= frame.left;
-			vertices[10]	= frame.left;
-			vertices[14]	= frame.right;
-		} else {
-			vertices[2]		= frame.left;
-			vertices[6]		= frame.right;
-			vertices[10]	= frame.right;
-			vertices[14]	= frame.left;
-		}
+        if (flipHorizontal) {
+            vertices[2]     = frame.right;
+            vertices[6]     = frame.left;
+            vertices[10]    = frame.left;
+            vertices[14]    = frame.right;
+        } else {
+            vertices[2]     = frame.left;
+            vertices[6]     = frame.right;
+            vertices[10]    = frame.right;
+            vertices[14]    = frame.left;
+        }
 
-		if (flipVertical) {
-			vertices[3]		= frame.bottom;
-			vertices[7]		= frame.bottom;
-			vertices[11]	= frame.top;
-			vertices[15]	= frame.top;
-		} else {
-			vertices[3]		= frame.top;
-			vertices[7]		= frame.top;
-			vertices[11]	= frame.bottom;
-			vertices[15]	= frame.bottom;
-		}
+        if (flipVertical) {
+            vertices[3]     = frame.bottom;
+            vertices[7]     = frame.bottom;
+            vertices[11]    = frame.top;
+            vertices[15]    = frame.top;
+        } else {
+            vertices[3]     = frame.top;
+            vertices[7]     = frame.top;
+            vertices[11]    = frame.bottom;
+            vertices[15]    = frame.bottom;
+        }
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	protected void updateVertices() {
+    protected void updateVertices() {
 
-		vertices[0] 	= 0;
-		vertices[1] 	= 0;
+        vertices[0]     = 0;
+        vertices[1]     = 0;
 
-		vertices[4] 	= width;
-		vertices[5] 	= 0;
+        vertices[4]     = width;
+        vertices[5]     = 0;
 
-		vertices[8] 	= width;
-		vertices[9] 	= height;
+        vertices[8]     = width;
+        vertices[9]     = height;
 
-		vertices[12]	= 0;
-		vertices[13]	= height;
+        vertices[12]    = 0;
+        vertices[13]    = height;
 
-		dirty = true;
-	}
+        dirty = true;
+    }
 
-	@Override
-	public void draw() {
+    @Override
+    public void draw() {
 
-		super.draw();
+        super.draw();
 
-		NoosaScript script = NoosaScript.get();
+        NoosaScript script = NoosaScript.get();
 
-		texture.bind();
+        texture.bind();
 
-		script.camera( camera() );
+        script.camera( camera() );
 
-		script.uModel.valueM4( matrix );
-		script.lighting(
-			rm, gm, bm, am,
-			ra, ga, ba, aa );
+        script.uModel.valueM4( matrix );
+        script.lighting(
+            rm, gm, bm, am,
+            ra, ga, ba, aa );
 
-		if (dirty) {
-			verticesBuffer.position( 0 );
-			verticesBuffer.put( vertices );
-			dirty = false;
-		}
-		script.drawQuad( verticesBuffer );
+        if (dirty) {
+            verticesBuffer.position( 0 );
+            verticesBuffer.put( vertices );
+            dirty = false;
+        }
+        script.drawQuad( verticesBuffer );
 
-	}
+    }
 }

@@ -26,25 +26,25 @@ import hu.nagytom.pd.utils.Random;
 
 public class Albino extends Rat {
 
-	{
-		name = "albino rat";
-		spriteClass = AlbinoSprite.class;
+    {
+        name = "albino rat";
+        spriteClass = AlbinoSprite.class;
 
-		HP = HT = 15;
-	}
+        HP = HT = 15;
+    }
 
-	@Override
-	public void die( Object cause ) {
-		super.die( cause );
-		Badges.validateRare( this );
-	}
+    @Override
+    public void die( Object cause ) {
+        super.die( cause );
+        Badges.validateRare( this );
+    }
 
-	@Override
-	public int attackProc( Char enemy, int damage ) {
-		if (Random.Int( 2 ) == 0) {
-			Buff.affect( enemy, Bleeding.class ).set( damage );
-		}
+    @Override
+    public int attackProc( Char enemy, int damage ) {
+        if (Random.Int( 2 ) == 0) {
+            Buff.affect( enemy, Bleeding.class ).set( damage );
+        }
 
-		return damage;
-	}
+        return damage;
+    }
 }

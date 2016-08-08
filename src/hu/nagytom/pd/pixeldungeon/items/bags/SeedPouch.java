@@ -23,26 +23,26 @@ import hu.nagytom.pd.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class SeedPouch extends Bag {
 
-	{
-		name = "seed pouch";
-		image = ItemSpriteSheet.POUCH;
+    {
+        name = "seed pouch";
+        image = ItemSpriteSheet.POUCH;
 
-		size = 8;
-	}
+        size = 8;
+    }
 
-	@Override
-	public boolean grab( Item item ) {
-		return item instanceof Plant.Seed;
-	}
+    @Override
+    public boolean grab( Item item ) {
+        return item instanceof Plant.Seed;
+    }
 
-	@Override
-	public int price() {
-		return 50;
-	}
+    @Override
+    public int price() {
+        return 50;
+    }
 
-	@Override
-	public String info() {
-		return
-			"This small velvet pouch allows you to store any number of seeds in it. Very convenient.";
-	}
+    @Override
+    public String info() {
+        return
+            "This small velvet pouch allows you to store any number of seeds in it. Very convenient.";
+    }
 }
