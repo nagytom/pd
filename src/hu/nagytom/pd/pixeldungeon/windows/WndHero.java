@@ -98,7 +98,7 @@ public class WndHero extends WndTabbed {
         private static final String TXT_GOD_ON      = "On";
         private static final String TXT_CATALOGUS   = "Catalogus";
         private static final String TXT_JOURNAL     = "Journal";
-        private static final String TXT_ADD         = " Add ";
+        private static final String TXT_ADD         = "Add";
 
         private static final int GAP = 5;
 

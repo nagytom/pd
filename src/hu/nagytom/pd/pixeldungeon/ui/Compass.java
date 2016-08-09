@@ -21,6 +21,7 @@ import hu.nagytom.pd.noosa.Camera;
 import hu.nagytom.pd.noosa.Image;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.DungeonTilemap;
+import hu.nagytom.pd.pixeldungeon.levels.Level;
 import hu.nagytom.pd.utils.PointF;
 
 public class Compass extends Image {
@@ -47,6 +48,10 @@ public class Compass extends Image {
     @Override
     public void update() {
         super.update();
+
+        if (cell < 0 || cell >= Level.LENGTH) {
+            return;
+        }
 
         if (!visible) {
             visible = Dungeon.level.visited[cell] || Dungeon.level.mapped[cell];
