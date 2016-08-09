@@ -331,7 +331,7 @@ public class Armor extends EquipableItem {
 
     public static abstract class Glyph implements Bundlable {
 
-        private static final Class<?>[] glyphs = new Class<?>[]{
+        public static final Class<?>[] glyphs = new Class<?>[]{
             Bounce.class, Affection.class, AntiEntropy.class, Multiplicity.class,
             Potential.class, Metabolism.class, Stench.class, Viscosity.class,
             Displacement.class, Entanglement.class, AutoRepair.class };

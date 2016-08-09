@@ -38,7 +38,7 @@ public abstract class Scroll extends Item {
 
     protected static final float TIME_TO_READ   = 1f;
 
-    private static final Class<?>[] scrolls = {
+    public static final Class<?>[] scrolls = {
         ScrollOfIdentify.class,
         ScrollOfMagicMapping.class,
         ScrollOfRecharging.class,

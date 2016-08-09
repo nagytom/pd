@@ -94,9 +94,11 @@ public class WndHero extends WndTabbed {
     private class StatsTab extends Group {
 
         private static final String TXT_TITLE       = "Level %d %s";
-        private static final String TXT_GOD_TITLE   = "Level %d legendary %s";
+        private static final String TXT_GOD         = "God Mode";
+        private static final String TXT_GOD_ON      = "On";
         private static final String TXT_CATALOGUS   = "Catalogus";
         private static final String TXT_JOURNAL     = "Journal";
+        private static final String TXT_ADD         = " Add ";
 
         private static final int GAP = 5;
 
@@ -107,8 +109,7 @@ public class WndHero extends WndTabbed {
             Hero hero = Dungeon.hero;
 
             BitmapText title = PixelScene.createText(
-                Utils.format( PixelDungeon.godMode() ? TXT_GOD_TITLE : TXT_TITLE, hero.lvl, hero.className() )
-                .toUpperCase( Locale.ENGLISH ), 9 );
+                Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9 );
             title.hardlight( TITLE_COLOR );
             title.measure();
             add( title );
@@ -135,6 +136,20 @@ public class WndHero extends WndTabbed {
                 btnJournal.reqWidth() + 2, btnJournal.reqHeight() + 2 );
             add( btnJournal );
 
+            if (Dungeon.godMode && Dungeon.hero.isAlive()) {
+                RedButton btnAdd = new RedButton(TXT_ADD) {
+                    @Override
+                    protected void onClick() {
+                        hide();
+                        GameScene.show(new WndAdd());
+                    }
+                };
+                btnAdd.setRect(
+                    btnJournal.right() + 1, btnCatalogus.top(),
+                    btnAdd.reqWidth() + 2, btnAdd.reqHeight() + 2);
+                add(btnAdd);
+            }
+
             pos = btnCatalogus.bottom() + GAP;
 
             statSlot( TXT_STR, hero.STR() );
@@ -145,6 +160,10 @@ public class WndHero extends WndTabbed {
 
             statSlot( TXT_GOLD, Statistics.goldCollected );
             statSlot( TXT_DEPTH, Statistics.deepestFloor );
+
+            if (Dungeon.godMode) {
+                statSlot( TXT_GOD, TXT_GOD_ON );
+            }
 
             pos += GAP;
         }

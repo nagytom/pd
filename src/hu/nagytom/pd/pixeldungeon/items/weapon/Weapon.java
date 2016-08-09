@@ -226,7 +226,7 @@ abstract public class Weapon extends KindOfWeapon {
 
     public static abstract class Enchantment implements Bundlable {
 
-        private static final Class<?>[] enchants = new Class<?>[]{
+        public static final Class<?>[] enchants = new Class<?>[]{
             Fire.class, Poison.class, Death.class, Paralysis.class, Leech.class,
             Slow.class, Shock.class, Instability.class, Horror.class, Luck.class,
             Tempering.class};

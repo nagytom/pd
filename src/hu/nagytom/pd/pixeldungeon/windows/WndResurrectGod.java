@@ -1,61 +1,36 @@
 package hu.nagytom.pd.pixeldungeon.windows;
 
-import hu.nagytom.pd.noosa.BitmapTextMultiline;
 import hu.nagytom.pd.noosa.Game;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Hero;
 import hu.nagytom.pd.pixeldungeon.scenes.InterlevelScene;
-import hu.nagytom.pd.pixeldungeon.scenes.PixelScene;
-import hu.nagytom.pd.pixeldungeon.ui.RedButton;
-import hu.nagytom.pd.pixeldungeon.ui.Window;
 
-public class WndResurrectGod extends Window {
+public class WndResurrectGod extends WndOptions {
 
-    private static final String TXT_MESSAGE = "You died, but your spirit is powerful enough to resurrect.";
-    private static final String TXT_YES     = "I will fight!";
-    private static final String TXT_NO      = "I give up";
-
-    private static final int WIDTH      = 120;
-    private static final int BTN_HEIGHT = 20;
-    private static final float GAP      = 2;
+    private static final String TXT_TITLE   = "You died";
+    private static final String TXT_MESSAGE = "Do you want to resurrect?";
+    private static final String TXT_YES     = "Yes, I will fight!";
+    private static final String TXT_NO      = "No, I give up";
 
     private Object causeOfDeath;
 
     public WndResurrectGod(Object causeOfDeathArg) {
+        super(TXT_TITLE, TXT_MESSAGE, TXT_YES, TXT_NO);
         this.causeOfDeath = causeOfDeathArg;
+    }
 
-        BitmapTextMultiline message = PixelScene.createMultiline(TXT_MESSAGE, 6);
-        message.maxWidth = WIDTH;
-        message.measure();
-        message.y = 0;
-        add(message);
-
-        RedButton btnYes = new RedButton(TXT_YES) {
-            @Override
-            protected void onClick() {
-                hide();
-                InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
-                Game.switchScene(InterlevelScene.class);
-            }
-        };
-        btnYes.setRect(0, message.y + message.height() + GAP, WIDTH, BTN_HEIGHT);
-        add(btnYes);
-
-        RedButton btnNo = new RedButton(TXT_NO) {
-            @Override
-            protected void onClick() {
-                hide();
-                Hero.reallyDie(causeOfDeath);
-            }
-        };
-        btnNo.setRect(0, btnYes.bottom() + GAP, WIDTH, BTN_HEIGHT);
-        add(btnNo);
-
-        resize(WIDTH, (int) btnNo.bottom());
+    @Override
+    protected void onSelect(int index) {
+        if (index == 0) {
+            InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
+            Game.switchScene(InterlevelScene.class);
+        } else {
+            Hero.reallyDie(causeOfDeath);
+        }
     }
 
     @Override
     public void onBackPressed() {
-
+        // must choose a button
     }
 
 }

@@ -52,7 +52,7 @@ public class Potion extends Item {
 
     private static final float TIME_TO_DRINK = 1f;
 
-    private static final Class<?>[] potions = {
+    public static final Class<?>[] potions = {
         PotionOfHealing.class,
         PotionOfExperience.class,
         PotionOfToxicGas.class,

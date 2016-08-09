@@ -52,7 +52,7 @@ public class Ring extends EquipableItem {
 
     protected Buff buff;
 
-    private static final Class<?>[] rings = {
+    public static final Class<?>[] rings = {
         RingOfMending.class,
         RingOfDetection.class,
         RingOfShadows.class,

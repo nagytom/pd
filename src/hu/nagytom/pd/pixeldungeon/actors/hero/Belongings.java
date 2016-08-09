@@ -25,6 +25,7 @@ import hu.nagytom.pd.pixeldungeon.items.Item;
 import hu.nagytom.pd.pixeldungeon.items.KindOfWeapon;
 import hu.nagytom.pd.pixeldungeon.items.armor.Armor;
 import hu.nagytom.pd.pixeldungeon.items.bags.Bag;
+import hu.nagytom.pd.pixeldungeon.items.bags.Keyring;
 import hu.nagytom.pd.pixeldungeon.items.keys.IronKey;
 import hu.nagytom.pd.pixeldungeon.items.keys.Key;
 import hu.nagytom.pd.pixeldungeon.items.rings.Ring;
@@ -167,9 +168,13 @@ public class Belongings implements Iterable<Item> {
 
     public void resurrect( int depth ) {
         if (Dungeon.godMode) {
-            for (Item item : backpack.items.toArray(new Item[0])) {
+            Bag b = Dungeon.hero.belongings.getItem(Keyring.class);
+            if (b == null) {
+                b = backpack;
+            }
+            for (Item item : b.items.toArray(new Item[0])) {
                 if (item instanceof Key && ((Key) item).depth == depth) {
-                    item.detachAll(backpack);
+                    item.detachAll(b);
                 }
             }
             return;

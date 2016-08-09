@@ -73,7 +73,7 @@ public abstract class Wand extends KindOfWeapon {
 
     protected boolean hitChars = true;
 
-    private static final Class<?>[] wands = {
+    public static final Class<?>[] wands = {
         WandOfTeleportation.class,
         WandOfSlowness.class,
         WandOfFirebolt.class,
