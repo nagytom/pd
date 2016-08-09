@@ -53,6 +53,7 @@ public class WndAddDetails extends Window {
         initUI();
     }
 
+    @SuppressWarnings("unchecked")
     private void initNamesArray() {
         if (!isEnchantable()) {
             enchNames = null;
@@ -209,6 +210,7 @@ public class WndAddDetails extends Window {
         }
 
         RedButton btnAdd = new RedButton(TXT_ADD) {
+            @SuppressWarnings("unchecked")
             @Override
             protected void onClick() {
                 try {

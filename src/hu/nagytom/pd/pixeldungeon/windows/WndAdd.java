@@ -105,6 +105,7 @@ public class WndAdd extends Window {
         list.setRect(0, txtTitle.height(), width, height - txtTitle.height());
     }
 
+    @SuppressWarnings("unchecked")
     private void initList() {
         List<Class<? extends Item>> list = new LinkedList<Class<? extends Item>>();
 
