@@ -39,9 +39,11 @@ import hu.nagytom.pd.pixeldungeon.effects.BannerSprites;
 import hu.nagytom.pd.pixeldungeon.effects.Speck;
 import hu.nagytom.pd.pixeldungeon.effects.BannerSprites.Type;
 import hu.nagytom.pd.pixeldungeon.ui.Archs;
+import hu.nagytom.pd.pixeldungeon.ui.CheckBox;
 import hu.nagytom.pd.pixeldungeon.ui.ExitButton;
 import hu.nagytom.pd.pixeldungeon.ui.Icons;
 import hu.nagytom.pd.pixeldungeon.ui.RedButton;
+import hu.nagytom.pd.pixeldungeon.ui.Window;
 import hu.nagytom.pd.pixeldungeon.utils.Utils;
 import hu.nagytom.pd.pixeldungeon.windows.WndChallenges;
 import hu.nagytom.pd.pixeldungeon.windows.WndClass;
@@ -56,19 +58,22 @@ public class StartScene extends PixelScene {
 
     private static final String TXT_LOAD    = "Load Game";
     private static final String TXT_NEW     = "New Game";
+    private static final String TXT_EXTRAS  = "Extras";
+    private static final String TXT_ABANDON = "Abandon Game";
 
     private static final String TXT_ERASE       = "Erase current game";
     private static final String TXT_DPTH_LVL    = "Depth: %d, level: %d";
+    private static final String TXT_EXTRAS_ON   = "Extras are turned on";
 
-    private static final String TXT_REALLY  = "Do you really want to start new game?";
+    private static final String TXT_REALLY  = "Do you really want to abandon this game?";
     private static final String TXT_WARNING = "Your current game progress will be erased.";
-    private static final String TXT_YES     = "Yes, start new game";
-    private static final String TXT_NO      = "No, return to main menu";
+    private static final String TXT_YES     = "Yes, abandon this game";
+    private static final String TXT_NO      = "No, I changed my mind";
 
     private static final String TXT_UNLOCK  = "To unlock this character class, slay the 3rd boss with any other class";
 
     private static final String TXT_WIN_THE_GAME =
-        "To unlock \"Challenges\", win the game with any character class.";
+        "To unlock God Mode and \"Challenges\", win the game with any character class.";
 
     private static final float WIDTH_P  = 116;
     private static final float HEIGHT_P = 220;
@@ -80,9 +85,12 @@ public class StartScene extends PixelScene {
 
     private float buttonX;
     private float buttonY;
+    private float buttonWidth;
 
     private GameButton btnLoad;
+    private GameButton btnAbandon;
     private GameButton btnNewGame;
+    private GameButton btnExtras;
 
     private boolean huntressUnlocked;
     private Group unlock;
@@ -125,26 +133,46 @@ public class StartScene extends PixelScene {
 
         buttonX = left;
         buttonY = bottom - BUTTON_HEIGHT;
+        buttonWidth = (Camera.main.width - GAP) / 2 - buttonX;
 
         btnNewGame = new GameButton( TXT_NEW ) {
             @Override
             protected void onClick() {
-                if (GamesInProgress.check( curClass ) != null) {
-                    StartScene.this.add( new WndOptions( TXT_REALLY, TXT_WARNING, TXT_YES, TXT_NO ) {
-                        @Override
-                        protected void onSelect( int index ) {
-                            if (index == 0) {
-                                startNewGame();
-                            }
-                        }
-                    } );
-
-                } else {
                     startNewGame();
-                }
             }
         };
         add( btnNewGame );
+
+        btnAbandon = new GameButton(TXT_ABANDON) {
+            @Override
+            protected void onClick() {
+                StartScene.this.add( new WndOptions( TXT_REALLY, TXT_WARNING, TXT_YES, TXT_NO ) {
+                    @Override
+                    protected void onSelect( int index ) {
+                        if (index == 0) {
+                            GamesInProgress.delete(StartScene.curClass);
+                            Dungeon.deleteGame(StartScene.curClass, true);
+                            PixelDungeon.lastClass(StartScene.curClass.ordinal());
+                            PixelDungeon.switchNoFade(StartScene.class);
+                        }
+                    }
+                } );
+            }
+        };
+        add(btnAbandon);
+
+        btnExtras = new GameButton(TXT_EXTRAS) {
+            @Override
+            protected void onClick() {
+                StartScene.this.add(new WndExtras());
+                /*if (Badges.isUnlocked(Badges.Badge.VICTORY)) {
+                    StartScene.this.add(new WndExtras());
+                } else {
+                    StartScene.this.add(new WndMessage(TXT_WIN_THE_GAME));
+                }*/
+            }
+        };
+        add(btnExtras);
 
         btnLoad = new GameButton( TXT_LOAD ) {
             @Override
@@ -174,12 +202,6 @@ public class StartScene extends PixelScene {
                 shield.setRect( left + i * shieldW, top, shieldW, shieldH );
             }
 
-            ChallengeButton challenge = new ChallengeButton();
-            challenge.setPos(
-                w / 2 - challenge.width() / 2,
-                top + shieldH - challenge.height() / 2 );
-            add( challenge );
-
         } else {
             float shieldW = width / 2;
             float shieldH = Math.min( centralHeight / 2, shieldW * 1.2f );
@@ -191,12 +213,6 @@ public class StartScene extends PixelScene {
                     top + (i / 2) * shieldH,
                     shieldW, shieldH );
             }
-
-            ChallengeButton challenge = new ChallengeButton();
-            challenge.setPos(
-                w / 2 - challenge.width() / 2,
-                top + shieldH - challenge.height() / 2 );
-            add( challenge );
         }
 
         unlock = new Group();
@@ -261,40 +277,45 @@ public class StartScene extends PixelScene {
         shields.get( curClass = cl ).highlight( true );
 
         if (cl != HeroClass.HUNTRESS || huntressUnlocked) {
-
             unlock.visible = false;
 
-            GamesInProgress.Info info = GamesInProgress.check( curClass );
+            GamesInProgress.Info info = GamesInProgress.check(curClass);
             if (info != null) {
-
+                btnExtras.visible = false;
+                btnNewGame.visible = false;
                 btnLoad.visible = true;
-                btnLoad.secondary( Utils.format( TXT_DPTH_LVL, info.depth, info.level ), info.challenges );
+                btnAbandon.visible = true;
 
-                btnNewGame.visible = true;
-                btnNewGame.secondary( TXT_ERASE, false );
-
-                float w = (Camera.main.width - GAP) / 2 - buttonX;
-
-                btnLoad.setRect(
-                    buttonX, buttonY, w, BUTTON_HEIGHT );
-                btnNewGame.setRect(
-                    btnLoad.right() + GAP, buttonY, w, BUTTON_HEIGHT );
-
+                btnLoad.secondary(Utils.format(TXT_DPTH_LVL, info.depth, info.level), info.challenges || info.godMode);
+                btnLoad.setRect(buttonX, buttonY, buttonWidth, BUTTON_HEIGHT);
+                btnAbandon.secondary(TXT_ERASE, false);
+                btnAbandon.setRect(btnLoad.right() + GAP, buttonY, buttonWidth, BUTTON_HEIGHT);
             } else {
+                btnAbandon.visible = false;
                 btnLoad.visible = false;
-
                 btnNewGame.visible = true;
-                btnNewGame.secondary( null, false );
-                btnNewGame.setRect( buttonX, buttonY, Camera.main.width - buttonX * 2, BUTTON_HEIGHT );
+                btnExtras.visible = true;
+
+                btnNewGame.secondary(null, false);
+                btnNewGame.setRect(buttonX, buttonY, buttonWidth, BUTTON_HEIGHT);
+                updateExtrasButton();
             }
-
         } else {
-
             unlock.visible = true;
             btnLoad.visible = false;
             btnNewGame.visible = false;
-
+            btnExtras.visible = false;
+            btnAbandon.visible = false;
         }
+    }
+
+    private void updateExtrasButton() {
+        if (PixelDungeon.challenges() > 0 || PixelDungeon.godMode()) {
+            btnExtras.secondary(TXT_EXTRAS_ON, true);
+        } else {
+            btnExtras.secondary(null, false);
+        }
+        btnExtras.setRect(btnNewGame.right() + GAP, buttonY, buttonWidth, BUTTON_HEIGHT);
     }
 
     private void startNewGame() {
@@ -473,55 +494,63 @@ public class StartScene extends PixelScene {
         }
     }
 
-    private class ChallengeButton extends Button {
+    private class WndExtras extends Window {
 
-        private Image image;
+        private static final String TXT_CHALLENGES  = "Challenges";
+        private static final String TXT_GOD_MODE    = "God Mode";
+        private static final String TXT_GOD_MODE_ON = "Badges, rankings and challenges are disabled in God Mode.";
 
-        public ChallengeButton() {
+        private static final int WIDTH      = 112;
+        private static final int BTN_HEIGHT = 20;
+        private static final int GAP        = 2;
+
+        public WndExtras() {
             super();
 
-            width = image.width;
-            height = image.height;
+            RedButton btnChallenges = new RedButton(TXT_CHALLENGES) {
+                @Override
+                protected void onClick() {
+                    if (PixelDungeon.godMode()) {
+                        StartScene.this.add(new WndMessage(TXT_GOD_MODE_ON));
+                    } else {
+                        hide();
+                        StartScene.this.add(new WndChallenges(PixelDungeon.challenges(), true) {
+                            @Override
+                            public void onBackPressed() {
+                                super.onBackPressed();
+                                updateExtrasButton();
+                            };
+                        });
+                    }
+                }
+            };
+            btnChallenges.setRect(0, 0, WIDTH, BTN_HEIGHT);
+            add(btnChallenges);
 
-            image.am = Badges.isUnlocked( Badges.Badge.VICTORY ) ? 1.0f : 0.5f;
+            CheckBox btnGodMode = new CheckBox(TXT_GOD_MODE) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    PixelDungeon.godMode(checked());
+
+                    if (PixelDungeon.godMode()) {
+                        StartScene.this.add(new WndMessage(TXT_GOD_MODE_ON));
+                    }
+                }
+            };
+            btnGodMode.setRect(0, btnChallenges.bottom() + GAP, WIDTH, BTN_HEIGHT);
+            btnGodMode.checked(PixelDungeon.godMode());
+            add(btnGodMode);
+
+            resize(WIDTH, (int) btnGodMode.bottom());
         }
 
         @Override
-        protected void createChildren() {
-
-            super.createChildren();
-
-            image = Icons.get( PixelDungeon.challenges() > 0 ? Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF );
-            add( image );
+        public void onBackPressed() {
+            super.onBackPressed();
+            updateExtrasButton();
         }
 
-        @Override
-        protected void layout() {
-
-            super.layout();
-
-            image.x = align( x );
-            image.y = align( y  );
-        }
-
-        @Override
-        protected void onClick() {
-            if (Badges.isUnlocked( Badges.Badge.VICTORY )) {
-                StartScene.this.add( new WndChallenges( PixelDungeon.challenges(), true ) {
-                    public void onBackPressed() {
-                        super.onBackPressed();
-                        image.copy( Icons.get( PixelDungeon.challenges() > 0 ?
-                            Icons.CHALLENGE_ON :Icons.CHALLENGE_OFF ) );
-                    };
-                } );
-            } else {
-                StartScene.this.add( new WndMessage( TXT_WIN_THE_GAME ) );
-            }
-        }
-
-        @Override
-        protected void onTouchDown() {
-            Sample.INSTANCE.play( Assets.SND_CLICK );
-        }
     }
+
 }

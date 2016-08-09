@@ -78,6 +78,7 @@ public class Dungeon {
     public static boolean dewVial;      // true if the dew vial can be spawned
 
     public static int challenges;
+    public static boolean godMode;
 
     public static Hero hero;
     public static Level level;
@@ -98,7 +99,13 @@ public class Dungeon {
 
     public static void init() {
 
+        if (PixelDungeon.godMode()) {
+            PixelDungeon.challenges(0);
+        }
         challenges = PixelDungeon.challenges();
+        PixelDungeon.challenges(0);
+        godMode = PixelDungeon.godMode();
+        PixelDungeon.godMode(false);
 
         Actor.clear();
 
@@ -321,6 +328,7 @@ public class Dungeon {
 
     private static final String VERSION     = "version";
     private static final String CHALLENGES  = "challenges";
+    private static final String GOD_MODE    = "godMode";
     private static final String HERO        = "hero";
     private static final String GOLD        = "gold";
     private static final String DEPTH       = "depth";
@@ -366,6 +374,7 @@ public class Dungeon {
 
             bundle.put( VERSION, Game.version );
             bundle.put( CHALLENGES, challenges );
+            bundle.put( GOD_MODE, godMode );
             bundle.put( HERO, hero );
             bundle.put( GOLD, gold );
             bundle.put( DEPTH, depth );
@@ -435,7 +444,7 @@ public class Dungeon {
             saveGame( gameFile( hero.heroClass ) );
             saveLevel();
 
-            GamesInProgress.set( hero.heroClass, depth, hero.lvl, challenges != 0 );
+            GamesInProgress.set( hero.heroClass, depth, hero.lvl, challenges != 0, godMode );
 
         } else if (WndResurrect.instance != null) {
 
@@ -458,6 +467,7 @@ public class Dungeon {
         Bundle bundle = gameBundle( fileName );
 
         Dungeon.challenges = bundle.getInt( CHALLENGES );
+        Dungeon.godMode = bundle.getBoolean( GOD_MODE );
 
         Dungeon.level = null;
         Dungeon.depth = -1;
@@ -574,6 +584,7 @@ public class Dungeon {
     public static void preview( GamesInProgress.Info info, Bundle bundle ) {
         info.depth = bundle.getInt( DEPTH );
         info.challenges = (bundle.getInt( CHALLENGES ) != 0);
+        info.godMode = bundle.getBoolean( GOD_MODE );
         if (info.depth == -1) {
             info.depth = bundle.getInt( "maxDepth" );   // FIXME
         }

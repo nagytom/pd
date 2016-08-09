@@ -27,6 +27,7 @@ import hu.nagytom.pd.noosa.Image;
 import hu.nagytom.pd.noosa.TextureFilm;
 import hu.nagytom.pd.pixeldungeon.Assets;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
+import hu.nagytom.pd.pixeldungeon.PixelDungeon;
 import hu.nagytom.pd.pixeldungeon.Statistics;
 import hu.nagytom.pd.pixeldungeon.actors.buffs.Buff;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Hero;
@@ -93,6 +94,7 @@ public class WndHero extends WndTabbed {
     private class StatsTab extends Group {
 
         private static final String TXT_TITLE       = "Level %d %s";
+        private static final String TXT_GOD_TITLE   = "Level %d legendary %s";
         private static final String TXT_CATALOGUS   = "Catalogus";
         private static final String TXT_JOURNAL     = "Journal";
 
@@ -105,7 +107,8 @@ public class WndHero extends WndTabbed {
             Hero hero = Dungeon.hero;
 
             BitmapText title = PixelScene.createText(
-                Utils.format( TXT_TITLE, hero.lvl, hero.className() ).toUpperCase( Locale.ENGLISH ), 9 );
+                Utils.format( PixelDungeon.godMode() ? TXT_GOD_TITLE : TXT_TITLE, hero.lvl, hero.className() )
+                .toUpperCase( Locale.ENGLISH ), 9 );
             title.hardlight( TITLE_COLOR );
             title.measure();
             add( title );

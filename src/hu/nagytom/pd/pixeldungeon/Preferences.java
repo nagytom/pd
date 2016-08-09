@@ -34,6 +34,7 @@ enum Preferences {
     public static final String KEY_ZOOM         = "zoom";
     public static final String KEY_LAST_CLASS   = "last_class";
     public static final String KEY_CHALLENGES   = "challenges";
+    public static final String KEY_GOD_MODE     = "god_mode";
     public static final String KEY_DONATED      = "donated";
     public static final String KEY_INTRO        = "intro";
     public static final String KEY_BRIGHTNESS   = "brightness";

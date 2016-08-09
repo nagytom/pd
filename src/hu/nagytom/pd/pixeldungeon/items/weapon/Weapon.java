@@ -18,6 +18,8 @@
 package hu.nagytom.pd.pixeldungeon.items.weapon;
 
 import hu.nagytom.pd.pixeldungeon.Badges;
+import hu.nagytom.pd.pixeldungeon.Challenges;
+import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.actors.Char;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Hero;
 import hu.nagytom.pd.pixeldungeon.actors.hero.HeroClass;
@@ -251,7 +253,11 @@ abstract public class Weapon extends KindOfWeapon {
         @SuppressWarnings("unchecked")
         public static Enchantment random() {
             try {
-                return ((Class<Enchantment>)enchants[ Random.chances( chances ) ]).newInstance();
+                Class ench;
+                do {
+                    ench = enchants[Random.chances(chances)];
+                } while (!Dungeon.isChallenged(Challenges.ITEM_DEGRADATION) && ench == Tempering.class);
+                return ((Class<Enchantment>) ench).newInstance();
             } catch (Exception e) {
                 return null;
             }

@@ -20,6 +20,7 @@ package hu.nagytom.pd.pixeldungeon.items.armor;
 import java.util.ArrayList;
 
 import hu.nagytom.pd.pixeldungeon.Badges;
+import hu.nagytom.pd.pixeldungeon.Challenges;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.actors.Char;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Hero;
@@ -370,7 +371,11 @@ public class Armor extends EquipableItem {
         @SuppressWarnings("unchecked")
         public static Glyph random() {
             try {
-                return ((Class<Glyph>)glyphs[ Random.chances( chances ) ]).newInstance();
+                Class ret;
+                do {
+                    ret = glyphs[Random.chances(chances)];
+                } while (!Dungeon.isChallenged(Challenges.ITEM_DEGRADATION) && ret == AutoRepair.class);
+                return ((Class<Glyph>) ret).newInstance();
             } catch (Exception e) {
                 return null;
             }

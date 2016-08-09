@@ -105,6 +105,7 @@ import hu.nagytom.pd.pixeldungeon.ui.BuffIndicator;
 import hu.nagytom.pd.pixeldungeon.utils.GLog;
 import hu.nagytom.pd.pixeldungeon.windows.WndMessage;
 import hu.nagytom.pd.pixeldungeon.windows.WndResurrect;
+import hu.nagytom.pd.pixeldungeon.windows.WndResurrectGod;
 import hu.nagytom.pd.pixeldungeon.windows.WndTradeItem;
 import hu.nagytom.pd.utils.Bundle;
 import hu.nagytom.pd.utils.Random;
@@ -1151,16 +1152,17 @@ public class Hero extends Char {
         Actor.fixTime();
         super.die( cause );
 
-        Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
-        if (ankh == null) {
-
-            reallyDie( cause );
-
+        if (Dungeon.godMode) {
+            Dungeon.deleteGame(Dungeon.hero.heroClass, false);
+            GameScene.show(new WndResurrectGod(cause));
         } else {
-
-            Dungeon.deleteGame( Dungeon.hero.heroClass, false );
-            GameScene.show( new WndResurrect( ankh, cause ) );
-
+            Ankh ankh = (Ankh)belongings.getItem( Ankh.class );
+            if (ankh == null) {
+                reallyDie( cause );
+            } else {
+                Dungeon.deleteGame( Dungeon.hero.heroClass, false );
+                GameScene.show( new WndResurrect( ankh, cause ) );
+            }
         }
     }
 
@@ -1185,7 +1187,9 @@ public class Hero extends Char {
             }
         }
 
-        Bones.leave();
+        if (!Dungeon.godMode) {
+            Bones.leave();
+        }
 
         Dungeon.observe();
 
@@ -1392,8 +1396,10 @@ public class Hero extends Char {
     public void resurrect( int resetLevel ) {
 
         HP = HT;
-        Dungeon.gold = 0;
-        exp = 0;
+        if (!Dungeon.godMode) {
+            Dungeon.gold = 0;
+            exp = 0;
+        }
 
         belongings.resurrect( resetLevel );
 

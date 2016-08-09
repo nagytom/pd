@@ -46,6 +46,9 @@ public enum Rankings {
     public int wonNumber;
 
     public void submit( boolean win ) {
+        if (Dungeon.godMode) {
+            return;
+        }
 
         load();
 

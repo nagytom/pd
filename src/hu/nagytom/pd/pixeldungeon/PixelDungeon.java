@@ -343,6 +343,14 @@ public class PixelDungeon extends Game {
         return Preferences.INSTANCE.getInt( Preferences.KEY_CHALLENGES, 0 );
     }
 
+    public static void godMode( boolean value ) {
+        Preferences.INSTANCE.put( Preferences.KEY_GOD_MODE, value );
+    }
+
+    public static boolean godMode() {
+        return Preferences.INSTANCE.getBoolean( Preferences.KEY_GOD_MODE, false );
+    }
+
     public static void intro( boolean value ) {
         Preferences.INSTANCE.put( Preferences.KEY_INTRO, value );
     }

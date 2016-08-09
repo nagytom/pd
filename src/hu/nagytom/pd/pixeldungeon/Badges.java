@@ -248,6 +248,9 @@ public class Badges {
     }
 
     public static void validateMonstersSlain() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.MONSTERS_SLAIN_1 ) && Statistics.enemiesSlain >= 10) {
@@ -271,6 +274,9 @@ public class Badges {
     }
 
     public static void validateGoldCollected() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.GOLD_COLLECTED_1 ) && Statistics.goldCollected >= 100) {
@@ -294,6 +300,9 @@ public class Badges {
     }
 
     public static void validateLevelReached() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.LEVEL_REACHED_1 ) && Dungeon.hero.lvl >= 6) {
@@ -317,6 +326,9 @@ public class Badges {
     }
 
     public static void validateStrengthAttained() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.STRENGTH_ATTAINED_1 ) && Dungeon.hero.STR >= 13) {
@@ -340,6 +352,9 @@ public class Badges {
     }
 
     public static void validateFoodEaten() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.FOOD_EATEN_1 ) && Statistics.foodEaten >= 10) {
@@ -363,6 +378,9 @@ public class Badges {
     }
 
     public static void validatePotionsCooked() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.POTIONS_COOKED_1 ) && Statistics.potionsCooked >= 3) {
@@ -386,6 +404,9 @@ public class Badges {
     }
 
     public static void validatePiranhasKilled() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
 
         if (!local.contains( Badge.PIRANHAS ) && Statistics.piranhasKilled >= 6) {
@@ -403,6 +424,9 @@ public class Badges {
         // 2) When an item gets upgraded (ScrollOfUpgrade, ScrollOfWeaponUpgrade, ShortSword, WandOfMagicMissile)
         // 3) When an item gets identified
         if (!item.levelKnown) {
+            return;
+        }
+        if (Dungeon.godMode) {
             return;
         }
 
@@ -429,6 +453,9 @@ public class Badges {
     }
 
     public static void validateAllPotionsIdentified() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
             !local.contains( Badge.ALL_POTIONS_IDENTIFIED ) && Potion.allKnown()) {
 
@@ -441,6 +468,9 @@ public class Badges {
     }
 
     public static void validateAllScrollsIdentified() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
             !local.contains( Badge.ALL_SCROLLS_IDENTIFIED ) && Scroll.allKnown()) {
 
@@ -453,6 +483,9 @@ public class Badges {
     }
 
     public static void validateAllRingsIdentified() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
             !local.contains( Badge.ALL_RINGS_IDENTIFIED ) && Ring.allKnown()) {
 
@@ -465,6 +498,9 @@ public class Badges {
     }
 
     public static void validateAllWandsIdentified() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
             !local.contains( Badge.ALL_WANDS_IDENTIFIED ) && Wand.allKnown()) {
 
@@ -477,6 +513,9 @@ public class Badges {
     }
 
     public static void validateAllBagsBought( Item bag ) {
+        if (Dungeon.godMode) {
+            return;
+        }
 
         Badge badge = null;
         if (bag instanceof SeedPouch) {
@@ -504,6 +543,9 @@ public class Badges {
     }
 
     public static void validateAllItemsIdentified() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!global.contains( Badge.ALL_ITEMS_IDENTIFIED ) &&
             global.contains( Badge.ALL_POTIONS_IDENTIFIED ) &&
             global.contains( Badge.ALL_SCROLLS_IDENTIFIED ) &&
@@ -516,6 +558,9 @@ public class Badges {
     }
 
     public static void validateDeathFromFire() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_FIRE;
         local.add( badge );
         displayBadge( badge );
@@ -524,6 +569,9 @@ public class Badges {
     }
 
     public static void validateDeathFromPoison() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_POISON;
         local.add( badge );
         displayBadge( badge );
@@ -532,6 +580,9 @@ public class Badges {
     }
 
     public static void validateDeathFromGas() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_GAS;
         local.add( badge );
         displayBadge( badge );
@@ -540,6 +591,9 @@ public class Badges {
     }
 
     public static void validateDeathFromHunger() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_HUNGER;
         local.add( badge );
         displayBadge( badge );
@@ -548,18 +602,27 @@ public class Badges {
     }
 
     public static void validateDeathFromGlyph() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_GLYPH;
         local.add( badge );
         displayBadge( badge );
     }
 
     public static void validateDeathFromFalling() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = Badge.DEATH_FROM_FALLING;
         local.add( badge );
         displayBadge( badge );
     }
 
     private static void validateYASD() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (global.contains( Badge.DEATH_FROM_FIRE ) &&
             global.contains( Badge.DEATH_FROM_POISON ) &&
             global.contains( Badge.DEATH_FROM_GAS ) &&
@@ -572,6 +635,9 @@ public class Badges {
     }
 
     public static void validateBossSlain() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
         switch (Dungeon.depth) {
         case 5:
@@ -682,6 +748,9 @@ public class Badges {
     }
 
     public static void validateMastery() {
+        if (Dungeon.godMode) {
+            return;
+        }
 
         Badge badge = null;
         switch (Dungeon.hero.heroClass) {
@@ -706,6 +775,9 @@ public class Badges {
     }
 
     public static void validateMasteryCombo( int n ) {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.MASTERY_COMBO ) && n == 7) {
             Badge badge = Badge.MASTERY_COMBO;
             local.add( badge );
@@ -714,6 +786,9 @@ public class Badges {
     }
 
     public static void validateRingOfHaggler() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.RING_OF_HAGGLER ) && new RingOfHaggler().isKnown()) {
             Badge badge = Badge.RING_OF_HAGGLER;
             local.add( badge );
@@ -722,6 +797,9 @@ public class Badges {
     }
 
     public static void validateRingOfThorns() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.RING_OF_THORNS ) && new RingOfThorns().isKnown()) {
             Badge badge = Badge.RING_OF_THORNS;
             local.add( badge );
@@ -730,6 +808,9 @@ public class Badges {
     }
 
     public static void validateRare( Mob mob ) {
+        if (Dungeon.godMode) {
+            return;
+        }
 
         Badge badge = null;
         if (mob instanceof Albino) {
@@ -760,6 +841,9 @@ public class Badges {
     }
 
     public static void validateVictory() {
+        if (Dungeon.godMode) {
+            return;
+        }
 
         Badge badge = Badge.VICTORY;
         displayBadge( badge );
@@ -795,6 +879,9 @@ public class Badges {
     }
 
     public static void validateNoKilling() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.NO_MONSTERS_SLAIN ) && Statistics.completedWithNoKilling) {
             Badge badge = Badge.NO_MONSTERS_SLAIN;
             local.add( badge );
@@ -803,6 +890,9 @@ public class Badges {
     }
 
     public static void validateGrimWeapon() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.GRIM_WEAPON )) {
             Badge badge = Badge.GRIM_WEAPON;
             local.add( badge );
@@ -811,6 +901,9 @@ public class Badges {
     }
 
     public static void validateNightHunter() {
+        if (Dungeon.godMode) {
+            return;
+        }
         if (!local.contains( Badge.NIGHT_HUNTER ) && Statistics.nightHunt >= 15) {
             Badge badge = Badge.NIGHT_HUNTER;
             local.add( badge );
@@ -827,6 +920,9 @@ public class Badges {
     }
 
     public static void validateGamesPlayed() {
+        if (Dungeon.godMode) {
+            return;
+        }
         Badge badge = null;
         if (Rankings.INSTANCE.totalNumber >= 10) {
             badge = Badge.GAMES_PLAYED_1;
@@ -845,10 +941,16 @@ public class Badges {
     }
 
     public static void validateHappyEnd() {
+        if (Dungeon.godMode) {
+            return;
+        }
         displayBadge( Badge.HAPPY_END );
     }
 
     public static void validateChampion() {
+        if (Dungeon.godMode) {
+            return;
+        }
         displayBadge( Badge.CHAMPION );
     }
 

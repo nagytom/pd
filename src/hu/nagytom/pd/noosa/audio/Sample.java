@@ -28,6 +28,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+@SuppressWarnings("deprecation")
 public enum Sample implements SoundPool.OnLoadCompleteListener {
 
     INSTANCE;
@@ -137,4 +138,5 @@ public enum Sample implements SoundPool.OnLoadCompleteListener {
     @Override
     public void onLoadComplete( SoundPool soundPool, int sampleId, int status ) {
     }
+
 }

@@ -51,11 +51,12 @@ public class GamesInProgress {
         }
     }
 
-    public static void set( HeroClass cl, int depth, int level, boolean challenges ) {
+    public static void set( HeroClass cl, int depth, int level, boolean challenges, boolean godMode ) {
         Info info = new Info();
         info.depth = depth;
         info.level = level;
         info.challenges = challenges;
+        info.godMode = godMode;
         state.put( cl, info );
     }
 
@@ -71,5 +72,6 @@ public class GamesInProgress {
         public int depth;
         public int level;
         public boolean challenges;
+        public boolean godMode;
     }
 }

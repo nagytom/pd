@@ -18,6 +18,7 @@
 package hu.nagytom.pd.pixeldungeon.actors.buffs;
 
 import hu.nagytom.pd.pixeldungeon.Badges;
+import hu.nagytom.pd.pixeldungeon.Challenges;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.ResultDescriptions;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Hero;
@@ -63,11 +64,9 @@ public class Hunger extends Buff implements Hero.Doom {
             Hero hero = (Hero)target;
 
             if (isStarving()) {
-                if (Random.Float() < 0.3f && (target.HP > 1 || !target.paralysed)) {
-
+                if (Dungeon.isChallenged(Challenges.PAINFUL_STARVING) && Random.Float() < 0.3f && (target.HP > 1 || !target.paralysed)) {
                     GLog.n( TXT_STARVING );
                     hero.damage( 1, this );
-
                     hero.interrupt();
                 }
             } else {

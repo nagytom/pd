@@ -24,6 +24,7 @@ import java.util.Comparator;
 import hu.nagytom.pd.noosa.audio.Sample;
 import hu.nagytom.pd.pixeldungeon.Assets;
 import hu.nagytom.pd.pixeldungeon.Badges;
+import hu.nagytom.pd.pixeldungeon.Challenges;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.actors.Actor;
 import hu.nagytom.pd.pixeldungeon.actors.Char;
@@ -298,7 +299,7 @@ public class Item implements Bundlable {
     }
 
     public void use() {
-        if (level > 0 && !isBroken()) {
+        if (Dungeon.isChallenged(Challenges.ITEM_DEGRADATION) && level > 0 && !isBroken()) {
             int threshold = (int)(maxDurability() * DURABILITY_WARNING_LEVEL);
             if (durability-- >= threshold && threshold > durability && levelKnown) {
                 GLog.w( TXT_GONNA_BREAK, name() );

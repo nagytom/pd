@@ -25,6 +25,7 @@ import hu.nagytom.pd.noosa.ColorBlock;
 import hu.nagytom.pd.noosa.Image;
 import hu.nagytom.pd.noosa.audio.Sample;
 import hu.nagytom.pd.pixeldungeon.Assets;
+import hu.nagytom.pd.pixeldungeon.Challenges;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.PixelDungeon;
 import hu.nagytom.pd.pixeldungeon.actors.hero.Belongings;
@@ -365,7 +366,7 @@ public class WndBag extends WndTabbed {
                     bg.ba = 0.1f;
                 }
 
-                if (lastBag.owner.isAlive() && item.isUpgradable() && item.levelKnown) {
+                if (Dungeon.isChallenged(Challenges.ITEM_DEGRADATION) && lastBag.owner.isAlive() && item.isUpgradable() && item.levelKnown) {
                     durability = new ColorBlock[NBARS];
                     int nBars = (int)GameMath.gate( 0, Math.round( (float)NBARS * item.durability() / item.maxDurability() ), NBARS );
                     for (int i=0; i < nBars; i++) {

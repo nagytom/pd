@@ -76,6 +76,7 @@ public class WndGame extends Window {
                 protected void onClick() {
                     Dungeon.hero = null;
                     PixelDungeon.challenges( Dungeon.challenges );
+                    PixelDungeon.godMode( Dungeon.godMode );
                     InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
                     InterlevelScene.noStory = true;
                     Game.switchScene( InterlevelScene.class );
@@ -83,13 +84,15 @@ public class WndGame extends Window {
             } );
             btnStart.icon( Icons.get( Dungeon.hero.heroClass ) );
 
-            addButton( new RedButton( TXT_RANKINGS ) {
-                @Override
-                protected void onClick() {
-                    InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-                    Game.switchScene( RankingsScene.class );
-                }
-            } );
+            if (!Dungeon.godMode) {
+                addButton( new RedButton( TXT_RANKINGS ) {
+                    @Override
+                    protected void onClick() {
+                        InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+                        Game.switchScene( RankingsScene.class );
+                    }
+                } );
+            }
         }
 
         addButtons(

@@ -18,6 +18,7 @@
 package hu.nagytom.pd.pixeldungeon.windows;
 
 import hu.nagytom.pd.noosa.BitmapTextMultiline;
+import hu.nagytom.pd.pixeldungeon.Challenges;
 import hu.nagytom.pd.pixeldungeon.Dungeon;
 import hu.nagytom.pd.pixeldungeon.items.Item;
 import hu.nagytom.pd.pixeldungeon.scenes.PixelScene;
@@ -43,7 +44,7 @@ public class WndItem extends Window {
         IconTitle titlebar = new IconTitle();
         titlebar.icon( new ItemSprite( item.image(), item.glowing() ) );
         titlebar.label( Utils.capitalize( item.toString() ) );
-        if (item.isUpgradable() && item.levelKnown) {
+        if (Dungeon.isChallenged(Challenges.ITEM_DEGRADATION) && item.isUpgradable() && item.levelKnown) {
             titlebar.health( (float)item.durability() / item.maxDurability() );
         }
         titlebar.setRect( 0, 0, WIDTH, 0 );
